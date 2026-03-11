@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Tes Kepribadian Finansial - Monetra</title>
     <link rel="shortcut icon" href="assets/img/image.jpeg" type="image/x-icon">
 
@@ -13,841 +13,602 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    colors: {
-                        primary: '#8b5cf6',
-                        secondary: '#06b6d4',
-                    }
+                    colors: { primary: '#8b5cf6', secondary: '#06b6d4' },
+                    screens: { 'xs': '480px' }
                 }
             }
         }
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="assets/css/clock.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js"></script>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
             transition: background-color 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        html.dark body {
-            background-color: #020617;
-            color: #f8fafc;
-        }
+        html.dark body { background-color: #020617; color: #f8fafc; }
+        html.light body { background-color: #f8fafc; color: #0f172a; }
 
-        html.light body {
-            background-color: #f8fafc;
-            color: #0f172a;
-        }
-
-        /* Noise texture */
         body::before {
             content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.03;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1; opacity: 0.03;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* Loading Screen */
-        .loader-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: #020617;
-            z-index: 10000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+        /* === ANIMATIONS === */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.85); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        @keyframes orb-float-1 {
+            0%, 100% { transform: translate(0,0) scale(1); }
+            33% { transform: translate(30px,-20px) scale(1.05); }
+            66% { transform: translate(-20px,15px) scale(0.95); }
+        }
+        @keyframes orb-float-2 {
+            0%, 100% { transform: translate(0,0) scale(1); }
+            33% { transform: translate(-25px,20px) scale(0.95); }
+            66% { transform: translate(20px,-15px) scale(1.05); }
         }
 
-        .loader-wrapper.slide-up {
-            transform: translateY(-100%);
+        /* Background orbs */
+        .bg-orb {
+            position: fixed; border-radius: 50%;
+            filter: blur(80px); pointer-events: none; z-index: 0;
+        }
+        .bg-orb-1 {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(139,92,246,0.15), transparent 70%);
+            top: -100px; left: -100px;
+            animation: orb-float-1 12s ease-in-out infinite;
+        }
+        .bg-orb-2 {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(6,182,212,0.12), transparent 70%);
+            bottom: 20%; right: -80px;
+            animation: orb-float-2 15s ease-in-out infinite;
+        }
+        .bg-orb-3 {
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(139,92,246,0.08), transparent 70%);
+            top: 50%; left: 40%;
+            animation: orb-float-1 18s ease-in-out infinite reverse;
         }
 
-        .loader-logo-img {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            border-radius: 20px;
-            box-shadow: 0 0 40px rgba(139, 92, 246, 0.4);
-            opacity: 0;
-            animation: logoReveal 1.5s ease forwards 0.8s;
+        /* Entrance animations */
+        .anim-navbar  { animation: fadeInDown 0.7s cubic-bezier(0.23,1,0.32,1) forwards; }
+        .anim-hero-tag   { animation: fadeInDown 0.6s cubic-bezier(0.23,1,0.32,1) 0.1s both; }
+        .anim-hero-title { animation: fadeInUp  0.8s cubic-bezier(0.23,1,0.32,1) 0.2s both; }
+        .anim-hero-sub   { animation: fadeInUp  0.8s cubic-bezier(0.23,1,0.32,1) 0.35s both; }
+        .anim-hero-card  { animation: scaleIn   0.7s cubic-bezier(0.23,1,0.32,1) 0.5s both; }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 1; transform: translateY(0);
+            transition: opacity 0.7s cubic-bezier(0.23,1,0.32,1), transform 0.7s cubic-bezier(0.23,1,0.32,1);
+        }
+        .reveal.pre-reveal { opacity: 0; transform: translateY(30px); }
+        .reveal-left {
+            opacity: 1; transform: translateX(0);
+            transition: opacity 0.7s cubic-bezier(0.23,1,0.32,1), transform 0.7s cubic-bezier(0.23,1,0.32,1);
+        }
+        .reveal-left.pre-reveal { opacity: 0; transform: translateX(-30px); }
+        .reveal-scale {
+            opacity: 1; transform: scale(1);
+            transition: opacity 0.6s cubic-bezier(0.23,1,0.32,1), transform 0.6s cubic-bezier(0.23,1,0.32,1);
+        }
+        .reveal-scale.pre-reveal { opacity: 0; transform: scale(0.9); }
+
+        .float-anim { animation: float 6s ease-in-out infinite; }
+
+        .shimmer-card { position: relative; overflow: hidden; }
+        .shimmer-card::after {
+            content: '';
+            position: absolute; top: 0; left: 0;
+            width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
+            animation: shimmer 3s infinite;
         }
 
-        @keyframes logoReveal {
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .loader-text {
-            margin-top: 24px;
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            opacity: 0;
-            animation: fadeIn 1.2s ease forwards 2s;
-        }
-
-        .loader-subtext {
-            margin-top: 8px;
-            font-size: 0.875rem;
-            color: #64748b;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            opacity: 0;
-            animation: fadeIn 1.2s ease forwards 2.8s;
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
-        /* Floating Rounded Header */
+        /* === NAVBAR === */
         .navbar {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            padding-top: 1.25rem;
-            padding-bottom: 1.25rem;
+            padding-top: 1.25rem; padding-bottom: 1.25rem;
         }
-
         .navbar .navbar-container {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 0;
         }
 
-        .navbar.floating {
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-        }
+        html.dark .navbar a,
+        html.dark .navbar button,
+        html.dark .navbar span { color: #f8fafc; }
+        html.light .navbar a,
+        html.light .navbar button,
+        html.light .navbar span { color: #0f172a; }
 
+        .navbar.floating { padding-top: 0.5rem; padding-bottom: 0.5rem; }
         .navbar.floating .navbar-container {
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 9999px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            padding: 0.75rem 2rem;
-            max-width: 1200px;
+            padding: 0.75rem 2rem; max-width: 1200px;
         }
-
         html.light .navbar.floating .navbar-container {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.92);
             border: 1px solid rgba(0, 0, 0, 0.1);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
         }
 
-        /* Cards */
-        .personality-card {
-            position: relative;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: border 0.2s ease;
-            overflow: hidden;
-            cursor: pointer;
+        /* =============================================
+           TOMBOL "MULAI SEKARANG" - SELALU PUTIH
+           ============================================= */
+        .navbar-cta {
+            background: linear-gradient(135deg, #7c3aed 0%, #0891b2 100%);
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
+            display: inline-block;
+            transition: all 0.3s ease;
+            padding: 0.6rem 1.5rem;
+            font-size: 0.875rem;
+            font-weight: 700;
         }
-
-        html.light .personality-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        .navbar-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(139, 92, 246, 0.45);
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
         }
-
-        .personality-card.selected {
-            border: 2px solid #8b5cf6;
-            box-shadow: 0 8px 20px rgba(139, 92, 246, 0.2);
+        /* Pastikan semua child element juga putih di mode apapun */
+        .navbar-cta span,
+        .navbar-cta *,
+        html.light .navbar-cta,
+        html.light .navbar-cta span,
+        html.light .navbar-cta *,
+        html.dark .navbar-cta,
+        html.dark .navbar-cta span,
+        html.dark .navbar-cta * {
+            color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
         }
 
         /* Buttons */
         .btn-primary {
             background: linear-gradient(135deg, #7c3aed 0%, #0891b2 100%);
             color: #ffffff !important;
-            transition: opacity 0.2s ease;
+            transition: all 0.3s ease;
         }
-
-        .btn-primary:hover {
-            opacity: 0.9;
-        }
-
-        .btn-primary:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .btn-primary *,
-        .btn-primary i,
-        .btn-primary span {
-            color: #ffffff !important;
-        }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-primary *, .btn-primary i, .btn-primary span { color: #ffffff !important; }
 
         .btn-outline {
             border: 1px solid rgba(255, 255, 255, 0.2);
-            background: transparent;
-            color: inherit;
+            background: transparent; color: inherit;
             transition: all 0.2s ease;
         }
+        .btn-outline:hover { background: rgba(255, 255, 255, 0.05); }
+        html.light .btn-outline { border-color: #cbd5e1; }
+        html.light .btn-outline:hover { background: #f1f5f9; }
 
-        .btn-outline:hover {
-            background: rgba(255, 255, 255, 0.05);
+        /* Dropdown */
+        .dropdown { position: relative; }
+        .dropdown-menu {
+            position: absolute; top: 100%; left: 0; margin-top: 0.5rem;
+            background: rgba(15, 23, 42, 0.97); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1rem;
+            padding: 0.5rem; min-width: 200px;
+            opacity: 0; visibility: hidden; transform: translateY(-10px);
+            transition: all 0.3s ease; z-index: 100;
+        }
+        html.light .dropdown-menu { background: rgba(255,255,255,0.97); border: 1px solid rgba(0,0,0,0.1); }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-item {
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 0.75rem 1rem; border-radius: 0.5rem;
+            transition: all 0.2s ease; color: #f8fafc !important;
+        }
+        html.light .dropdown-item { color: #0f172a !important; }
+        .dropdown-item span { color: inherit !important; }
+        .dropdown-item:hover { background: rgba(139, 92, 246, 0.2); }
+
+        /* Mobile menu */
+        .mobile-menu-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px);
+            z-index: 9998; opacity: 0; visibility: hidden; transition: all 0.3s ease;
+        }
+        .mobile-menu-overlay.active { opacity: 1; visibility: visible; }
+        .mobile-menu {
+            position: fixed; top: 0; right: 0; width: 85%; max-width: 320px;
+            height: 100vh; background: #0f172a; z-index: 9999;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto; padding: 1.5rem;
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
+        }
+        html.light .mobile-menu { background: #ffffff; border-left: 1px solid #e2e8f0; }
+        .mobile-menu.active { transform: translateX(0); }
+        .mobile-menu a, .mobile-menu span { color: #f8fafc; }
+        html.light .mobile-menu a, html.light .mobile-menu span { color: #0f172a; }
+
+        #closeMobileMenu {
+            position: relative; z-index: 10000; cursor: pointer;
+            width: 40px; height: 40px; display: flex; align-items: center;
+            justify-content: center; border-radius: 999px;
+            background: rgba(255,255,255,0.1); transition: all 0.2s ease; color: #f8fafc;
+        }
+        #closeMobileMenu:hover { background: rgba(255,255,255,0.2); }
+        #mobileMenuBtn {
+            width: 40px; height: 40px; display: flex; align-items: center;
+            justify-content: center; border-radius: 999px;
+            background: rgba(255,255,255,0.1); transition: all 0.2s ease; color: #f8fafc;
+        }
+        html.light #mobileMenuBtn { background: rgba(0,0,0,0.05); color: #0f172a; }
+        #mobileMenuBtn:hover { background: rgba(255,255,255,0.2); }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #a78bfa 0%, #22d3ee 50%, #818cf8 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-size: 200% auto; animation: gradientMove 5s linear infinite;
         }
 
-        html.light .btn-outline {
-            border-color: #cbd5e1;
+        /* Section tag */
+        .section-tag {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.35rem 1rem; border-radius: 9999px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            background: rgba(139, 92, 246, 0.08);
+            font-size: 0.72rem; font-weight: 700;
+            letter-spacing: 0.15em; text-transform: uppercase; color: #a78bfa;
         }
-
-        html.light .btn-outline:hover {
-            background: #f1f5f9;
-        }
+        html.light .section-tag { color: #7c3aed; background: rgba(124,58,237,0.08); border-color: rgba(124,58,237,0.3); }
 
         /* Progress Bar */
         .progress-bar {
-            width: 100%;
-            height: 8px;
+            width: 100%; height: 8px;
             background: rgba(255, 255, 255, 0.1);
-            border-radius: 999px;
-            overflow: hidden;
+            border-radius: 999px; overflow: hidden;
         }
-
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #8b5cf6, #06b6d4);
-            transition: width 0.3s ease;
+            background: linear-gradient(90deg, #8b5cf6, #06b6d4, #8b5cf6);
+            background-size: 200% auto;
+            animation: gradientShift 3s linear infinite;
+            transition: width 0.5s cubic-bezier(0.23,1,0.32,1);
+            border-radius: 999px;
         }
 
-        /* Question Container */
-        .question-container {
-            min-height: 400px;
+        /* Personality / Question Cards */
+        .personality-card {
+            position: relative;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.3s cubic-bezier(0.23,1,0.32,1);
+            overflow: hidden; cursor: pointer;
+        }
+        .personality-card:hover {
+            transform: translateY(-4px) scale(1.02);
+            border-color: rgba(139,92,246,0.5);
+            box-shadow: 0 12px 40px rgba(139,92,246,0.2);
+        }
+        html.light .personality-card {
+            background: #ffffff; border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+        .personality-card.selected {
+            border: 2px solid #8b5cf6;
+            box-shadow: 0 8px 20px rgba(139,92,246,0.2);
         }
 
+        .question-container { min-height: 400px; }
         .question-card {
             background: rgba(15, 23, 42, 0.8);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 2rem;
-            padding: 2.5rem;
+            border-radius: 2rem; padding: 2.5rem;
+            transition: transform 0.4s cubic-bezier(0.23,1,0.32,1), box-shadow 0.4s ease;
+            animation: scaleIn 0.6s cubic-bezier(0.23,1,0.32,1) both;
         }
-
+        .question-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 60px rgba(139,92,246,0.15);
+        }
         html.light .question-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            background: #ffffff; border: 1px solid #e2e8f0;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
 
         /* Result Cards */
         .result-card {
-            background: rgba(15, 23, 42, 0.8);
+            position: relative;
+            background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 2rem;
-            padding: 2rem;
-            transition: border-color 0.2s ease;
+            border-radius: 2rem; padding: 2rem;
+            transition: all 0.3s cubic-bezier(0.23,1,0.32,1);
+            overflow: hidden;
         }
-
-        html.light .result-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-        }
-
+        html.light .result-card { background: #ffffff; border: 1px solid #e2e8f0; }
         .result-card:hover {
-            border-color: #8b5cf6;
+            border-color: rgba(139,92,246,0.5);
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(139,92,246,0.2);
         }
 
-        /* Light Mode Fixes */
-        html.light h1,
-        html.light h2,
-        html.light h3,
-        html.light h4,
-        html.light h5 {
-            color: #0f172a !important;
+        /* Icon wrapper */
+        .icon-wrapper {
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
         }
 
-        html.light p,
-        html.light span,
-        html.light li {
-            color: #334155 !important;
-        }
+        /* Light mode */
+        html.light h1, html.light h2, html.light h3, html.light h4, html.light h5 { color: #0f172a; }
+        html.light .result-card p, html.light .result-card span:not(.gradient-text),
+        html.light .result-card li, html.light .question-card p,
+        html.light .question-card label { color: #334155; }
+        html.light .text-gray-300, html.light .text-gray-400, html.light .text-gray-500 { color: #64748b; }
 
-        html.light .btn-primary,
-        html.light .btn-primary:hover,
-        html.light .btn-primary *,
-        html.light .btn-primary span {
-            color: #ffffff !important;
+        /* =============================================
+           FOOTER - SEMUA TEKS PUTIH PENUH
+           ============================================= */
+        footer {
+            background-color: #020617 !important;
         }
-
-        html.light .text-gray-300,
-        html.light .text-gray-400,
-        html.light .text-gray-500 {
-            color: #64748b !important;
-        }
-
-        /* Footer */
         footer,
-        footer h4,
+        footer *,
         footer p,
-        footer a,
         footer span,
+        footer h4,
+        footer a,
         footer li,
-        footer div {
+        footer div,
+        footer ul,
+        footer ol,
+        footer label {
             color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
         }
-
-        html.light footer,
-        html.light footer h4,
-        html.light footer p,
-        html.light footer a,
-        html.light footer span,
-        html.light footer li,
-        html.light footer div {
+        footer a:hover {
+            color: #a78bfa !important;
+            -webkit-text-fill-color: #a78bfa !important;
+        }
+        footer .text-gray-400,
+        footer .text-gray-500,
+        footer .opacity-50,
+        footer .opacity-40,
+        footer .opacity-60 {
             color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
+            opacity: 1 !important;
         }
-
-        /* Dropdown Menu */
-        .dropdown {
-            position: relative;
+        footer p.opacity-50,
+        footer .opacity-50 p {
+            color: #cbd5e1 !important;
+            -webkit-text-fill-color: #cbd5e1 !important;
+            opacity: 1 !important;
         }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 0.5rem;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
-            padding: 0.5rem;
-            min-width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            z-index: 100;
+        footer .border-t {
+            opacity: 1 !important;
         }
-
-        html.light .dropdown-menu {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .dropdown:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .dropdown-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            transition: all 0.2s ease;
-            color: #f8fafc;
-        }
-
-        html.light .dropdown-item {
-            color: #0f172a;
-        }
-
-        .dropdown-item:hover {
-            background: rgba(139, 92, 246, 0.2);
-        }
-
-        /* Mobile Menu */
-        .mobile-menu {
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            background: #0f172a;
-            z-index: 9999;
-        }
-
-        html.light .mobile-menu {
-            background: #ffffff;
-            border-left: 1px solid #e2e8f0;
-        }
-
-        .mobile-menu.active {
-            transform: translateX(0);
-        }
-
-        #closeMobileMenu {
-            position: relative;
-            z-index: 10000;
-            cursor: pointer;
-        }
-
-        .mobile-menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 9998;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .mobile-menu-overlay.active {
-            opacity: 1;
-            visibility: visible;
+        footer .border-t p {
+            color: #94a3b8 !important;
+            -webkit-text-fill-color: #94a3b8 !important;
         }
 
         /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        html.light ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+        button, a { -webkit-tap-highlight-color: transparent; }
 
-        ::-webkit-scrollbar-track {
-            background: #0f172a;
-        }
+        /* SVG icons */
+        svg[data-lucide] { display: inline-block; vertical-align: middle; }
 
-        html.light ::-webkit-scrollbar-track {
-            background: #f1f5f9;
+        /* ============================================
+           CLOCK
+           ============================================ */
+        #floating-clock {
+            position: fixed; bottom: 2rem; right: 2rem;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 0.75rem 1.5rem; border-radius: 9999px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.1);
+            min-width: 160px; z-index: 9990;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.37);
+            transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+            cursor: default; user-select: none;
+            font-family: 'Inter', sans-serif;
         }
-
-        ::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 4px;
+        #floating-clock:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(139,92,246,0.5);
+            box-shadow: 0 12px 40px rgba(139,92,246,0.2);
         }
-
-        .gradient-text {
-            background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        html.light #floating-clock {
+            background: rgba(15,23,42,0.05);
+            border: 1px solid rgba(15,23,42,0.1);
+            box-shadow: 0 8px 32px rgba(15,23,42,0.1);
+        }
+        html.light #floating-clock:hover {
+            background: rgba(15,23,42,0.08); border-color: rgba(139,92,246,0.3);
+        }
+        #floating-clock > .clock-time {
+            font-size: 1.5rem; font-weight: 800; line-height: 1;
+            background: linear-gradient(135deg, #a78bfa, #22d3ee);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent; display: block;
+        }
+        #floating-clock > .clock-date {
+            font-size: 0.7rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            opacity: 0.8; margin-top: 4px;
+            background: linear-gradient(135deg, #f8fafc, #94a3b8);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; display: block;
+        }
+        html.light #floating-clock > .clock-date {
+            background: linear-gradient(135deg, #0f172a, #475569);
+            -webkit-background-clip: text; background-clip: text;
+        }
+        @media (max-width: 768px) {
+            #floating-clock { bottom: 1.5rem; right: 1.5rem; padding: 0.6rem 1.25rem; min-width: 140px; }
+            #floating-clock > .clock-time { font-size: 1.25rem; }
+            #floating-clock > .clock-date { font-size: 0.6rem; }
         }
 
         /* Print Styles */
         @media print {
-            @page {
-                size: A4;
-                margin: 1.5cm;
-            }
-
-            body {
-                background: white !important;
-                color: black !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-
-            .no-print,
-            .navbar,
-            footer,
-            #floating-clock,
-            .loader-wrapper,
-            .btn-primary,
-            .btn-outline {
-                display: none !important;
-            }
-
-            .print-report {
-                display: block !important;
-                font-family: 'Inter', sans-serif;
-                max-width: 100%;
-                margin: 0 auto;
-                background: white;
-                padding: 0;
-            }
-
-            .report-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-                margin-bottom: 30px;
-                padding-bottom: 20px;
-                border-bottom: 2px solid #8b5cf6;
-            }
-
-            .logo-area {
-                display: flex;
-                align-items: center;
-                gap: 15px;
-            }
-
-            .logo-area img {
-                width: 50px;
-                height: 50px;
-                border-radius: 10px;
-            }
-
-            .logo-area div h2 {
-                font-size: 20px;
-                font-weight: 800;
-                margin: 0;
-                color: #1e293b;
-            }
-
-            .logo-area div p {
-                font-size: 10px;
-                color: #64748b;
-                margin: 0;
-            }
-
-            .title-area h1 {
-                font-size: 22px;
-                font-weight: 900;
-                color: #0f172a;
-                margin: 0;
-            }
-
-            .meta-area {
-                text-align: right;
-                font-size: 10px;
-                color: #475569;
-            }
-
-            .meta-area p {
-                margin: 2px 0;
-            }
-
-            .result-summary {
-                text-align: center;
-                margin: 30px 0 25px;
-                padding: 25px;
-                background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-                border-radius: 20px;
-                page-break-inside: avoid;
-            }
-
-            .result-badge {
-                display: inline-block;
-                padding: 6px 14px;
-                background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
-                color: white;
-                border-radius: 100px;
-                font-size: 11px;
-                font-weight: 600;
-                letter-spacing: 1px;
-                margin-bottom: 15px;
-            }
-
-            .result-name {
-                font-size: 36px;
-                font-weight: 900;
-                margin: 10px 0;
-                background: linear-gradient(135deg, #8b5cf6 0%, #06b6d4 100%);
-                -webkit-background-clip: text;
-                background-clip: text;
-                -webkit-text-fill-color: transparent;
-                color: #8b5cf6;
-            }
-
-            .result-desc {
-                font-size: 14px;
-                line-height: 1.6;
-                color: #334155;
-                max-width: 500px;
-                margin: 0 auto;
-            }
-
-            .score-meter {
-                background: white;
-                border-radius: 16px;
-                padding: 20px;
-                margin: 25px 0;
-                border: 1px solid #e2e8f0;
-                page-break-inside: avoid;
-            }
-
-            .score-title {
-                font-size: 16px;
-                font-weight: 700;
-                margin-bottom: 15px;
-                color: #0f172a;
-            }
-
-            .score-item {
-                margin-bottom: 12px;
-            }
-
-            .score-label {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 4px;
-                font-size: 12px;
-                font-weight: 500;
-            }
-
-            .score-bar-bg {
-                height: 6px;
-                background: #e2e8f0;
-                border-radius: 100px;
-                overflow: hidden;
-            }
-
-            .score-bar-fill {
-                height: 100%;
-                border-radius: 100px;
-            }
-
-            .print-grid {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 15px;
-                margin: 25px 0;
-                page-break-inside: avoid;
-            }
-
-            .print-card {
-                background: white;
-                border: 1px solid #e2e8f0;
-                border-radius: 16px;
-                padding: 15px;
-                page-break-inside: avoid;
-            }
-
-            .print-card-header {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                margin-bottom: 15px;
-                padding-bottom: 10px;
-                border-bottom: 2px solid #f1f5f9;
-            }
-
-            .print-card-icon {
-                width: 36px;
-                height: 36px;
-                border-radius: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-
-            .print-card-header h3 {
-                font-size: 16px;
-                font-weight: 700;
-                margin: 0;
-            }
-
-            .print-card-list {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
-
-            .print-card-list li {
-                display: flex;
-                align-items: flex-start;
-                gap: 8px;
-                margin-bottom: 10px;
-                font-size: 11px;
-                line-height: 1.4;
-                color: #334155;
-                page-break-inside: avoid;
-            }
-
-            .print-card-list li i {
-                width: 16px;
-                height: 16px;
-                flex-shrink: 0;
-            }
-
-            .answers-section {
-                margin-top: 30px;
-                page-break-before: avoid;
-            }
-
-            .answers-title {
-                font-size: 18px;
-                font-weight: 700;
-                margin-bottom: 15px;
-                padding-bottom: 8px;
-                border-bottom: 2px solid #8b5cf6;
-                color: #0f172a;
-            }
-
-            .answers-grid {
-                display: grid;
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-            }
-
-            .answer-item {
-                background: #f8fafc;
-                border-radius: 10px;
-                padding: 12px;
-                font-size: 11px;
-                border-left: 3px solid #8b5cf6;
-                page-break-inside: avoid;
-            }
-
-            .answer-question {
-                font-weight: 700;
-                margin-bottom: 6px;
-                color: #0f172a;
-            }
-
-            .answer-choice {
-                color: #475569;
-                display: flex;
-                align-items: center;
-                gap: 6px;
-            }
-
-            .answer-choice i {
-                color: #10b981;
-                width: 14px;
-                height: 14px;
-            }
-
-            .print-footer {
-                margin-top: 40px;
-                padding-top: 15px;
-                border-top: 1px dashed #cbd5e1;
-                text-align: center;
-                font-size: 9px;
-                color: #94a3b8;
-            }
+            @page { size: A4; margin: 1.5cm; }
+            body { background: white !important; color: black !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .no-print, .navbar, footer, #floating-clock, .btn-primary, .btn-outline { display: none !important; }
+            .print-report { display: block !important; font-family: 'Inter', sans-serif; max-width: 100%; margin: 0 auto; background: white; }
+            .report-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #8b5cf6; }
+            .logo-area { display: flex; align-items: center; gap: 15px; }
+            .logo-area img { width: 50px; height: 50px; border-radius: 10px; }
+            .result-name { font-size: 36px; font-weight: 900; margin: 10px 0; color: #8b5cf6; }
+            .result-desc { font-size: 14px; line-height: 1.6; color: #334155; }
+            .print-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin: 25px 0; }
+            .print-card { background: white; border: 1px solid #e2e8f0; border-radius: 16px; padding: 15px; }
+            .print-card-list li { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px; font-size: 11px; color: #334155; }
+            .answers-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .answer-item { background: #f8fafc; border-radius: 10px; padding: 12px; font-size: 11px; border-left: 3px solid #8b5cf6; }
+            .print-footer { margin-top: 40px; padding-top: 15px; border-top: 1px dashed #cbd5e1; text-align: center; font-size: 9px; color: #94a3b8; }
         }
-
-        /* Print Report Container */
-        .print-report {
-            display: none;
-        }
+        .print-report { display: none; }
     </style>
 </head>
 
 <body>
-    <!-- Loading Screen -->
-    <div class="loader-wrapper" id="loader">
-        <img src="assets/img/image.jpeg" alt="Monetra Logo" class="loader-logo-img">
-        <div class="loader-text">MONETRA</div>
-        <div class="loader-subtext">Tes Kepribadian Finansial</div>
-    </div>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
 
-    <!-- Floating Rounded Header -->
-    <nav class="navbar fixed w-full top-0 z-50 px-6">
+    <!-- Navbar -->
+    <nav class="navbar anim-navbar fixed w-full top-0 z-50 px-6">
         <div class="navbar-container max-w-7xl mx-auto flex items-center justify-between relative">
             <div class="flex items-center space-x-3 cursor-pointer group" onclick="window.location.href='index.html'">
-                <div
-                    class="relative w-10 h-10 overflow-hidden rounded-xl border border-white/10 group-hover:border-violet-500/50 transition-colors">
-                    <img src="assets/img/image.jpeg" alt="Monetra Logo" class="w-full h-full object-cover">
+                <div class="relative w-10 h-10 overflow-hidden rounded-xl border border-white/10 group-hover:border-violet-500/50 transition-colors">
+                    <img src="assets/img/image.jpeg" alt="Monetra Logo" class="w-full h-full object-cover"
+                         onerror="this.style.display='none'">
                 </div>
-                <span
-                    class="text-xl font-bold tracking-tight group-hover:text-violet-400 transition-colors">Monetra</span>
+                <span class="text-xl font-bold tracking-tight group-hover:text-violet-400 transition-colors">Monetra</span>
             </div>
 
             <!-- Desktop Menu -->
             <div class="hidden md:flex items-center space-x-8">
                 <a href="index.html" class="text-sm font-medium hover:text-violet-400 transition-colors">Home</a>
                 <a href="about.html" class="text-sm font-medium hover:text-violet-400 transition-colors">About</a>
-
-                <!-- Features Dropdown -->
                 <div class="dropdown">
                     <button class="text-sm font-medium hover:text-violet-400 transition-colors flex items-center gap-1">
-                        Features
-                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                        Features <i data-lucide="chevron-down" class="w-4 h-4"></i>
                     </button>
                     <div class="dropdown-menu">
                         <a href="personality-test.html" class="dropdown-item">
-                            <i data-lucide="user-circle" class="w-4 h-4"></i>
-                            <span>Tes Kepribadian</span>
+                            <i data-lucide="user-circle" class="w-4 h-4"></i><span>Tes Kepribadian</span>
                         </a>
                         <a href="budget-simulator.html" class="dropdown-item">
-                            <i data-lucide="wallet" class="w-4 h-4"></i>
-                            <span>Simulasi Budget</span>
+                            <i data-lucide="wallet" class="w-4 h-4"></i><span>Simulasi Budget</span>
                         </a>
                         <a href="goal-tracker.html" class="dropdown-item">
-                            <i data-lucide="target" class="w-4 h-4"></i>
-                            <span>Target Tabungan</span>
+                            <i data-lucide="target" class="w-4 h-4"></i><span>Target Tabungan</span>
                         </a>
                         <a href="challenge.html" class="dropdown-item">
-                            <i data-lucide="trophy" class="w-4 h-4"></i>
-                            <span>Saving Challenge</span>
+                            <i data-lucide="trophy" class="w-4 h-4"></i><span>Saving Challenge</span>
                         </a>
                     </div>
                 </div>
-
                 <a href="contact.html" class="text-sm font-medium hover:text-violet-400 transition-colors">Contact</a>
-
-                <button class="p-2.5 rounded-full bg-white/5 hover:bg-white/10 transition" id="themeToggle">
-                    <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-yellow-300"></i>
-                    <i data-lucide="moon" class="w-5 h-5 block dark:hidden text-slate-700"></i>
+                <button class="p-2.5 rounded-full bg-white/5 hover:bg-white/10 transition" id="themeToggle" title="Toggle theme">
+                    <span id="themeIcon" style="display:flex;align-items:center;justify-content:center;"></span>
                 </button>
-
-                <a href="personality-test.html" class="btn-primary px-6 py-2.5 rounded-full text-sm font-semibold">
-                    Mulai Sekarang
+                <a href="personality-test.html" class="navbar-cta rounded-full font-bold flex items-center gap-2">
+                    <span>Mulai Sekarang</span>
                 </a>
             </div>
-            <div class="md:hidden flex items-center space-x-4">
-                <button class="p-2" id="themeToggleMobile">
-                    <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
-                    <i data-lucide="moon" class="w-5 h-5 block dark:hidden text-slate-700"></i>
+
+            <!-- Mobile -->
+            <div class="md:hidden flex items-center space-x-3">
+                <button class="p-2 rounded-full bg-white/5" id="themeToggleMobile" title="Toggle theme">
+                    <span id="themeIconMobile" style="display:flex;align-items:center;justify-content:center;"></span>
                 </button>
-                <button id="mobileMenuBtn" class="p-2">
+                <button id="mobileMenuBtn" aria-label="Open menu">
                     <i data-lucide="menu" class="w-6 h-6"></i>
                 </button>
             </div>
         </div>
     </nav>
 
-    <!-- Mobile Menu Overlay -->
     <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
-
-    <!-- Mobile Menu -->
-    <div class="mobile-menu fixed top-0 right-0 w-72 h-full p-6 md:hidden shadow-2xl">
+    <div class="mobile-menu" id="mobileMenu">
         <div class="flex justify-end mb-8">
-            <button id="closeMobileMenu">
+            <button id="closeMobileMenu" aria-label="Close menu">
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
         </div>
         <div class="flex flex-col space-y-4">
             <a href="index.html" class="text-lg font-medium hover:text-violet-400 transition">Home</a>
             <a href="about.html" class="text-lg font-medium hover:text-violet-400 transition">About</a>
-
             <div class="border-t border-white/10 pt-4">
                 <div class="text-xs uppercase tracking-wider opacity-50 mb-3">Features</div>
                 <a href="personality-test.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition">
-                    <i data-lucide="user-circle" class="w-4 h-4"></i>
-                    <span>Tes Kepribadian</span>
+                    <i data-lucide="user-circle" class="w-4 h-4"></i><span>Tes Kepribadian</span>
                 </a>
                 <a href="budget-simulator.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition">
-                    <i data-lucide="wallet" class="w-4 h-4"></i>
-                    <span>Simulasi Budget</span>
+                    <i data-lucide="wallet" class="w-4 h-4"></i><span>Simulasi Budget</span>
                 </a>
                 <a href="goal-tracker.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition">
-                    <i data-lucide="target" class="w-4 h-4"></i>
-                    <span>Target Tabungan</span>
+                    <i data-lucide="target" class="w-4 h-4"></i><span>Target Tabungan</span>
                 </a>
                 <a href="challenge.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition">
-                    <i data-lucide="trophy" class="w-4 h-4"></i>
-                    <span>Saving Challenge</span>
+                    <i data-lucide="trophy" class="w-4 h-4"></i><span>Saving Challenge</span>
                 </a>
             </div>
-
             <a href="contact.html" class="text-lg font-medium hover:text-violet-400 transition">Contact</a>
-
-            <a href="personality-test.html" class="btn-primary px-6 py-3 rounded-full text-center mt-4">
-                Mulai Sekarang
-            </a>
+            <a href="personality-test.html" class="navbar-cta rounded-full text-center mt-4">Mulai Sekarang</a>
         </div>
     </div>
 
@@ -856,17 +617,14 @@
         <div class="absolute inset-0 bg-gradient-to-b from-violet-900/20 via-transparent to-transparent"></div>
         <div class="max-w-7xl mx-auto px-6 relative z-10">
             <div class="text-center">
-                <div class="inline-block mb-6">
-                    <span
-                        class="px-4 py-2 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-300 text-xs font-bold tracking-widest uppercase backdrop-blur-sm">
-                        Tes Psikologi Finansial
-                    </span>
+                <div class="inline-block mb-6 anim-hero-tag">
+                    <span class="section-tag">Tes Psikologi Finansial</span>
                 </div>
-                <h1 class="text-5xl md:text-6xl font-black mb-6">Kenali <span class="gradient-text">Tipe
-                        Finansialmu</span></h1>
-                <p class="text-lg md:text-xl opacity-70 max-w-2xl mx-auto leading-relaxed">
-                    Jawab 10 pertanyaan sederhana untuk memahami kepribadian finansialmu dan dapatkan rekomendasi
-                    pengelolaan uang yang tepat
+                <h1 class="text-5xl md:text-6xl font-black mb-6 anim-hero-title">
+                    Kenali <span class="gradient-text">Tipe Finansialmu</span>
+                </h1>
+                <p class="text-lg md:text-xl opacity-70 max-w-2xl mx-auto leading-relaxed anim-hero-sub">
+                    Jawab 10 pertanyaan sederhana untuk memahami kepribadian finansialmu dan dapatkan rekomendasi pengelolaan uang yang tepat
                 </p>
             </div>
         </div>
@@ -875,7 +633,7 @@
     <!-- Test Section -->
     <section class="pb-32" id="testSection">
         <div class="max-w-4xl mx-auto px-6">
-            <!-- Progress Bar -->
+            <!-- Progress -->
             <div class="mb-12">
                 <div class="flex justify-between items-center mb-3">
                     <span class="text-sm font-medium opacity-60">Progress Tes</span>
@@ -887,52 +645,44 @@
             </div>
 
             <!-- Question Container -->
-            <div id="questionContainer" class="question-container">
-                <!-- Questions will be injected here via JavaScript -->
-            </div>
+            <div id="questionContainer" class="question-container"></div>
 
-            <!-- Navigation Buttons -->
+            <!-- Navigation -->
             <div class="flex justify-between items-center mt-8">
                 <button id="prevBtn"
-                    class="px-8 py-3 rounded-full border border-white/20 font-medium hover:bg-white/5 transition disabled:opacity-30 disabled:cursor-not-allowed"
+                    class="px-8 py-3 rounded-full border border-white/20 font-medium hover:bg-white/5 transition disabled:opacity-30 disabled:cursor-not-allowed flex items-center gap-2"
                     disabled>
-                    <i data-lucide="arrow-left" class="w-4 h-4 inline mr-2"></i>
-                    Sebelumnya
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>Sebelumnya
                 </button>
                 <button id="nextBtn" class="btn-primary px-8 py-3 rounded-full font-medium flex items-center gap-2">
-                    Selanjutnya
-                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    Selanjutnya <i data-lucide="arrow-right" class="w-4 h-4"></i>
                 </button>
-                <button id="submitBtn" class="btn-primary px-8 py-3 rounded-full font-medium hidden">
-                    Lihat Hasil
+                <button id="submitBtn" class="btn-primary px-8 py-3 rounded-full font-medium hidden flex items-center gap-2">
+                    <i data-lucide="check" class="w-4 h-4"></i>Lihat Hasil
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- Result Section (Hidden by default) -->
+    <!-- Result Section -->
     <section class="pb-32 hidden" id="resultSection">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16">
                 <div class="inline-block mb-6">
-                    <span
-                        class="px-4 py-2 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-300 text-xs font-bold tracking-widest uppercase backdrop-blur-sm">
-                        Hasil Tes Kamu
-                    </span>
+                    <span class="section-tag">Hasil Tes Kamu</span>
                 </div>
-                <h2 class="text-4xl md:text-5xl font-black mb-6">Kamu adalah Tipe <span class="gradient-text"
-                        id="resultType">The Saver</span></h2>
+                <h2 class="text-4xl md:text-5xl font-black mb-6">
+                    Kamu adalah Tipe <span class="gradient-text" id="resultType">The Saver</span>
+                </h2>
                 <p class="text-lg opacity-70 max-w-2xl mx-auto leading-relaxed" id="resultDescription">
-                    Kamu memiliki kecenderungan untuk menabung dan berhemat. Kamu bijak dalam mengelola uang dan selalu
-                    mempersiapkan masa depan.
+                    Kamu memiliki kecenderungan untuk menabung dan berhemat.
                 </p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-8 mb-16">
                 <!-- Strengths -->
-                <div class="result-card">
-                    <div
-                        class="w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mb-6">
+                <div class="result-card shimmer-card reveal">
+                    <div class="icon-wrapper w-16 h-16 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl mb-6">
                         <i data-lucide="star" class="w-8 h-8 text-white"></i>
                     </div>
                     <h3 class="text-2xl font-bold mb-4">Kelebihan</h3>
@@ -945,9 +695,8 @@
                 </div>
 
                 <!-- Weaknesses -->
-                <div class="result-card">
-                    <div
-                        class="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mb-6">
+                <div class="result-card shimmer-card reveal" style="transition-delay:0.1s">
+                    <div class="icon-wrapper w-16 h-16 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl mb-6">
                         <i data-lucide="alert-triangle" class="w-8 h-8 text-white"></i>
                     </div>
                     <h3 class="text-2xl font-bold mb-4">Tantangan</h3>
@@ -960,9 +709,8 @@
                 </div>
 
                 <!-- Recommendations -->
-                <div class="result-card">
-                    <div
-                        class="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center mb-6">
+                <div class="result-card shimmer-card reveal" style="transition-delay:0.2s">
+                    <div class="icon-wrapper w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-600 rounded-2xl mb-6">
                         <i data-lucide="lightbulb" class="w-8 h-8 text-white"></i>
                     </div>
                     <h3 class="text-2xl font-bold mb-4">Rekomendasi</h3>
@@ -978,58 +726,50 @@
             <div class="text-center flex flex-wrap justify-center gap-4">
                 <a href="budget-simulator.html"
                     class="btn-primary px-8 py-4 rounded-full font-bold text-lg inline-flex items-center gap-3">
-                    Mulai Simulasi Budget
-                    <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    Mulai Simulasi Budget <i data-lucide="arrow-right" class="w-5 h-5"></i>
                 </a>
                 <button onclick="downloadResult()"
                     class="btn-primary px-8 py-4 rounded-full font-bold text-lg inline-flex items-center gap-3">
-                    <i data-lucide="download" class="w-5 h-5"></i>
-                    Download Hasil
+                    <i data-lucide="download" class="w-5 h-5"></i>Download Hasil
                 </button>
                 <button onclick="printResult()"
                     class="btn-outline px-8 py-4 rounded-full font-bold text-lg inline-flex items-center gap-3">
-                    <i data-lucide="printer" class="w-5 h-5"></i>
-                    Print Hasil
+                    <i data-lucide="printer" class="w-5 h-5"></i>Print Hasil
                 </button>
                 <button onclick="restartTest()"
                     class="btn-outline px-8 py-4 rounded-full font-bold text-lg inline-flex items-center gap-3">
-                    <i data-lucide="refresh-cw" class="w-5 h-5"></i>
-                    Ulangi Tes
+                    <i data-lucide="refresh-cw" class="w-5 h-5"></i>Ulangi Tes
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
+    <!-- Footer -->
     <footer class="bg-[#020617] pt-24 pb-12 border-t border-white/5">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid md:grid-cols-4 gap-12 mb-16">
                 <div>
                     <div class="flex items-center space-x-3 mb-6">
                         <div class="w-10 h-10 overflow-hidden rounded-xl border border-white/10">
-                            <img src="assets/img/image.jpeg" alt="Monetra Logo" class="w-full h-full object-cover">
+                            <img src="assets/img/image.jpeg" alt="Monetra Logo" class="w-full h-full object-cover"
+                                 onerror="this.style.display='none'">
                         </div>
                         <span class="text-2xl font-bold">Monetra</span>
                     </div>
-                    <p class="opacity-50 text-sm leading-relaxed">Platform edukasi finansial interaktif yang membantu
-                        generasi muda Indonesia memahami, merencanakan, dan mengoptimalkan keuangan mereka secara lebih
-                        bijak.</p>
+                    <p class="text-sm leading-relaxed" style="color:#cbd5e1 !important; -webkit-text-fill-color:#cbd5e1 !important;">Platform edukasi finansial interaktif yang membantu generasi muda Indonesia memahami, merencanakan, dan mengoptimalkan keuangan mereka secara lebih bijak.</p>
                 </div>
                 <div>
                     <h4 class="font-bold mb-6">Produk</h4>
-                    <ul class="space-y-4 text-sm opacity-60">
-                        <li><a href="personality-test.html" class="hover:text-violet-400 transition">Tes Kepribadian</a>
-                        </li>
-                        <li><a href="budget-simulator.html" class="hover:text-violet-400 transition">Simulasi Budget</a>
-                        </li>
-                        <li><a href="goal-tracker.html" class="hover:text-violet-400 transition">Target Tabungan</a>
-                        </li>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="personality-test.html" class="hover:text-violet-400 transition">Tes Kepribadian</a></li>
+                        <li><a href="budget-simulator.html" class="hover:text-violet-400 transition">Simulasi Budget</a></li>
+                        <li><a href="goal-tracker.html" class="hover:text-violet-400 transition">Target Tabungan</a></li>
                         <li><a href="challenge.html" class="hover:text-violet-400 transition">Saving Challenge</a></li>
                     </ul>
                 </div>
                 <div>
                     <h4 class="font-bold mb-6">Perusahaan</h4>
-                    <ul class="space-y-4 text-sm opacity-60">
+                    <ul class="space-y-4 text-sm">
                         <li><a href="about.html" class="hover:text-violet-400 transition">Tentang Kami</a></li>
                         <li><a href="contact.html" class="hover:text-violet-400 transition">Hubungi Kami</a></li>
                     </ul>
@@ -1037,683 +777,153 @@
                 <div>
                     <h4 class="font-bold mb-6">Ikuti Kami</h4>
                     <div class="flex space-x-4">
-                        <a href="#"
-                            class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10">
+                        <a href="#" class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10">
                             <i data-lucide="twitter" class="w-5 h-5"></i>
                         </a>
-                        <a href="#"
-                            class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10">
+                        <a href="#" class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10">
                             <i data-lucide="instagram" class="w-5 h-5"></i>
                         </a>
-                        <a href="#"
-                            class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10">
+                        <a href="#" class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10">
                             <i data-lucide="linkedin" class="w-5 h-5"></i>
                         </a>
                     </div>
                 </div>
             </div>
-            <div class="border-t border-white/5 pt-8 text-center opacity-40 text-sm">
-                <p>&copy; 2026 Monetra. All rights reserved.</p>
+            <div class="border-t border-white/5 pt-8 text-center text-sm">
+                <p style="color:#94a3b8 !important; -webkit-text-fill-color:#94a3b8 !important;">&copy; 2026 Monetra. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     <!-- Floating Clock -->
-    <div id="floating-clock" class="clock-container no-print">
+    <div id="floating-clock" class="no-print">
         <div class="clock-time">00:00:00</div>
         <div class="clock-date">Memuat...</div>
     </div>
 
-    <!-- Print Report Container (Hidden) -->
+    <!-- Print Report -->
     <div id="printReport" class="print-report"></div>
 
-    <script>
-        lucide.createIcons();
+    <script src="assets/js/personality-main.js"></script>
 
-        // Loading
-        window.addEventListener('load', function () {
-            setTimeout(() => document.getElementById('loader').classList.add('slide-up'), 800);
-        });
+    <script>
+        function initLucide() {
+            if (typeof lucide !== 'undefined') {
+                try { lucide.createIcons(); } catch(e) { console.warn('Lucide error:', e); }
+            } else {
+                const s = document.createElement('script');
+                s.src = 'https://unpkg.com/lucide@0.441.0/dist/umd/lucide.min.js';
+                s.onload = () => { try { lucide.createIcons(); } catch(e) {} };
+                document.head.appendChild(s);
+            }
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initLucide);
+        } else {
+            initLucide();
+        }
 
         // Theme Toggle
-        const themeToggle = document.getElementById('themeToggle');
-        const themeToggleMobile = document.getElementById('themeToggleMobile');
-        const html = document.documentElement;
+        const _htmlEl = document.documentElement;
+
+        const SVG_SUN  = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fde047" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>';
+        const SVG_MOON = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>';
+
+        function updateThemeIcons() {
+            const icon = _htmlEl.classList.contains('dark') ? SVG_SUN : SVG_MOON;
+            const ti = document.getElementById('themeIcon');
+            const tim = document.getElementById('themeIconMobile');
+            if (ti) ti.innerHTML = icon;
+            if (tim) tim.innerHTML = icon;
+        }
 
         function toggleTheme() {
-            html.classList.toggle('dark');
-            html.classList.toggle('light');
-            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-            lucide.createIcons();
+            const isDark = _htmlEl.classList.contains('dark');
+            _htmlEl.classList.toggle('dark', !isDark);
+            _htmlEl.classList.toggle('light', isDark);
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
+            updateThemeIcons();
         }
 
-        themeToggle.addEventListener('click', toggleTheme);
-        themeToggleMobile.addEventListener('click', toggleTheme);
+        document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
+        document.getElementById('themeToggleMobile')?.addEventListener('click', toggleTheme);
 
-        if (localStorage.getItem('theme') === 'light') {
-            html.classList.remove('dark');
-            html.classList.add('light');
-        }
+        (function() {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'light') { _htmlEl.classList.remove('dark'); _htmlEl.classList.add('light'); }
+            else { _htmlEl.classList.add('dark'); _htmlEl.classList.remove('light'); }
+        })();
+
+        updateThemeIcons();
 
         // Floating Navbar
         const navbar = document.querySelector('.navbar');
-        window.addEventListener('scroll', function () {
-            if (window.scrollY > 100) {
-                navbar.classList.add('floating');
-            } else {
-                navbar.classList.remove('floating');
-            }
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('floating', window.scrollY > 100);
         });
 
         // Mobile Menu
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const closeMobileMenu = document.getElementById('closeMobileMenu');
-        const mobileMenu = document.querySelector('.mobile-menu');
-        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-
         function openMobileMenu() {
-            mobileMenu.classList.add('active');
-            mobileMenuOverlay.classList.add('active');
+            document.getElementById('mobileMenu')?.classList.add('active');
+            document.getElementById('mobileMenuOverlay')?.classList.add('active');
             document.body.style.overflow = 'hidden';
         }
-
-        function closeMobileMenuFunc() {
-            mobileMenu.classList.remove('active');
-            mobileMenuOverlay.classList.remove('active');
+        function closeMobileMenuFn() {
+            document.getElementById('mobileMenu')?.classList.remove('active');
+            document.getElementById('mobileMenuOverlay')?.classList.remove('active');
             document.body.style.overflow = '';
         }
+        document.getElementById('mobileMenuBtn')?.addEventListener('click', openMobileMenu);
+        document.getElementById('closeMobileMenu')?.addEventListener('click', closeMobileMenuFn);
+        document.getElementById('mobileMenuOverlay')?.addEventListener('click', closeMobileMenuFn);
+        document.querySelectorAll('.mobile-menu a').forEach(l => l.addEventListener('click', closeMobileMenuFn));
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileMenuFn(); });
 
-        mobileMenuBtn.addEventListener('click', openMobileMenu);
-        closeMobileMenu.addEventListener('click', closeMobileMenuFunc);
-        mobileMenuOverlay.addEventListener('click', closeMobileMenuFunc);
+        // Scroll Reveal
+        function initReveal() {
+            const els = document.querySelectorAll('.reveal, .reveal-left, .reveal-scale');
+            els.forEach(el => el.classList.add('pre-reveal'));
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        e.target.classList.remove('pre-reveal');
+                        obs.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
+            els.forEach(el => obs.observe(el));
+        }
+        requestAnimationFrame(() => requestAnimationFrame(initReveal));
 
-        document.querySelectorAll('.mobile-menu a').forEach(link => {
-            link.addEventListener('click', closeMobileMenuFunc);
+        // Floating Clock
+        (function() {
+            const days   = ['MINGGU','SENIN','SELASA','RABU','KAMIS','JUMAT','SABTU'];
+            const months = ['JAN','FEB','MAR','APR','MEI','JUN','JUL','AGU','SEP','OKT','NOV','DES'];
+            function updateClock() {
+                const now = new Date();
+                const hh = String(now.getHours()).padStart(2,'0');
+                const mm = String(now.getMinutes()).padStart(2,'0');
+                const ss = String(now.getSeconds()).padStart(2,'0');
+                const timeEl = document.querySelector('#floating-clock > .clock-time');
+                const dateEl = document.querySelector('#floating-clock > .clock-date');
+                if (timeEl) timeEl.textContent = `${hh}:${mm}:${ss}`;
+                if (dateEl) dateEl.textContent = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+            }
+            updateClock();
+            setInterval(updateClock, 1000);
+        })();
+
+        // Cursor trail
+        document.addEventListener('mousemove', function(e) {
+            if (Math.random() > 0.85) {
+                const dot = document.createElement('div');
+                dot.style.cssText = `position:fixed;left:${e.clientX}px;top:${e.clientY}px;width:6px;height:6px;border-radius:50%;background:rgba(139,92,246,0.6);pointer-events:none;z-index:9999;transition:all 0.8s ease;transform:translate(-50%,-50%)`;
+                document.body.appendChild(dot);
+                requestAnimationFrame(() => { dot.style.opacity = '0'; dot.style.transform = 'translate(-50%,-50%) scale(0)'; });
+                setTimeout(() => dot.remove(), 800);
+            }
         });
-
-        // Personality Test Data
-        const questions = [
-            {
-                id: 1,
-                question: "Ketika menerima uang, apa yang pertama kamu pikirkan?",
-                options: [
-                    { text: "Langsung ditabung", value: "saver", score: { saver: 3, spender: 0, investor: 0, security: 1 } },
-                    { text: "Langsung dibelanjakan", value: "spender", score: { saver: 0, spender: 3, investor: 0, security: 0 } },
-                    { text: "Dicari cara untuk dikembangkan", value: "investor", score: { saver: 0, spender: 0, investor: 3, security: 0 } },
-                    { text: "Disimpan untuk kebutuhan darurat", value: "security", score: { saver: 1, spender: 0, investor: 0, security: 3 } }
-                ]
-            },
-            {
-                id: 2,
-                question: "Bagaimana pandanganmu tentang investasi?",
-                options: [
-                    { text: "Risiko tinggi, lebih baik tabungan biasa", value: "saver", score: { saver: 3, spender: 0, investor: 0, security: 1 } },
-                    { text: "Investasi itu membosankan, lebih baik belanja", value: "spender", score: { saver: 0, spender: 3, investor: 0, security: 0 } },
-                    { text: "Peluang untuk mengembangkan uang", value: "investor", score: { saver: 0, spender: 0, investor: 3, security: 0 } },
-                    { text: "Hanya instrumen yang aman seperti deposito", value: "security", score: { saver: 1, spender: 0, investor: 0, security: 3 } }
-                ]
-            },
-            {
-                id: 3,
-                question: "Apa reaksimu saat melihat diskon besar-besaran?",
-                options: [
-                    { text: "Tetap berpikir apakah benar-benar butuh", value: "saver", score: { saver: 3, spender: 0, investor: 0, security: 1 } },
-                    { text: "Langsung beli sebelum kehabisan", value: "spender", score: { saver: 0, spender: 3, investor: 0, security: 0 } },
-                    { text: "Membeli barang yang bisa dijual kembali", value: "investor", score: { saver: 0, spender: 0, investor: 3, security: 0 } },
-                    { text: "Membeli kebutuhan pokok dalam jumlah banyak", value: "security", score: { saver: 1, spender: 0, investor: 0, security: 3 } }
-                ]
-            },
-            {
-                id: 4,
-                question: "Bagaimana persiapanmu untuk masa pensiun?",
-                options: [
-                    { text: "Menabung secara rutin setiap bulan", value: "saver", score: { saver: 3, spender: 0, investor: 0, security: 1 } },
-                    { text: "Belum terpikirkan sama sekali", value: "spender", score: { saver: 0, spender: 3, investor: 0, security: 0 } },
-                    { text: "Berinvestasi jangka panjang", value: "investor", score: { saver: 0, spender: 0, investor: 3, security: 0 } },
-                    { text: "Ikut program asuransi dan dana pensiun", value: "security", score: { saver: 1, spender: 0, investor: 0, security: 3 } }
-                ]
-            },
-            {
-                id: 5,
-                question: "Saat memiliki uang lebih, apa yang kamu lakukan?",
-                options: [
-                    { text: "Menambah tabungan", value: "saver", score: { saver: 3, spender: 0, investor: 0, security: 1 } },
-                    { text: "Traktir teman atau family", value: "spender", score: { saver: 0, spender: 3, investor: 0, security: 0 } },
-                    { text: "Beli saham atau emas", value: "investor", score: { saver: 0, spender: 0, investor: 3, security: 0 } },
-                    { text: "Simpan di rekening terpisah", value: "security", score: { saver: 1, spender: 0, investor: 0, security: 3 } }
-                ]
-            },
-            {
-                id: 6,
-                question: "Bagaimana perasaanmu tentang utang?",
-                options: [
-                    { text: "Harus dihindari sebisa mungkin", value: "saver", score: { saver: 3, spender: 0, investor: 0, security: 1 } },
-                    { text: "Wajar untuk gaya hidup", value: "spender", score: { saver: 0, spender: 3, investor: 0, security: 0 } },
-                    { text: "Bisa jadi alat untuk bisnis", value: "investor", score: { saver: 0, spender: 0, investor: 3, security: 0 } },
-                    { text: "Hanya untuk kebutuhan mendesak", value: "security", score: { saver: 1, spender: 0, investor: 0, security: 3 } }
-                ]
-            },
-            {
-                id: 7,
-                question: "Kamu mendapatkan bonus besar. Apa yang kamu lakukan?",
-                options: [
-                    { text: "90% ditabung, 10% untuk reward", value: "saver", score: { saver: 3, spender: 0, investor: 0, security: 1 } },
-                    { text: "Beli barang impian", value: "spender", score: { saver: 0, spender: 3, investor: 0, security: 0 } },
-                    { text: "Cari peluang investasi baru", value: "investor", score: { saver: 0, spender: 0, investor: 3, security: 0 } },
-                    { text: "Buat dana darurat", value: "security", score: { saver: 1, spender: 0, investor: 0, security: 3 } }
-                ]
-            },
-            {
-                id: 8,
-                question: "Bagaimana kebiasaan catatan keuanganmu?",
-                options: [
-                    { text: "Mencatat setiap pemasukan & pengeluaran", value: "saver", score: { saver: 3, spender: 0, investor: 0, security: 1 } },
-                    { text: "Jarang mencatat, yang penting cukup", value: "spender", score: { saver: 0, spender: 3, investor: 0, security: 0 } },
-                    { text: "Mencatat untuk evaluasi investasi", value: "investor", score: { saver: 0, spender: 0, investor: 3, security: 0 } },
-                    { text: "Mencatat pengeluaran penting saja", value: "security", score: { saver: 1, spender: 0, investor: 0, security: 3 } }
-                ]
-            },
-            {
-                id: 9,
-                question: "Saat harga barang naik, apa yang kamu lakukan?",
-                options: [
-                    { text: "Mengurangi konsumsi", value: "saver", score: { saver: 3, spender: 0, investor: 0, security: 1 } },
-                    { text: "Tetap beli karena butuh", value: "spender", score: { saver: 0, spender: 3, investor: 0, security: 0 } },
-                    { text: "Cari alternatif investasi", value: "investor", score: { saver: 0, spender: 0, investor: 3, security: 0 } },
-                    { text: "Stok barang dari sekarang", value: "security", score: { saver: 1, spender: 0, investor: 0, security: 3 } }
-                ]
-            },
-            {
-                id: 10,
-                question: "Apa tujuan keuangan utamamu?",
-                options: [
-                    { text: "Memiliki tabungan besar", value: "saver", score: { saver: 3, spender: 0, investor: 0, security: 1 } },
-                    { text: "Menikmati hidup tanpa mikir uang", value: "spender", score: { saver: 0, spender: 3, investor: 0, security: 0 } },
-                    { text: "Mencapai financial freedom", value: "investor", score: { saver: 0, spender: 0, investor: 3, security: 0 } },
-                    { text: "Keuangan stabil dan aman", value: "security", score: { saver: 1, spender: 0, investor: 0, security: 3 } }
-                ]
-            }
-        ];
-
-        // Result data
-        const resultTypes = {
-            saver: {
-                name: "The Saver",
-                description: "Kamu adalah tipe yang suka menabung dan hemat. Kamu selalu memikirkan masa depan dan tidak mudah tergoda oleh gaya hidup konsumtif.",
-                strengths: [
-                    "Bijak dalam mengelola keuangan",
-                    "Disiplin menabung",
-                    "Tidak mudah tergoda diskon",
-                    "Memiliki tujuan finansial jelas"
-                ],
-                weaknesses: [
-                    "Kadang terlalu pelit pada diri sendiri",
-                    "Takut mengambil risiko",
-                    "Kesulitan menikmati hasil jerih payah"
-                ],
-                recommendations: [
-                    "Mulai belajar investasi rendah risiko seperti reksadana pasar uang",
-                    "Sisihkan dana untuk 'reward' diri sendiri",
-                    "Coba saving challenge untuk menambah motivasi"
-                ]
-            },
-            spender: {
-                name: "The Spender",
-                description: "Kamu adalah tipe yang menikmati hidup dan tidak ragu membelanjakan uang untuk hal-hal yang kamu suka.",
-                strengths: [
-                    "Menghargai hasil kerja keras",
-                    "Pandai mencari kesenangan",
-                    "Tidak pelit pada diri sendiri",
-                    "Mudah bersosialisasi"
-                ],
-                weaknesses: [
-                    "Sulit menabung",
-                    "Mudah tergoda diskon",
-                    "Kurang persiapan masa depan"
-                ],
-                recommendations: [
-                    "Gunakan metode 50-30-20 untuk budgeting",
-                    "Buat rekening tabungan terpisah",
-                    "Ikut saving challenge untuk melatih disiplin"
-                ]
-            },
-            investor: {
-                name: "The Investor",
-                description: "Kamu memiliki jiwa investor sejati. Kamu selalu mencari peluang untuk mengembangkan uang dan berpikir jangka panjang.",
-                strengths: [
-                    "Berpikir jangka panjang",
-                    "Berani mengambil risiko",
-                    "Paham instrumen investasi",
-                    "Selalu update informasi keuangan"
-                ],
-                weaknesses: [
-                    "Bisa terlalu agresif dalam investasi",
-                    "Kurang memikirkan dana darurat",
-                    "Mengabaikan kebutuhan jangka pendek"
-                ],
-                recommendations: [
-                    "Seimbangkan portofolio investasi",
-                    "Siapkan dana darurat 6 bulan",
-                    "Diversifikasi instrumen investasi"
-                ]
-            },
-            security: {
-                name: "The Security Seeker",
-                description: "Kamu adalah tipe yang mengutamakan keamanan finansial. Kamu selalu siap menghadapi situasi darurat dan tidak suka risiko.",
-                strengths: [
-                    "Siap menghadapi darurat",
-                    "Memiliki proteksi diri",
-                    "Perencanaan matang",
-                    "Tidak ceroboh dalam finansial"
-                ],
-                weaknesses: [
-                    "Terlalu protektif",
-                    "Melewatkan peluang investasi",
-                    "Kurang fleksibel"
-                ],
-                recommendations: [
-                    "Mulai eksplorasi investasi rendah risiko",
-                    "Evaluasi proteksi asuransi secara berkala",
-                    "Belajar tentang inflasi dan dampaknya"
-                ]
-            }
-        };
-
-        // Test state
-        let currentQuestion = 0;
-        let answers = new Array(questions.length).fill(null);
-        let scores = {
-            saver: 0,
-            spender: 0,
-            investor: 0,
-            security: 0
-        };
-        let currentResult = null;
-
-        const questionContainer = document.getElementById('questionContainer');
-        const prevBtn = document.getElementById('prevBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const submitBtn = document.getElementById('submitBtn');
-        const questionCounter = document.getElementById('questionCounter');
-        const progressFill = document.getElementById('progressFill');
-        const testSection = document.getElementById('testSection');
-        const resultSection = document.getElementById('resultSection');
-
-        function renderQuestion() {
-            const q = questions[currentQuestion];
-            const selectedAnswer = answers[currentQuestion];
-
-            let html = `
-                <div class="question-card">
-                    <div class="mb-8">
-                        <span class="text-sm font-medium text-violet-400 mb-2 block">Pertanyaan ${currentQuestion + 1}</span>
-                        <h3 class="text-2xl md:text-3xl font-bold">${q.question}</h3>
-                    </div>
-                    <div class="space-y-4">
-            `;
-
-            q.options.forEach((option, index) => {
-                const isSelected = selectedAnswer === index;
-                html += `
-                    <div class="personality-card p-6 rounded-2xl ${isSelected ? 'selected' : ''}" onclick="selectAnswer(${index})">
-                        <div class="flex items-center justify-between">
-                            <span class="text-lg">${option.text}</span>
-                            <div class="w-6 h-6 rounded-full border-2 ${isSelected ? 'border-violet-500 bg-violet-500' : 'border-white/20'} flex items-center justify-center">
-                                ${isSelected ? '<i data-lucide="check" class="w-4 h-4 text-white"></i>' : ''}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-
-            html += `
-                    </div>
-                </div>
-            `;
-
-            questionContainer.innerHTML = html;
-            lucide.createIcons();
-            updateNavigationButtons();
-        }
-
-        window.selectAnswer = function (optionIndex) {
-            answers[currentQuestion] = optionIndex;
-            renderQuestion();
-        };
-
-        function updateNavigationButtons() {
-            if (currentQuestion === 0) {
-                prevBtn.disabled = true;
-            } else {
-                prevBtn.disabled = false;
-            }
-
-            const hasAnswer = answers[currentQuestion] !== null;
-
-            if (currentQuestion === questions.length - 1) {
-                nextBtn.classList.add('hidden');
-                submitBtn.classList.remove('hidden');
-                submitBtn.disabled = !hasAnswer;
-            } else {
-                nextBtn.classList.remove('hidden');
-                submitBtn.classList.add('hidden');
-                nextBtn.disabled = !hasAnswer;
-            }
-
-            questionCounter.textContent = `${currentQuestion + 1}/${questions.length}`;
-            progressFill.style.width = `${((currentQuestion + 1) / questions.length) * 100}%`;
-        }
-
-        function nextQuestion() {
-            if (currentQuestion < questions.length - 1) {
-                currentQuestion++;
-                renderQuestion();
-                window.scrollTo({ top: testSection.offsetTop - 100, behavior: 'smooth' });
-            }
-        }
-
-        function prevQuestion() {
-            if (currentQuestion > 0) {
-                currentQuestion--;
-                renderQuestion();
-                window.scrollTo({ top: testSection.offsetTop - 100, behavior: 'smooth' });
-            }
-        }
-
-        function calculateResult() {
-            scores = { saver: 0, spender: 0, investor: 0, security: 0 };
-
-            questions.forEach((q, index) => {
-                const answerIndex = answers[index];
-                if (answerIndex !== null) {
-                    const option = q.options[answerIndex];
-                    Object.keys(option.score).forEach(key => {
-                        scores[key] += option.score[key];
-                    });
-                }
-            });
-
-            let dominantType = 'saver';
-            let maxScore = 0;
-
-            Object.keys(scores).forEach(key => {
-                if (scores[key] > maxScore) {
-                    maxScore = scores[key];
-                    dominantType = key;
-                }
-            });
-
-            return dominantType;
-        }
-
-        function showResult() {
-            const type = calculateResult();
-            currentResult = resultTypes[type];
-
-            document.getElementById('resultType').textContent = currentResult.name;
-            document.getElementById('resultDescription').textContent = currentResult.description;
-
-            const strengthsList = document.getElementById('strengthsList');
-            strengthsList.innerHTML = currentResult.strengths.map(s => `
-                <li class="flex items-start gap-3">
-                    <i data-lucide="check-circle" class="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5"></i>
-                    <span>${s}</span>
-                </li>
-            `).join('');
-
-            const weaknessesList = document.getElementById('weaknessesList');
-            weaknessesList.innerHTML = currentResult.weaknesses.map(w => `
-                <li class="flex items-start gap-3">
-                    <i data-lucide="alert-circle" class="w-5 h-5 text-orange-400 flex-shrink-0 mt-0.5"></i>
-                    <span>${w}</span>
-                </li>
-            `).join('');
-
-            const recommendationsList = document.getElementById('recommendationsList');
-            recommendationsList.innerHTML = currentResult.recommendations.map(r => `
-                <li class="flex items-start gap-3">
-                    <i data-lucide="trending-up" class="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5"></i>
-                    <span>${r}</span>
-                </li>
-            `).join('');
-
-            lucide.createIcons();
-
-            testSection.classList.add('hidden');
-            resultSection.classList.remove('hidden');
-            window.scrollTo({ top: resultSection.offsetTop - 100, behavior: 'smooth' });
-        }
-
-        function restartTest() {
-            currentQuestion = 0;
-            answers = new Array(questions.length).fill(null);
-            scores = { saver: 0, spender: 0, investor: 0, security: 0 };
-            currentResult = null;
-
-            testSection.classList.remove('hidden');
-            resultSection.classList.add('hidden');
-
-            renderQuestion();
-            window.scrollTo({ top: testSection.offsetTop - 100, behavior: 'smooth' });
-        }
-
-        function generateScoreMeter() {
-            const total = Object.values(scores).reduce((a, b) => a + b, 0) || 1;
-            
-            const types = {
-                saver: { name: 'The Saver', color: '#8b5cf6' },
-                spender: { name: 'The Spender', color: '#f43f5e' },
-                investor: { name: 'The Investor', color: '#06b6d4' },
-                security: { name: 'The Security Seeker', color: '#10b981' }
-            };
-
-            return Object.keys(scores).map(key => {
-                const percentage = Math.round((scores[key] / total) * 100);
-                return `
-                    <div class="score-item">
-                        <div class="score-label">
-                            <span>${types[key].name}</span>
-                            <span style="font-weight: 600; color: ${types[key].color};">${percentage}%</span>
-                        </div>
-                        <div class="score-bar-bg">
-                            <div class="score-bar-fill" style="width: ${percentage}%; background: linear-gradient(90deg, ${types[key].color}, ${types[key].color}dd);"></div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        function generatePrintContent() {
-            const date = new Date();
-            const formattedDate = date.toLocaleDateString('id-ID', {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-                hour: '2-digit',
-                minute: '2-digit'
-            });
-
-            return `
-                <div class="print-report" style="display: block;">
-                    <div class="report-header">
-                        <div class="logo-area">
-                            <img src="assets/img/image.jpeg" alt="Monetra Logo">
-                            <div>
-                                <h2>Monetra</h2>
-                                <p>Financial Intelligence Platform</p>
-                            </div>
-                        </div>
-                        <div class="title-area">
-                            <h1>Laporan Hasil Tes Kepribadian Finansial</h1>
-                        </div>
-                        <div class="meta-area">
-                            <p>Tanggal: ${formattedDate}</p>
-                            <p>Dokumen Resmi Monetra</p>
-                        </div>
-                    </div>
-
-                    <div class="result-summary">
-                        <div class="result-badge">HASIL TES KAMU</div>
-                        <div class="result-name">${currentResult.name}</div>
-                        <div class="result-desc">${currentResult.description}</div>
-                    </div>
-
-                    <div class="score-meter">
-                        <div class="score-title">Skor Kepribadian Finansial</div>
-                        ${generateScoreMeter()}
-                    </div>
-
-                    <div class="print-grid">
-                        <div class="print-card">
-                            <div class="print-card-header">
-                                <div class="print-card-icon" style="background: #d1fae5;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-                                </div>
-                                <h3>Kelebihan</h3>
-                            </div>
-                            <ul class="print-card-list">
-                                ${currentResult.strengths.map(s => `
-                                    <li>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                                        <span>${s}</span>
-                                    </li>
-                                `).join('')}
-                            </ul>
-                        </div>
-
-                        <div class="print-card">
-                            <div class="print-card-header">
-                                <div class="print-card-icon" style="background: #fee2e2;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#dc2626" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                                </div>
-                                <h3>Tantangan</h3>
-                            </div>
-                            <ul class="print-card-list">
-                                ${currentResult.weaknesses.map(w => `
-                                    <li>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r="0.5" fill="#f59e0b" stroke="#f59e0b"/></svg>
-                                        <span>${w}</span>
-                                    </li>
-                                `).join('')}
-                            </ul>
-                        </div>
-
-                        <div class="print-card">
-                            <div class="print-card-header">
-                                <div class="print-card-icon" style="background: #dbeafe;">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/><path d="M10 12h4"/></svg>
-                                </div>
-                                <h3>Rekomendasi</h3>
-                            </div>
-                            <ul class="print-card-list">
-                                ${currentResult.recommendations.map(r => `
-                                    <li>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
-                                        <span>${r}</span>
-                                    </li>
-                                `).join('')}
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="answers-section">
-                        <div class="answers-title">Analisis Jawaban</div>
-                        <div class="answers-grid">
-                            ${questions.map((q, i) => `
-                                <div class="answer-item">
-                                    <div class="answer-question">${i + 1}. ${q.question}</div>
-                                    <div class="answer-choice">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                                        <span>${q.options[answers[i]].text}</span>
-                                    </div>
-                                </div>
-                            `).join('')}
-                        </div>
-                    </div>
-
-                    <div class="print-footer">
-                        <p>© ${new Date().getFullYear()} Monetra - Financial Intelligence Platform</p>
-                        <p>Laporan ini dihasilkan secara otomatis dan valid untuk digunakan sebagai referensi pengelolaan keuangan pribadi.</p>
-                    </div>
-                </div>
-            `;
-        }
-
-        function downloadResult() {
-            if (!currentResult) return;
-            
-            const printContent = generatePrintContent();
-            const printWindow = window.open('', '_blank');
-            
-            printWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Laporan Hasil Tes Kepribadian - Monetra</title>
-                    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-                    <style>
-                        ${document.querySelector('style').innerHTML}
-                        body {
-                            font-family: 'Inter', sans-serif;
-                            padding: 40px;
-                            background: white;
-                            margin: 0;
-                        }
-                        @media print {
-                            body {
-                                padding: 0;
-                            }
-                        }
-                    </style>
-                </head>
-                <body>
-                    ${printContent}
-                    <div style="text-align: center; margin-top: 30px; display: none;" class="no-print">
-                        <button onclick="window.print()" style="padding: 12px 30px; background: #8b5cf6; color: white; border: none; border-radius: 50px; font-size: 16px; cursor: pointer; margin-right: 10px;">Print</button>
-                        <button onclick="window.close()" style="padding: 12px 30px; background: #e2e8f0; border: none; border-radius: 50px; font-size: 16px; cursor: pointer;">Tutup</button>
-                    </div>
-                </body>
-                </html>
-            `);
-            
-            printWindow.document.close();
-            
-            // Trigger print dialog after content loads
-            setTimeout(() => {
-                printWindow.print();
-            }, 500);
-        }
-
-        function printResult() {
-            if (!currentResult) return;
-            
-            // Store print content in the hidden div and trigger print
-            const printReport = document.getElementById('printReport');
-            printReport.innerHTML = generatePrintContent();
-            printReport.style.display = 'block';
-            
-            window.print();
-            
-            // Hide it again after print
-            setTimeout(() => {
-                printReport.style.display = 'none';
-            }, 1000);
-        }
-
-        // Event listeners
-        prevBtn.addEventListener('click', prevQuestion);
-        nextBtn.addEventListener('click', nextQuestion);
-        submitBtn.addEventListener('click', showResult);
-
-        // Initialize first question
-        renderQuestion();
-
-        // Make functions globally available
-        window.restartTest = restartTest;
-        window.downloadResult = downloadResult;
-        window.printResult = printResult;
     </script>
-    <script src="assets/js/clock.js"></script>
 </body>
-
 </html>

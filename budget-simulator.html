@@ -14,36 +14,77 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    colors: {
-                        primary: '#8b5cf6',
-                        secondary: '#06b6d4',
-                    },
-                    screens: {
-                        'xs': '480px',
-                        'sm': '640px',
-                        'md': '768px',
-                        'lg': '1024px',
-                        'xl': '1280px',
-                        '2xl': '1536px',
-                    }
+                    colors: { primary: '#8b5cf6', secondary: '#06b6d4' },
+                    screens: { 'xs': '480px' }
                 }
             }
         }
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="assets/css/clock.css">
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- FIX 1: Ganti unpkg ke CDN yang lebih stabil dengan versi spesifik -->
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js"></script>
+    <script>
+    // SVG fallback jika Lucide CDN gagal load
+    window.__lucideFallbackSVGs = {
+        'chevron-down': '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>',
+        'user-circle': '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="10" r="3"/><path d="M7 20.662V19a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v1.662"/></svg>',
+        'wallet': '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>',
+        'target': '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>',
+        'trophy': '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/></svg>',
+        'sun': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>',
+        'moon': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>',
+        'menu': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>',
+        'x': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>',
+        'trending-up': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>',
+        'trending-down': '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 17 13.5 8.5 8.5 13.5 2 7"/><polyline points="16 17 22 17 22 11"/></svg>',
+        'home': '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+        'shopping-cart': '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>',
+        'zap': '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+        'car': '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 17H5v-7l2-5h10l2 5v7z"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/></svg>',
+        'bus': '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6v6"/><path d="M16 6v6"/><path d="M2 12h19.6"/><path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2 0-.4-.1-.8-.2-1.2l-1.4-5C20.1 6.8 19.1 6 18 6H4a2 2 0 0 0-2 2v10h3"/><circle cx="7" cy="18" r="2"/><circle cx="15" cy="18" r="2"/></svg>',
+        'film': '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="2.18" ry="2.18"/><line x1="7" x2="7" y1="2" y2="22"/><line x1="17" x2="17" y1="2" y2="22"/><line x1="2" x2="22" y1="7" y2="7"/><line x1="2" x2="22" y1="12" y2="12"/><line x1="2" x2="22" y1="17" y2="17"/></svg>',
+        'coffee': '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" x2="6" y1="2" y2="4"/><line x1="10" x2="10" y1="2" y2="4"/><line x1="14" x2="14" y1="2" y2="4"/></svg>',
+        'piggy-bank': '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2z"/><path d="M2 9v1a2 2 0 0 0 2 2h1"/><path d="M16 11h0"/></svg>',
+        'info': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>',
+        'download': '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>',
+        'printer': '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>',
+        'percent': '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" x2="5" y1="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>',
+        'alert-circle': '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>',
+        'twitter': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"/></svg>',
+        'instagram': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>',
+        'linkedin': '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/></svg>'
+    };
+
+    // Inject fallback jika lucide gagal
+    window.__applyLucideFallback = function() {
+        document.querySelectorAll('i[data-lucide]').forEach(function(el) {
+            var name = el.getAttribute('data-lucide');
+            var svg = window.__lucideFallbackSVGs[name];
+            if (svg) {
+                var wrapper = document.createElement('span');
+                wrapper.innerHTML = svg;
+                var svgEl = wrapper.firstChild;
+                // Copy classes
+                el.className.split(' ').forEach(function(c) {
+                    if (c && c !== '') {
+                        var match = c.match(/w-(\d+)/);
+                        if (match) svgEl.setAttribute('width', match[1] === '3' ? '12' : match[1] === '4' ? '16' : match[1] === '5' ? '20' : match[1] === '6' ? '24' : match[1] === '7' ? '28' : '24');
+                        match = c.match(/h-(\d+)/);
+                        if (match) svgEl.setAttribute('height', match[1] === '3' ? '12' : match[1] === '4' ? '16' : match[1] === '5' ? '20' : match[1] === '6' ? '24' : match[1] === '7' ? '28' : '24');
+                    }
+                });
+                svgEl.className.baseVal = el.className;
+                svgEl.style.cssText = el.style.cssText;
+                el.parentNode.replaceChild(svgEl, el);
+            }
+        });
+    };
+    </script>
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -52,836 +93,544 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        html.dark body {
-            background-color: #020617;
-            color: #f8fafc;
-        }
+        html.dark body { background-color: #020617; color: #f8fafc; }
+        html.light body { background-color: #f8fafc; color: #0f172a; }
 
-        html.light body {
-            background-color: #f8fafc;
-            color: #0f172a;
-        }
-
-        /* Noise texture */
         body::before {
             content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.03;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1; opacity: 0.03;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* Loading Screen */
-        .loader-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: #020617;
-            z-index: 10000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+        @keyframes fadeInDown {
+            0%   { opacity: 0; transform: translateY(-18px); }
+            60%  { opacity: 1; }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            0%   { opacity: 0; transform: translateY(22px); }
+            60%  { opacity: 1; }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInLeft {
+            0%   { opacity: 0; transform: translateX(-22px); }
+            60%  { opacity: 1; }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes fadeInRight {
+            0%   { opacity: 0; transform: translateX(22px); }
+            60%  { opacity: 1; }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes scaleUp {
+            0%   { opacity: 0; transform: scale(0.94) translateY(10px); }
+            60%  { opacity: 1; }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        @keyframes gradientMove {
+            0%   { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+        @keyframes gradientShift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        @keyframes shimmerSweep {
+            0%   { transform: translateX(-200%) skewX(-12deg); opacity: 0; }
+            20%  { opacity: 1; }
+            80%  { opacity: 1; }
+            100% { transform: translateX(200%) skewX(-12deg); opacity: 0; }
+        }
+        @keyframes orbDrift1 {
+            0%   { transform: translate(0px, 0px); }
+            25%  { transform: translate(28px, -18px); }
+            50%  { transform: translate(14px, 22px); }
+            75%  { transform: translate(-20px, 8px); }
+            100% { transform: translate(0px, 0px); }
+        }
+        @keyframes orbDrift2 {
+            0%   { transform: translate(0px, 0px); }
+            25%  { transform: translate(-22px, 16px); }
+            50%  { transform: translate(10px, -20px); }
+            75%  { transform: translate(18px, 6px); }
+            100% { transform: translate(0px, 0px); }
+        }
+        @keyframes orbBreathe {
+            0%, 100% { opacity: 0.5; transform: scale(1); }
+            50%       { opacity: 0.85; transform: scale(1.08); }
+        }
+        @keyframes floatGentle {
+            0%, 100% { transform: translateY(0px); }
+            50%       { transform: translateY(-7px); }
+        }
+        @keyframes borderPulse {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(139,92,246,0); }
+            50%       { box-shadow: 0 0 0 4px rgba(139,92,246,0.12); }
+        }
+        @keyframes lineGrow {
+            from { width: 0; opacity: 0; }
+            to   { width: 100%; opacity: 1; }
         }
 
-        .loader-wrapper.slide-up {
-            transform: translateY(-100%);
+        .bg-orb {
+            position: fixed; border-radius: 50%;
+            filter: blur(100px); pointer-events: none; z-index: 0;
+            will-change: transform;
+        }
+        .bg-orb-1 {
+            width: 650px; height: 650px;
+            background: radial-gradient(circle, rgba(6,182,212,0.11), transparent 68%);
+            top: -160px; left: -160px;
+            animation: orbDrift1 22s ease-in-out infinite;
+        }
+        .bg-orb-2 {
+            width: 520px; height: 520px;
+            background: radial-gradient(circle, rgba(139,92,246,0.11), transparent 68%);
+            bottom: 8%; right: -110px;
+            animation: orbDrift2 28s ease-in-out infinite;
+        }
+        .bg-orb-3 {
+            width: 380px; height: 380px;
+            background: radial-gradient(circle, rgba(6,182,212,0.07), transparent 68%);
+            top: 42%; left: 36%;
+            animation: orbDrift1 34s ease-in-out infinite reverse;
+        }
+        .bg-orb-4 {
+            width: 280px; height: 280px;
+            background: radial-gradient(circle, rgba(139,92,246,0.08), transparent 68%);
+            top: 22%; right: 12%;
+            animation: orbBreathe 12s ease-in-out infinite;
         }
 
-        .loader-logo-img {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            border-radius: 20px;
-            box-shadow: 0 0 40px rgba(139, 92, 246, 0.4);
-            opacity: 0;
-            animation: logoReveal 1s ease forwards 0.5s;
+        .anim-navbar     { animation: fadeInDown 0.8s cubic-bezier(0.22,1,0.36,1) both; }
+        .anim-hero-tag   { animation: scaleUp   0.65s cubic-bezier(0.22,1,0.36,1) 0.08s both; }
+        .anim-hero-title { animation: fadeInUp  0.9s  cubic-bezier(0.22,1,0.36,1) 0.18s both; }
+        .anim-hero-sub   { animation: fadeInUp  0.9s  cubic-bezier(0.22,1,0.36,1) 0.32s both; }
+        .anim-hero-line  { animation: lineGrow  0.7s  cubic-bezier(0.22,1,0.36,1) 0.5s  both; }
+
+        .reveal {
+            opacity: 1; transform: translateY(0);
+            transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1);
+            will-change: opacity, transform;
+        }
+        .reveal.pre-reveal { opacity: 0; transform: translateY(28px); }
+
+        .reveal-left {
+            opacity: 1; transform: translateX(0);
+            transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1);
+            will-change: opacity, transform;
+        }
+        .reveal-left.pre-reveal { opacity: 0; transform: translateX(-28px); }
+
+        .reveal-right {
+            opacity: 1; transform: translateX(0);
+            transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1), transform 0.75s cubic-bezier(0.22,1,0.36,1);
+            will-change: opacity, transform;
+        }
+        .reveal-right.pre-reveal { opacity: 0; transform: translateX(28px); }
+
+        .reveal-scale {
+            opacity: 1; transform: scale(1) translateY(0);
+            transition: opacity 0.7s cubic-bezier(0.22,1,0.36,1), transform 0.7s cubic-bezier(0.22,1,0.36,1);
+            will-change: opacity, transform;
+        }
+        .reveal-scale.pre-reveal { opacity: 0; transform: scale(0.93) translateY(16px); }
+
+        .reveal-card {
+            opacity: 1; transform: translateY(0);
+            transition: opacity 0.85s cubic-bezier(0.22,1,0.36,1), transform 0.85s cubic-bezier(0.22,1,0.36,1);
+            will-change: opacity, transform;
+        }
+        .reveal-card.pre-reveal { opacity: 0; transform: translateY(36px); }
+
+        .shimmer-card { position: relative; overflow: hidden; }
+        .shimmer-card::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.04) 50%, transparent 60%);
+            animation: shimmerSweep 5s ease-in-out infinite;
+            pointer-events: none;
         }
 
-        @keyframes logoReveal {
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
+        .float-anim { animation: floatGentle 6s ease-in-out infinite; }
+        .glow-border { animation: borderPulse 5s ease-in-out infinite; }
 
-        .loader-text {
-            margin-top: 24px;
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            opacity: 0;
-            animation: fadeIn 0.8s ease forwards 1.2s;
-        }
-
-        .loader-subtext {
-            margin-top: 8px;
-            font-size: 0.875rem;
-            color: #64748b;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            opacity: 0;
-            animation: fadeIn 1s ease forwards 1.8s;
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
-        /* Navbar */
         .navbar {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            padding-top: 1.25rem;
-            padding-bottom: 1.25rem;
+            transition: padding 0.4s cubic-bezier(0.22,1,0.36,1);
+            padding-top: 1.25rem; padding-bottom: 1.25rem;
         }
-
         .navbar .navbar-container {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, border-radius 0.4s ease, padding 0.4s cubic-bezier(0.22,1,0.36,1);
             padding: 0;
         }
 
-        .navbar.floating {
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-        }
+        html.dark .navbar a,
+        html.dark .navbar button,
+        html.dark .navbar span { color: #f8fafc; }
+        html.light .navbar a,
+        html.light .navbar button,
+        html.light .navbar span { color: #0f172a; }
 
+        .navbar.floating { padding-top: 0.5rem; padding-bottom: 0.5rem; }
         .navbar.floating .navbar-container {
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 9999px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            padding: 0.75rem 2rem;
-            max-width: 1200px;
+            padding: 0.75rem 2rem; max-width: 1200px;
         }
-
         html.light .navbar.floating .navbar-container {
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.92);
             border: 1px solid rgba(0, 0, 0, 0.1);
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
         }
 
         /* =============================================
-           FIX 1: Navbar CTA - Ukuran wajar + teks selalu putih
+           TOMBOL "MULAI SEKARANG" - SELALU PUTIH
            ============================================= */
         .navbar-cta {
             background: linear-gradient(135deg, #7c3aed 0%, #0891b2 100%);
             color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
             display: inline-block;
             transition: all 0.3s ease;
-            /* FIX: ukuran yang lebih proporsional */
             padding: 0.6rem 1.5rem !important;
             font-size: 0.875rem !important;
             font-weight: 700;
         }
-
         .navbar-cta:hover {
             transform: translateY(-2px);
             box-shadow: 0 12px 35px rgba(139, 92, 246, 0.45);
-            background: linear-gradient(135deg, #6d28d9 0%, #0e7490 100%);
             color: #ffffff !important;
+            -webkit-text-fill-color: #ffffff !important;
         }
-
-        /* FIX: Pastikan teks selalu putih di semua mode */
+        .navbar-cta *,
         html.light .navbar-cta,
-        html.light .navbar-cta:hover,
-        html.light .navbar-cta span,
-        html.light .navbar-cta * {
+        html.light .navbar-cta *,
+        html.dark .navbar-cta,
+        html.dark .navbar-cta * {
             color: #ffffff !important;
             -webkit-text-fill-color: #ffffff !important;
         }
 
-        /* Buttons */
         .btn-primary {
             background: linear-gradient(135deg, #7c3aed 0%, #0891b2 100%);
             color: #ffffff !important;
-            transition: opacity 0.2s ease;
-        }
-
-        .btn-primary:hover {
-            opacity: 0.9;
-        }
-
-        .btn-primary:active {
-            opacity: 0.8;
-        }
-
-        .btn-primary *,
-        .btn-primary i,
-        .btn-primary span {
-            color: #ffffff !important;
-        }
-
-        html.light .btn-primary,
-        html.light .btn-primary:hover,
-        html.light .btn-primary *,
-        html.light .btn-primary span {
-            color: #ffffff !important;
-        }
-
-        /* Dropdown Menu */
-        .dropdown {
-            position: relative;
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 0.5rem;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
-            padding: 0.5rem;
-            min-width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
             transition: all 0.3s ease;
+        }
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        .dropdown { position: relative; }
+        .dropdown-menu {
+            position: absolute; top: 100%; left: 0; margin-top: 0.5rem;
+            background: rgba(15, 23, 42, 0.97); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1rem;
+            padding: 0.5rem; min-width: 200px;
+            opacity: 0; visibility: hidden; transform: translateY(-8px) scale(0.98);
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.22,1,0.36,1), visibility 0.3s ease;
             z-index: 100;
         }
-
-        html.light .dropdown-menu {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .dropdown:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
+        html.light .dropdown-menu { background: rgba(255, 255, 255, 0.97); border: 1px solid rgba(0, 0, 0, 0.1); }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
         .dropdown-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 0.75rem 1rem; border-radius: 0.5rem;
             transition: all 0.2s ease;
-            color: #f8fafc;
+            color: #f8fafc !important;
         }
+        html.light .dropdown-item { color: #0f172a !important; }
+        .dropdown-item:hover { background: rgba(139, 92, 246, 0.2); }
+        .dropdown-item span { color: inherit !important; }
 
-        html.light .dropdown-item {
-            color: #0f172a;
-        }
-
-        .dropdown-item:hover {
-            background: rgba(139, 92, 246, 0.2);
-        }
-
-        /* Cards */
         .budget-card {
             position: relative;
             background: rgba(15, 23, 42, 0.6);
             backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: border-color 0.2s ease;
+            transition: border-color 0.4s ease, transform 0.5s cubic-bezier(0.22,1,0.36,1), box-shadow 0.5s cubic-bezier(0.22,1,0.36,1);
             overflow: hidden;
+            will-change: transform;
         }
-
-        html.light .budget-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-        }
-
+        html.light .budget-card { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04); }
         .budget-card:hover {
-            border-color: #8b5cf6;
+            border-color: rgba(139,92,246,0.4);
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(139,92,246,0.13), 0 6px 18px rgba(0,0,0,0.1);
         }
+        .budget-card:hover .icon-wrapper { animation: floatGentle 3s ease-in-out infinite; }
 
-        /* Input Range Styling */
         input[type=range] {
-            -webkit-appearance: none;
-            width: 100%;
-            height: 6px;
-            background: rgba(139, 92, 246, 0.2);
-            border-radius: 999px;
-            outline: none;
+            -webkit-appearance: none; width: 100%; height: 5px;
+            background: rgba(139, 92, 246, 0.18); border-radius: 999px; outline: none;
+            transition: background 0.4s ease;
         }
-
+        input[type=range]:hover { background: rgba(139, 92, 246, 0.3); }
         input[type=range]::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 18px;
-            height: 18px;
-            background: #8b5cf6;
-            border-radius: 50%;
-            cursor: pointer;
-            box-shadow: 0 0 20px #8b5cf6;
-            transition: all 0.2s ease;
+            -webkit-appearance: none; width: 19px; height: 19px;
+            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
+            border-radius: 50%; cursor: pointer;
+            box-shadow: 0 0 0 3px rgba(139,92,246,0.18), 0 2px 8px rgba(139,92,246,0.35);
+            transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), box-shadow 0.3s ease;
         }
+        input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.25); box-shadow: 0 0 0 5px rgba(139,92,246,0.2), 0 4px 16px rgba(139,92,246,0.5); }
+        input[type=range]::-webkit-slider-thumb:active { transform: scale(0.95); }
 
-        @media (min-width: 768px) {
-            input[type=range]::-webkit-slider-thumb {
-                width: 20px;
-                height: 20px;
-            }
-        }
-
-        input[type=range]::-webkit-slider-thumb:hover {
-            transform: scale(1.2);
-        }
-
-        input[type=range]::-webkit-slider-thumb:active {
-            transform: scale(0.95);
-        }
-
-        /* Category Badges */
         .category-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 999px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            background: rgba(139, 92, 246, 0.2);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            color: #8b5cf6;
+            padding: 0.25rem 0.75rem; border-radius: 999px;
+            font-size: 0.7rem; font-weight: 600;
+            display: inline-flex; align-items: center; gap: 0.25rem;
+            background: rgba(139, 92, 246, 0.12);
+            border: 1px solid rgba(139, 92, 246, 0.28); color: #8b5cf6;
+            transition: background 0.35s ease, transform 0.35s cubic-bezier(0.22,1,0.36,1), box-shadow 0.35s ease;
         }
+        .category-badge:hover { background: rgba(139,92,246,0.25); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(139,92,246,0.2); }
 
-        /* Progress Bar */
-        .progress-bar {
-            width: 100%;
-            height: 6px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 999px;
-            overflow: hidden;
-        }
-
+        .progress-bar { width: 100%; height: 5px; background: rgba(255, 255, 255, 0.08); border-radius: 999px; overflow: hidden; }
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #8b5cf6, #06b6d4);
-            transition: width 0.3s ease;
+            background: linear-gradient(90deg, #8b5cf6, #06b6d4, #a78bfa, #8b5cf6);
+            background-size: 300% auto;
+            animation: gradientShift 3s linear infinite;
+            transition: width 0.6s cubic-bezier(0.22,1,0.36,1);
+            border-radius: 999px;
         }
 
-        /* Summary Card */
         .summary-card {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(6, 182, 212, 0.2));
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1.5rem;
-            padding: 1rem;
+            background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(6,182,212,0.15));
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 1.5rem; padding: 1rem;
+            transition: background 0.4s ease, border-color 0.4s ease;
         }
+        .summary-card:hover { background: linear-gradient(135deg, rgba(139,92,246,0.22), rgba(6,182,212,0.22)); border-color: rgba(139,92,246,0.25); }
+        @media (min-width: 768px) { .summary-card { padding: 1.5rem; } }
 
-        @media (min-width: 768px) {
-            .summary-card {
-                padding: 1.5rem;
-            }
-        }
-
-        /* Number Input Styling */
         .number-input {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 0.5rem 0.75rem;
-            color: inherit;
-            width: 100%;
-            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 10px; padding: 0.5rem 0.75rem;
+            color: inherit; width: 100%;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.22,1,0.36,1);
             font-size: 0.875rem;
         }
+        @media (min-width: 768px) { .number-input { padding: 0.75rem 1rem; border-radius: 12px; font-size: 1rem; } }
+        html.light .number-input { background: #f8fafc; border: 1px solid #e2e8f0; color: #0f172a; }
+        .number-input:focus { outline: none; border-color: rgba(139,92,246,0.7); box-shadow: 0 0 0 3px rgba(139,92,246,0.14); transform: translateY(-1px); }
 
-        @media (min-width: 768px) {
-            .number-input {
-                padding: 0.75rem 1rem;
-                border-radius: 12px;
-                font-size: 1rem;
-            }
-        }
+        .chart-container { position: relative; height: 200px; width: 100%; }
+        @media (min-width: 640px) { .chart-container { height: 250px; } }
+        @media (min-width: 1024px) { .chart-container { height: 300px; } }
 
-        html.light .number-input {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-        }
-
-        .number-input:focus {
-            outline: none;
-            border-color: #8b5cf6;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-        }
-
-        /* Chart Container */
-        .chart-container {
-            position: relative;
-            height: 200px;
-            width: 100%;
-        }
-
-        @media (min-width: 640px) {
-            .chart-container {
-                height: 250px;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .chart-container {
-                height: 300px;
-            }
-        }
-
-        /* Mobile Menu */
         .mobile-menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(4px);
-            z-index: 9998;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px);
+            z-index: 9998; opacity: 0; visibility: hidden; transition: all 0.3s ease;
         }
-
-        .mobile-menu-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
+        .mobile-menu-overlay.active { opacity: 1; visibility: visible; }
         .mobile-menu {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 85%;
-            max-width: 320px;
-            height: 100vh;
-            background: #0f172a;
-            z-index: 9999;
+            position: fixed; top: 0; right: 0; width: 85%; max-width: 320px;
+            height: 100vh; background: #0f172a; z-index: 9999;
             transform: translateX(100%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow-y: auto;
-            padding: 1.5rem;
+            overflow-y: auto; padding: 1.5rem;
             box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
         }
-
-        html.light .mobile-menu {
-            background: #ffffff;
-            border-left: 1px solid #e2e8f0;
-        }
-
-        .mobile-menu.active {
-            transform: translateX(0);
-        }
+        html.light .mobile-menu { background: #ffffff; border-left: 1px solid #e2e8f0; }
+        .mobile-menu.active { transform: translateX(0); }
+        .mobile-menu a, .mobile-menu span, .mobile-menu div:not(#closeMobileMenu) { color: #f8fafc; }
+        html.light .mobile-menu a, html.light .mobile-menu span { color: #0f172a; }
 
         #closeMobileMenu {
-            position: relative;
-            z-index: 10000;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.1);
-            transition: all 0.2s ease;
+            position: relative; z-index: 10000; cursor: pointer;
+            width: 40px; height: 40px; display: flex; align-items: center;
+            justify-content: center; border-radius: 999px;
+            background: rgba(255, 255, 255, 0.1); transition: all 0.2s ease; color: #f8fafc;
         }
-
-        #closeMobileMenu:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        #closeMobileMenu:active {
-            transform: scale(0.95);
-        }
-
+        #closeMobileMenu:hover { background: rgba(255, 255, 255, 0.2); }
         #mobileMenuBtn {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.1);
-            transition: all 0.2s ease;
+            width: 40px; height: 40px; display: flex; align-items: center;
+            justify-content: center; border-radius: 999px;
+            background: rgba(255, 255, 255, 0.1); transition: all 0.2s ease; color: #f8fafc;
         }
+        html.light #mobileMenuBtn { background: rgba(0,0,0,0.05); color: #0f172a; }
+        #mobileMenuBtn:hover { background: rgba(255, 255, 255, 0.2); }
 
-        #mobileMenuBtn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
+        .hero-title { font-size: 2rem; line-height: 1.2; }
+        @media (min-width: 640px) { .hero-title { font-size: 3rem; } }
+        @media (min-width: 768px) { .hero-title { font-size: 4rem; } }
+        @media (min-width: 1024px) { .hero-title { font-size: 5rem; } }
 
-        #mobileMenuBtn:active {
-            transform: scale(0.95);
-        }
-
-        /* Hero Section */
-        .hero-title {
-            font-size: 2rem;
-            line-height: 1.2;
-        }
-
-        @media (min-width: 640px) {
-            .hero-title {
-                font-size: 3rem;
-            }
-        }
-
-        @media (min-width: 768px) {
-            .hero-title {
-                font-size: 4rem;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .hero-title {
-                font-size: 5rem;
-            }
-        }
-
-        /* Gradient Text */
         .gradient-text {
-            background: linear-gradient(135deg, #a78bfa 0%, #22d3ee 50%, #818cf8 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 200% auto;
-            animation: gradientMove 5s linear infinite;
+            background: linear-gradient(135deg, #a78bfa 0%, #22d3ee 40%, #818cf8 70%, #a78bfa 100%);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-size: 250% auto; animation: gradientMove 4s linear infinite;
         }
 
-        @keyframes gradientMove {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            100% {
-                background-position: 200% 50%;
-            }
+        .section-tag {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.35rem 1rem; border-radius: 9999px;
+            border: 1px solid rgba(139, 92, 246, 0.35);
+            background: rgba(139, 92, 246, 0.1);
+            font-size: 0.72rem; font-weight: 700;
+            letter-spacing: 0.15em; text-transform: uppercase; color: #a78bfa;
+            transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+            box-shadow: 0 0 20px rgba(139,92,246,0.1);
         }
+        .section-tag:hover { background: rgba(139,92,246,0.2); box-shadow: 0 0 30px rgba(139,92,246,0.25); transform: translateY(-2px); }
+        html.light .section-tag { color: #7c3aed; background: rgba(124, 58, 237, 0.08); border-color: rgba(124, 58, 237, 0.3); }
 
-        /* Light Mode Fixes */
-        html.light h1,
-        html.light h2,
-        html.light h3,
-        html.light h4,
-        html.light h5 {
-            color: #0f172a !important;
-        }
-
-        html.light p,
-        html.light span,
-        html.light li,
-        html.light a:not(.btn-primary):not(.navbar-cta):not(.dropdown-item) {
-            color: #334155 !important;
-        }
-
-        html.light .text-gray-300,
-        html.light .text-gray-400,
-        html.light .text-gray-500 {
-            color: #64748b !important;
-        }
+        html.light h1, html.light h2, html.light h3, html.light h4, html.light h5 { color: #0f172a; }
+        html.light .budget-card p, html.light .budget-card span:not(.gradient-text):not(.category-badge):not(.navbar-cta *),
+        html.light .budget-card label { color: #334155; }
+        html.light .text-gray-300, html.light .text-gray-400, html.light .text-gray-500 { color: #64748b; }
 
         /* =============================================
-           FIX 2: Footer - selalu dark background, teks selalu putih
+           FOOTER - SELALU PUTIH DI MODE APAPUN
            ============================================= */
         footer {
             background-color: #020617 !important;
         }
-
+        footer,
         footer *,
-        footer h4,
-        footer p,
-        footer a,
-        footer span,
-        footer li,
-        footer div {
-            color: #ffffff !important;
-        }
-
-        html.light footer {
-            background-color: #020617 !important;
-        }
-
-        html.light footer *,
-        html.light footer h4,
-        html.light footer p,
-        html.light footer a,
-        html.light footer span,
-        html.light footer li,
-        html.light footer div {
+        html.light footer,
+        html.light footer * {
             color: #ffffff !important;
             -webkit-text-fill-color: #ffffff !important;
         }
-
-        html.light footer .opacity-50,
-        html.light footer .opacity-60,
-        html.light footer .opacity-40 {
-            color: #ffffff !important;
-            -webkit-text-fill-color: #ffffff !important;
+        footer a:hover,
+        html.light footer a:hover {
+            color: #a78bfa !important;
+            -webkit-text-fill-color: #a78bfa !important;
+        }
+        /* Copyright text sedikit redup */
+        footer .border-t p,
+        html.light footer .border-t p {
+            color: #94a3b8 !important;
+            -webkit-text-fill-color: #94a3b8 !important;
+        }
+        /* Deskripsi perusahaan sedikit redup */
+        footer p.opacity-50,
+        html.light footer p.opacity-50 {
+            color: #cbd5e1 !important;
+            -webkit-text-fill-color: #cbd5e1 !important;
+            opacity: 1 !important;
+        }
+        footer ul.opacity-60 li a,
+        html.light footer ul.opacity-60 li a {
+            color: #cbd5e1 !important;
+            -webkit-text-fill-color: #cbd5e1 !important;
+            opacity: 1 !important;
         }
 
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
+        svg[data-lucide] { display: inline-block; vertical-align: middle; }
+        html.dark svg[data-lucide] { color: inherit; }
 
-        ::-webkit-scrollbar-track {
-            background: #0f172a;
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        html.light ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+        button, a { -webkit-tap-highlight-color: transparent; }
 
-        html.light ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #4b5563;
-        }
-
-        /* Touch-friendly buttons */
-        button,
-        a {
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* Smooth transitions */
-        .transition-all {
-            transition: all 0.3s ease;
-        }
-
-        /* Section tag */
-        .section-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.35rem 1rem;
-            border-radius: 9999px;
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            background: rgba(139, 92, 246, 0.08);
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: #a78bfa;
-        }
-
-        html.light .section-tag {
-            color: #7c3aed;
-            background: rgba(124, 58, 237, 0.08);
-            border-color: rgba(124, 58, 237, 0.3);
-        }
-
-        /* Print Styles */
         @media print {
-            @page {
-                size: A4;
-                margin: 1.5cm;
-            }
-
-            body {
-                background: white !important;
-                color: black !important;
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-
-            .no-print,
-            .navbar,
-            footer,
-            #floating-clock,
-            .loader-wrapper,
-            .mobile-menu,
-            .mobile-menu-overlay,
-            header,
-            section:not(#printReport),
-            .btn-primary,
-            .btn-outline,
-            .budget-card:not(.print-report-card) {
-                display: none !important;
-            }
-
-            #printReport {
-                display: block !important;
-                padding: 0;
-            }
-
-            .print-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-                margin-bottom: 30px;
-                padding-bottom: 20px;
-                border-bottom: 2px solid #8b5cf6;
-            }
-
-            .print-logo-section {
-                display: flex;
-                align-items: center;
-                gap: 15px;
-            }
-
-            .print-logo-section img {
-                width: 50px;
-                height: 50px;
-                border-radius: 10px;
-            }
-
-            .print-title h1 {
-                font-size: 22px;
-                font-weight: 900;
-                margin: 0;
-                color: #0f172a;
-            }
-
-            .print-meta {
-                text-align: right;
-                font-size: 10px;
-                color: #475569;
-            }
-
-            .summary-grid {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 15px;
-                margin-bottom: 30px;
-            }
-
-            .summary-item {
-                background: #f8fafc;
-                padding: 15px;
-                border-radius: 12px;
-                border: 1px solid #e2e8f0;
-            }
-
-            .summary-item-label {
-                font-size: 10px;
-                text-transform: uppercase;
-                letter-spacing: 0.05em;
-                color: #64748b;
-                margin-bottom: 5px;
-            }
-
-            .summary-item-value {
-                font-size: 18px;
-                font-weight: 700;
-                color: #0f172a;
-            }
-
-            .chart-section {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                margin-bottom: 30px;
-                page-break-inside: avoid;
-            }
-
-            .chart-section h2 {
-                font-size: 16px;
-                font-weight: 700;
-                margin-bottom: 15px;
-            }
-
-            .chart-image-container {
-                width: 300px;
-                height: 300px;
-            }
-
-            .details-section {
-                margin-top: 30px;
-            }
-
-            .details-title {
-                font-size: 18px;
-                font-weight: 700;
-                margin-bottom: 15px;
-                padding-bottom: 8px;
-                border-bottom: 2px solid #8b5cf6;
-            }
-
-            .details-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 20px;
-            }
-
-            .details-card {
-                background: white;
-                border: 1px solid #e2e8f0;
-                border-radius: 12px;
-                padding: 15px;
-                page-break-inside: avoid;
-            }
-
-            .details-card h3 {
-                font-size: 14px;
-                font-weight: 700;
-                margin-bottom: 10px;
-            }
-
-            .details-list {
-                list-style: none;
-                padding: 0;
-            }
-
-            .details-list-item {
-                display: flex;
-                justify-content: space-between;
-                font-size: 12px;
-                padding: 6px 0;
-                border-bottom: 1px solid #f1f5f9;
-            }
-
-            .print-footer {
-                margin-top: 40px;
-                padding-top: 15px;
-                border-top: 1px dashed #cbd5e1;
-                text-align: center;
-                font-size: 9px;
-                color: #94a3b8;
-            }
+            @page { size: A4; margin: 1.5cm; }
+            body { background: white !important; color: black !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .no-print, .navbar, footer, #floating-clock, .bg-orb,
+            .mobile-menu, .mobile-menu-overlay, header,
+            section:not(#printReport), .btn-primary, .btn-outline,
+            .budget-card:not(.print-report-card) { display: none !important; }
+            #printReport { display: block !important; padding: 0; }
+            .print-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 2px solid #8b5cf6; }
+            .summary-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; }
+            .summary-item { background: #f8fafc; padding: 15px; border-radius: 12px; border: 1px solid #e2e8f0; }
+            .details-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+            .details-card { background: white; border: 1px solid #e2e8f0; border-radius: 12px; padding: 15px; page-break-inside: avoid; }
+            .details-list-item { display: flex; justify-content: space-between; font-size: 12px; padding: 6px 0; border-bottom: 1px solid #f1f5f9; }
         }
 
-        #printReport {
-            display: none;
+        #printReport { display: none; }
+
+        .icon-wrapper { display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+
+        #floating-clock {
+            position: fixed;
+            bottom: 2rem; right: 2rem;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.1);
+            min-width: 160px; z-index: 9990;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.37);
+            transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+            cursor: default; user-select: none;
+            font-family: 'Inter', sans-serif;
         }
+        #floating-clock:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(139,92,246,0.5);
+            box-shadow: 0 12px 40px rgba(139,92,246,0.2);
+        }
+        html.light #floating-clock { background: rgba(15,23,42,0.05); border: 1px solid rgba(15,23,42,0.1); box-shadow: 0 8px 32px rgba(15,23,42,0.1); }
+        html.light #floating-clock:hover { background: rgba(15,23,42,0.08); border-color: rgba(139,92,246,0.3); }
+        #floating-clock > .clock-time {
+            font-size: 1.5rem; font-weight: 800; line-height: 1;
+            background: linear-gradient(135deg, #a78bfa, #22d3ee);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; color: transparent; display: block;
+        }
+        #floating-clock > .clock-date {
+            font-size: 0.7rem; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            opacity: 0.8; margin-top: 4px;
+            background: linear-gradient(135deg, #f8fafc, #94a3b8);
+            -webkit-background-clip: text; background-clip: text;
+            -webkit-text-fill-color: transparent; display: block;
+        }
+        html.light #floating-clock > .clock-date {
+            background: linear-gradient(135deg, #0f172a, #475569);
+            -webkit-background-clip: text; background-clip: text;
+        }
+        @media (max-width: 768px) {
+            #floating-clock { bottom: 1.5rem; right: 1.5rem; padding: 0.6rem 1.25rem; min-width: 140px; }
+            #floating-clock > .clock-time { font-size: 1.25rem; }
+            #floating-clock > .clock-date { font-size: 0.6rem; }
+        }
+        @media print { #floating-clock { display: none !important; } }
     </style>
 </head>
 
 <body>
-    <!-- Loading Screen -->
-    <div class="loader-wrapper" id="loader">
-        <img src="assets/img/image.jpeg" alt="Monetra Logo" class="loader-logo-img">
-        <div class="loader-text">MONETRA</div>
-        <div class="loader-subtext">Simulasi Budget</div>
-    </div>
+    <div class="bg-orb bg-orb-1"></div>
+    <div class="bg-orb bg-orb-2"></div>
+    <div class="bg-orb bg-orb-3"></div>
+    <div class="bg-orb bg-orb-4"></div>
 
     <!-- Navbar -->
-    <nav class="navbar fixed w-full top-0 z-50 px-6">
+    <nav class="navbar anim-navbar fixed w-full top-0 z-50 px-6">
         <div class="navbar-container max-w-7xl mx-auto flex items-center justify-between relative">
             <div class="flex items-center space-x-3 cursor-pointer group" onclick="window.location.href='index.html'">
-                <div
-                    class="relative w-10 h-10 overflow-hidden rounded-xl border border-white/10 group-hover:border-violet-500/50 transition-colors">
-                    <img src="assets/img/image.jpeg" alt="Monetra Logo" class="w-full h-full object-cover">
+                <div class="relative w-10 h-10 overflow-hidden rounded-xl border border-white/10 group-hover:border-violet-500/50 transition-colors">
+                    <img src="assets/img/image.jpeg" alt="Monetra Logo" class="w-full h-full object-cover"
+                         onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'color:#a78bfa;font-weight:900;font-size:1.2rem\'>M</span>'">
                 </div>
-                <span
-                    class="text-xl font-bold tracking-tight group-hover:text-violet-400 transition-colors">Monetra</span>
+                <span class="text-xl font-bold tracking-tight group-hover:text-violet-400 transition-colors">Monetra</span>
             </div>
 
-            <!-- Desktop Menu -->
+            <!-- Desktop Nav -->
             <div class="hidden md:flex items-center space-x-8">
                 <a href="index.html" class="text-sm font-medium hover:text-violet-400 transition-colors">Home</a>
                 <a href="about.html" class="text-sm font-medium hover:text-violet-400 transition-colors">About</a>
-
-                <!-- Features Dropdown -->
                 <div class="dropdown">
                     <button class="text-sm font-medium hover:text-violet-400 transition-colors flex items-center gap-1">
                         Features
+                        <!-- FIX 9: Fallback icon jika lucide gagal -->
                         <i data-lucide="chevron-down" class="w-4 h-4"></i>
                     </button>
                     <div class="dropdown-menu">
@@ -903,71 +652,54 @@
                         </a>
                     </div>
                 </div>
-
-
                 <a href="contact.html" class="text-sm font-medium hover:text-violet-400 transition-colors">Contact</a>
-
-                <button class="p-2.5 rounded-full bg-white/5 hover:bg-white/10 transition" id="themeToggle">
-                    <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-yellow-300"></i>
-                    <i data-lucide="moon" class="w-5 h-5 block dark:hidden text-slate-700"></i>
+                <button class="p-2.5 rounded-full bg-white/5 hover:bg-white/10 transition" id="themeToggle" title="Toggle theme">
+                    <span id="themeIcon" style="display:flex;align-items:center;justify-content:center;"></span>
                 </button>
-
-                <!-- FIX: Ukuran tombol diperkecil & teks selalu putih -->
                 <a href="personality-test.html" class="navbar-cta rounded-full font-bold flex items-center gap-2">
                     <span>Mulai Sekarang</span>
                 </a>
             </div>
-            <div class="md:hidden flex items-center space-x-4">
-                <button class="p-2" id="themeToggleMobile">
-                    <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
-                    <i data-lucide="moon" class="w-5 h-5 block dark:hidden text-slate-700"></i>
+
+            <!-- Mobile -->
+            <div class="md:hidden flex items-center space-x-3">
+                <button class="p-2 rounded-full bg-white/5" id="themeToggleMobile" title="Toggle theme">
+                    <span id="themeIconMobile" style="display:flex;align-items:center;justify-content:center;"></span>
                 </button>
-                <button id="mobileMenuBtn" class="p-2">
+                <button id="mobileMenuBtn" aria-label="Open menu">
                     <i data-lucide="menu" class="w-6 h-6"></i>
                 </button>
             </div>
         </div>
     </nav>
 
-    <!-- Mobile Menu Overlay -->
     <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
-
-    <!-- Mobile Menu -->
     <div class="mobile-menu" id="mobileMenu">
         <div class="flex justify-end mb-8">
-            <button id="closeMobileMenu">
+            <button id="closeMobileMenu" aria-label="Close menu">
                 <i data-lucide="x" class="w-6 h-6"></i>
             </button>
         </div>
         <div class="flex flex-col space-y-4">
             <a href="index.html" class="text-lg font-medium hover:text-violet-400 transition">Home</a>
             <a href="about.html" class="text-lg font-medium hover:text-violet-400 transition">About</a>
-
             <div class="border-t border-white/10 pt-4">
                 <div class="text-xs uppercase tracking-wider opacity-50 mb-3">Features</div>
                 <a href="personality-test.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition">
-                    <i data-lucide="user-circle" class="w-4 h-4"></i>
-                    <span>Tes Kepribadian</span>
+                    <i data-lucide="user-circle" class="w-4 h-4"></i><span>Tes Kepribadian</span>
                 </a>
                 <a href="budget-simulator.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition">
-                    <i data-lucide="wallet" class="w-4 h-4"></i>
-                    <span>Simulasi Budget</span>
+                    <i data-lucide="wallet" class="w-4 h-4"></i><span>Simulasi Budget</span>
                 </a>
                 <a href="goal-tracker.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition">
-                    <i data-lucide="target" class="w-4 h-4"></i>
-                    <span>Target Tabungan</span>
+                    <i data-lucide="target" class="w-4 h-4"></i><span>Target Tabungan</span>
                 </a>
                 <a href="challenge.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition">
-                    <i data-lucide="trophy" class="w-4 h-4"></i>
-                    <span>Saving Challenge</span>
+                    <i data-lucide="trophy" class="w-4 h-4"></i><span>Saving Challenge</span>
                 </a>
             </div>
-
             <a href="contact.html" class="text-lg font-medium hover:text-violet-400 transition">Contact</a>
-
-            <a href="personality-test.html" class="navbar-cta rounded-full text-center mt-4">
-                Mulai Sekarang
-            </a>
+            <a href="personality-test.html" class="navbar-cta rounded-full text-center mt-4">Mulai Sekarang</a>
         </div>
     </div>
 
@@ -976,16 +708,14 @@
         <div class="absolute inset-0 bg-gradient-to-b from-cyan-900/20 via-transparent to-transparent"></div>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
             <div class="text-center">
-                <div class="inline-block mb-4 sm:mb-6">
-                    <span class="section-tag">
-                        Kalkulator Anggaran
-                    </span>
+                <div class="inline-block mb-4 sm:mb-6 anim-hero-tag">
+                    <span class="section-tag">Kalkulator Anggaran</span>
                 </div>
-                <h1 class="hero-title font-black mb-4 sm:mb-6">Simulasi <span class="gradient-text">Budget
-                        Bulanan</span></h1>
-                <p class="text-sm sm:text-base md:text-lg lg:text-xl opacity-70 max-w-2xl mx-auto leading-relaxed px-4">
-                    Atur pemasukan dan pengeluaranmu dengan mudah. Dapatkan gambaran jelas tentang kesehatan keuangan
-                    bulanan.
+                <h1 class="hero-title font-black mb-4 sm:mb-6 anim-hero-title">
+                    Simulasi <span class="gradient-text">Budget Bulanan</span>
+                </h1>
+                <p class="text-sm sm:text-base md:text-lg lg:text-xl opacity-70 max-w-2xl mx-auto leading-relaxed px-4 anim-hero-sub">
+                    Atur pemasukan dan pengeluaranmu dengan mudah. Dapatkan gambaran jelas tentang kesehatan keuangan bulanan.
                 </p>
             </div>
         </div>
@@ -994,216 +724,138 @@
     <!-- Budget Simulator Section -->
     <section class="pb-20 sm:pb-24 md:pb-28 lg:pb-32">
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <!-- Input Form -->
             <div class="grid lg:grid-cols-2 gap-6 sm:gap-8 mb-8 sm:mb-10 md:mb-12">
-                <!-- Income Section -->
-                <div class="budget-card p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl">
+                <!-- Income -->
+                <div class="budget-card shimmer-card reveal-card p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl">
                     <div class="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-                        <div
-                            class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl sm:rounded-2xl flex items-center justify-center">
-                            <i data-lucide="trending-up" class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white"></i>
+                        <div class="icon-wrapper w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl sm:rounded-2xl">
+                            <i data-lucide="trending-up" class="w-5 h-5 sm:w-6 sm:h-6 text-white"></i>
                         </div>
                         <div>
                             <h2 class="text-lg sm:text-xl md:text-2xl font-bold">Pemasukan</h2>
                             <p class="text-xs sm:text-sm opacity-60">Masukkan pendapatan bulananmu</p>
                         </div>
                     </div>
-
                     <div class="space-y-4 sm:space-y-5 md:space-y-6">
                         <div>
-                            <label class="block text-xs sm:text-sm font-medium mb-1 sm:mb-2 opacity-70">Pendapatan
-                                Utama</label>
+                            <label class="block text-xs sm:text-sm font-medium mb-1 sm:mb-2 opacity-70">Pendapatan Utama</label>
                             <div class="relative">
-                                <span
-                                    class="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-xs sm:text-sm opacity-60">Rp</span>
+                                <span class="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-xs sm:text-sm opacity-60 pointer-events-none">Rp</span>
                                 <input type="text" id="mainIncome" value="0" class="number-input pl-10 sm:pl-14">
                             </div>
                         </div>
-
                         <div>
-                            <label class="block text-xs sm:text-sm font-medium mb-1 sm:mb-2 opacity-70">Pendapatan
-                                Tambahan</label>
+                            <label class="block text-xs sm:text-sm font-medium mb-1 sm:mb-2 opacity-70">Pendapatan Tambahan</label>
                             <div class="relative">
-                                <span
-                                    class="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-xs sm:text-sm opacity-60">Rp</span>
+                                <span class="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-xs sm:text-sm opacity-60 pointer-events-none">Rp</span>
                                 <input type="text" id="additionalIncome" value="0" class="number-input pl-10 sm:pl-14">
                             </div>
                         </div>
-
                         <div>
-                            <label class="block text-xs sm:text-sm font-medium mb-1 sm:mb-2 opacity-70">Pendapatan
-                                Pasif</label>
+                            <label class="block text-xs sm:text-sm font-medium mb-1 sm:mb-2 opacity-70">Pendapatan Pasif</label>
                             <div class="relative">
-                                <span
-                                    class="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-xs sm:text-sm opacity-60">Rp</span>
+                                <span class="absolute left-3 sm:left-4 top-1/2 -translate-y-1/2 text-xs sm:text-sm opacity-60 pointer-events-none">Rp</span>
                                 <input type="text" id="passiveIncome" value="0" class="number-input pl-10 sm:pl-14">
                             </div>
                         </div>
-
                         <div class="summary-card mt-4 sm:mt-5 md:mt-6">
                             <div class="flex justify-between items-center">
                                 <span class="text-xs sm:text-sm font-semibold">Total Pemasukan:</span>
-                                <span class="text-lg sm:text-xl md:text-2xl font-bold text-green-400"
-                                    id="totalIncome">Rp 0</span>
+                                <span class="text-lg sm:text-xl md:text-2xl font-bold text-green-400" id="totalIncome">Rp 0</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Expenses Section -->
-                <div class="budget-card p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl">
+                <!-- Expenses -->
+                <div class="budget-card shimmer-card reveal-card p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl" data-delay="120">
                     <div class="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-                        <div
-                            class="w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-gradient-to-br from-red-500 to-orange-600 rounded-xl sm:rounded-2xl flex items-center justify-center">
-                            <i data-lucide="trending-down" class="w-5 h-5 sm:w-6 sm:h-6 md:w-7 md:h-7 text-white"></i>
+                        <div class="icon-wrapper w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 bg-gradient-to-br from-red-500 to-orange-600 rounded-xl sm:rounded-2xl">
+                            <i data-lucide="trending-down" class="w-5 h-5 sm:w-6 sm:h-6 text-white"></i>
                         </div>
                         <div>
                             <h2 class="text-lg sm:text-xl md:text-2xl font-bold">Pengeluaran</h2>
                             <p class="text-xs sm:text-sm opacity-60">Atur pengeluaran rutin bulanan</p>
                         </div>
                     </div>
-
                     <div class="space-y-4 sm:space-y-5 md:space-y-6">
-                        <!-- Primary Needs -->
                         <div>
                             <div class="flex justify-between mb-1 sm:mb-2">
                                 <label class="text-xs sm:text-sm font-medium opacity-70">Kebutuhan Pokok</label>
                                 <span class="text-xs sm:text-sm font-bold text-cyan-400" id="needsValue">Rp 0</span>
                             </div>
-                            <input type="range" id="needsSlider" class="mb-1 sm:mb-2" min="0" max="10000000" value="0"
-                                step="100000">
-                            <div class="flex justify-between text-xxs sm:text-xs opacity-50">
-                                <span>Rp 0</span>
-                                <span>Rp 10 Jt</span>
-                            </div>
+                            <input type="range" id="needsSlider" class="mb-1 sm:mb-2" min="0" max="10000000" value="0" step="100000">
+                            <div class="flex justify-between text-xs opacity-50"><span>Rp 0</span><span>Rp 10 Jt</span></div>
                             <div class="flex flex-wrap gap-1 sm:gap-2 mt-2 sm:mt-3">
-                                <span class="category-badge">
-                                    <i data-lucide="home" class="w-3 h-3"></i>
-                                    Cicilan
-                                </span>
-                                <span class="category-badge">
-                                    <i data-lucide="shopping-cart" class="w-3 h-3"></i>
-                                    Sembako
-                                </span>
-                                <span class="category-badge">
-                                    <i data-lucide="zap" class="w-3 h-3"></i>
-                                    Listrik
-                                </span>
+                                <span class="category-badge"><i data-lucide="home" class="w-3 h-3"></i>Cicilan</span>
+                                <span class="category-badge"><i data-lucide="shopping-cart" class="w-3 h-3"></i>Sembako</span>
+                                <span class="category-badge"><i data-lucide="zap" class="w-3 h-3"></i>Listrik</span>
                             </div>
                         </div>
-
-                        <!-- Transportation -->
                         <div>
                             <div class="flex justify-between mb-1 sm:mb-2">
                                 <label class="text-xs sm:text-sm font-medium opacity-70">Transportasi</label>
                                 <span class="text-xs sm:text-sm font-bold text-cyan-400" id="transportValue">Rp 0</span>
                             </div>
-                            <input type="range" id="transportSlider" class="mb-1 sm:mb-2" min="0" max="5000000"
-                                value="0" step="50000">
-                            <div class="flex justify-between text-xxs sm:text-xs opacity-50">
-                                <span>Rp 0</span>
-                                <span>Rp 5 Jt</span>
-                            </div>
+                            <input type="range" id="transportSlider" class="mb-1 sm:mb-2" min="0" max="5000000" value="0" step="50000">
+                            <div class="flex justify-between text-xs opacity-50"><span>Rp 0</span><span>Rp 5 Jt</span></div>
                             <div class="flex flex-wrap gap-1 sm:gap-2 mt-2 sm:mt-3">
-                                <span class="category-badge">
-                                    <i data-lucide="car" class="w-3 h-3"></i>
-                                    Bensin
-                                </span>
-                                <span class="category-badge">
-                                    <i data-lucide="bus" class="w-3 h-3"></i>
-                                    Transport Umum
-                                </span>
+                                <span class="category-badge"><i data-lucide="car" class="w-3 h-3"></i>Bensin</span>
+                                <span class="category-badge"><i data-lucide="bus" class="w-3 h-3"></i>Transport Umum</span>
                             </div>
                         </div>
-
-                        <!-- Entertainment -->
                         <div>
                             <div class="flex justify-between mb-1 sm:mb-2">
                                 <label class="text-xs sm:text-sm font-medium opacity-70">Hiburan & Lifestyle</label>
-                                <span class="text-xs sm:text-sm font-bold text-cyan-400" id="entertainmentValue">Rp
-                                    0</span>
+                                <span class="text-xs sm:text-sm font-bold text-cyan-400" id="entertainmentValue">Rp 0</span>
                             </div>
-                            <input type="range" id="entertainmentSlider" class="mb-1 sm:mb-2" min="0" max="3000000"
-                                value="0" step="50000">
-                            <div class="flex justify-between text-xxs sm:text-xs opacity-50">
-                                <span>Rp 0</span>
-                                <span>Rp 3 Jt</span>
-                            </div>
+                            <input type="range" id="entertainmentSlider" class="mb-1 sm:mb-2" min="0" max="3000000" value="0" step="50000">
+                            <div class="flex justify-between text-xs opacity-50"><span>Rp 0</span><span>Rp 3 Jt</span></div>
                             <div class="flex flex-wrap gap-1 sm:gap-2 mt-2 sm:mt-3">
-                                <span class="category-badge">
-                                    <i data-lucide="film" class="w-3 h-3"></i>
-                                    Nonton
-                                </span>
-                                <span class="category-badge">
-                                    <i data-lucide="coffee" class="w-3 h-3"></i>
-                                    Nongkrong
-                                </span>
+                                <span class="category-badge"><i data-lucide="film" class="w-3 h-3"></i>Nonton</span>
+                                <span class="category-badge"><i data-lucide="coffee" class="w-3 h-3"></i>Nongkrong</span>
                             </div>
                         </div>
-
-                        <!-- Savings & Investment -->
                         <div>
                             <div class="flex justify-between mb-1 sm:mb-2">
                                 <label class="text-xs sm:text-sm font-medium opacity-70">Tabungan & Investasi</label>
                                 <span class="text-xs sm:text-sm font-bold text-cyan-400" id="savingsValue">Rp 0</span>
                             </div>
-                            <input type="range" id="savingsSlider" class="mb-1 sm:mb-2" min="0" max="5000000" value="0"
-                                step="50000">
-                            <div class="flex justify-between text-xxs sm:text-xs opacity-50">
-                                <span>Rp 0</span>
-                                <span>Rp 5 Jt</span>
-                            </div>
+                            <input type="range" id="savingsSlider" class="mb-1 sm:mb-2" min="0" max="5000000" value="0" step="50000">
+                            <div class="flex justify-between text-xs opacity-50"><span>Rp 0</span><span>Rp 5 Jt</span></div>
                             <div class="flex flex-wrap gap-1 sm:gap-2 mt-2 sm:mt-3">
-                                <span class="category-badge">
-                                    <i data-lucide="piggy-bank" class="w-3 h-3"></i>
-                                    Tabungan
-                                </span>
-                                <span class="category-badge">
-                                    <i data-lucide="trending-up" class="w-3 h-3"></i>
-                                    Investasi
-                                </span>
+                                <span class="category-badge"><i data-lucide="piggy-bank" class="w-3 h-3"></i>Tabungan</span>
+                                <span class="category-badge"><i data-lucide="trending-up" class="w-3 h-3"></i>Investasi</span>
                             </div>
                         </div>
-
-                        <!-- Others -->
                         <div>
                             <div class="flex justify-between mb-1 sm:mb-2">
                                 <label class="text-xs sm:text-sm font-medium opacity-70">Lain-lain</label>
                                 <span class="text-xs sm:text-sm font-bold text-cyan-400" id="othersValue">Rp 0</span>
                             </div>
-                            <input type="range" id="othersSlider" class="mb-1 sm:mb-2" min="0" max="2000000" value="0"
-                                step="50000">
-                            <div class="flex justify-between text-xxs sm:text-xs opacity-50">
-                                <span>Rp 0</span>
-                                <span>Rp 2 Jt</span>
-                            </div>
+                            <input type="range" id="othersSlider" class="mb-1 sm:mb-2" min="0" max="2000000" value="0" step="50000">
+                            <div class="flex justify-between text-xs opacity-50"><span>Rp 0</span><span>Rp 2 Jt</span></div>
                         </div>
-
                         <div class="summary-card mt-4 sm:mt-5 md:mt-6">
                             <div class="flex justify-between items-center">
                                 <span class="text-xs sm:text-sm font-semibold">Total Pengeluaran:</span>
-                                <span class="text-lg sm:text-xl md:text-2xl font-bold text-red-400"
-                                    id="totalExpenses">Rp 0</span>
+                                <span class="text-lg sm:text-xl md:text-2xl font-bold text-red-400" id="totalExpenses">Rp 0</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Summary & Visualization -->
+            <!-- Summary & Chart -->
             <div class="grid lg:grid-cols-3 gap-6 sm:gap-8">
-                <!-- Chart -->
-                <div class="lg:col-span-2 budget-card p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl">
+                <div class="lg:col-span-2 budget-card reveal-card p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl" data-delay="80">
                     <h3 class="text-base sm:text-lg md:text-xl font-bold mb-4 sm:mb-6">Visualisasi Anggaran</h3>
                     <div class="chart-container">
                         <canvas id="budgetChart"></canvas>
                     </div>
                 </div>
-
-                <!-- Summary -->
-                <div class="budget-card p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl">
+                <div class="budget-card reveal-card p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl" data-delay="160">
                     <h3 class="text-base sm:text-lg md:text-xl font-bold mb-4 sm:mb-6">Ringkasan Keuangan</h3>
-
                     <div class="space-y-4 sm:space-y-5 md:space-y-6">
                         <div>
                             <div class="flex justify-between mb-1 sm:mb-2">
@@ -1213,61 +865,34 @@
                             <div class="progress-bar h-2 sm:h-3">
                                 <div class="progress-fill" id="budgetPercentage" style="width: 0%"></div>
                             </div>
-                            <div class="flex justify-between mt-1 text-xxs sm:text-xs opacity-50">
-                                <span>0%</span>
-                                <span id="percentageText">0%</span>
-                                <span>100%</span>
+                            <div class="flex justify-between mt-1 text-xs opacity-50">
+                                <span>0%</span><span id="percentageText">0%</span><span>100%</span>
                             </div>
                         </div>
-
                         <div class="border-t border-white/10 pt-3 sm:pt-4">
-                            <div class="flex justify-between mb-2 sm:mb-3">
-                                <span class="text-xs sm:text-sm opacity-70">Kebutuhan Pokok</span>
-                                <span class="text-xs sm:text-sm font-bold" id="needsPercentage">0%</span>
-                            </div>
-                            <div class="flex justify-between mb-2 sm:mb-3">
-                                <span class="text-xs sm:text-sm opacity-70">Transportasi</span>
-                                <span class="text-xs sm:text-sm font-bold" id="transportPercentage">0%</span>
-                            </div>
-                            <div class="flex justify-between mb-2 sm:mb-3">
-                                <span class="text-xs sm:text-sm opacity-70">Hiburan</span>
-                                <span class="text-xs sm:text-sm font-bold" id="entertainmentPercentage">0%</span>
-                            </div>
-                            <div class="flex justify-between mb-2 sm:mb-3">
-                                <span class="text-xs sm:text-sm opacity-70">Tabungan</span>
-                                <span class="text-xs sm:text-sm font-bold" id="savingsPercentage">0%</span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span class="text-xs sm:text-sm opacity-70">Lain-lain</span>
-                                <span class="text-xs sm:text-sm font-bold" id="othersPercentage">0%</span>
-                            </div>
+                            <div class="flex justify-between mb-2 sm:mb-3"><span class="text-xs sm:text-sm opacity-70">Kebutuhan Pokok</span><span class="text-xs sm:text-sm font-bold" id="needsPercentage">0%</span></div>
+                            <div class="flex justify-between mb-2 sm:mb-3"><span class="text-xs sm:text-sm opacity-70">Transportasi</span><span class="text-xs sm:text-sm font-bold" id="transportPercentage">0%</span></div>
+                            <div class="flex justify-between mb-2 sm:mb-3"><span class="text-xs sm:text-sm opacity-70">Hiburan</span><span class="text-xs sm:text-sm font-bold" id="entertainmentPercentage">0%</span></div>
+                            <div class="flex justify-between mb-2 sm:mb-3"><span class="text-xs sm:text-sm opacity-70">Tabungan</span><span class="text-xs sm:text-sm font-bold" id="savingsPercentage">0%</span></div>
+                            <div class="flex justify-between"><span class="text-xs sm:text-sm opacity-70">Lain-lain</span><span class="text-xs sm:text-sm font-bold" id="othersPercentage">0%</span></div>
                         </div>
-
                         <div class="summary-card">
                             <div class="flex items-start gap-2 sm:gap-3">
-                                <div
-                                    class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-violet-500/20 flex items-center justify-center flex-shrink-0">
+                                <div class="icon-wrapper w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-violet-500/20 flex-shrink-0">
                                     <i data-lucide="info" class="w-4 h-4 sm:w-5 sm:h-5 text-violet-400"></i>
                                 </div>
                                 <div>
                                     <p class="text-xs sm:text-sm font-medium mb-1">Tips Budgeting</p>
-                                    <p class="text-xxs sm:text-xs opacity-60" id="budgetTip">
-                                        Mulai dengan mengisi pemasukan dan pengeluaran bulananmu.
-                                    </p>
+                                    <p class="text-xs opacity-60" id="budgetTip">Mulai dengan mengisi pemasukan dan pengeluaran bulananmu.</p>
                                 </div>
                             </div>
                         </div>
-
                         <div class="grid grid-cols-2 gap-3 mt-4">
-                            <button onclick="downloadResult()"
-                                class="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-violet-500/10 border border-violet-500/20 text-violet-400 text-xs font-bold hover:bg-violet-500 hover:text-white transition">
-                                <i data-lucide="download" class="w-4 h-4"></i>
-                                Download PDF
+                            <button onclick="downloadResult()" class="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-violet-500/10 border border-violet-500/20 text-violet-400 text-xs font-bold hover:bg-violet-500 hover:text-white transition">
+                                <i data-lucide="download" class="w-4 h-4"></i>Download PDF
                             </button>
-                            <button onclick="printResult()"
-                                class="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white/5 border border-white/10 text-xs font-bold hover:bg-white/10 transition">
-                                <i data-lucide="printer" class="w-4 h-4"></i>
-                                Cetak Laporan
+                            <button onclick="printResult()" class="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-white/5 border border-white/10 text-xs font-bold hover:bg-white/10 transition">
+                                <i data-lucide="printer" class="w-4 h-4"></i>Cetak
                             </button>
                         </div>
                     </div>
@@ -1279,335 +904,266 @@
     <!-- Tips Section -->
     <section class="pb-20 sm:pb-24 md:pb-28 lg:pb-32">
         <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="text-center mb-10 sm:mb-12 md:mb-16">
-                <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">Tips Mengatur Budget
-                </h2>
-                <div
-                    class="w-16 sm:w-20 md:w-24 h-1 sm:h-1.5 bg-gradient-to-r from-violet-500 to-cyan-500 mx-auto rounded-full mb-4 sm:mb-6">
-                </div>
-                <p class="text-sm sm:text-base md:text-lg opacity-70 max-w-2xl mx-auto px-4">
-                    Panduan sederhana untuk mengelola keuangan dengan lebih baik
-                </p>
+            <div class="text-center mb-10 sm:mb-12 md:mb-16 reveal">
+                <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-4 sm:mb-6">Tips Mengatur Budget</h2>
+                <div class="w-16 sm:w-20 md:w-24 h-1 sm:h-1.5 bg-gradient-to-r from-violet-500 to-cyan-500 mx-auto rounded-full mb-4 sm:mb-6"></div>
+                <p class="text-sm sm:text-base md:text-lg opacity-70 max-w-2xl mx-auto px-4">Panduan sederhana untuk mengelola keuangan dengan lebih baik</p>
             </div>
-
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 md:gap-8">
-                <div class="budget-card p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl">
-                    <div
-                        class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-violet-600 to-fuchsia-600 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6">
-                        <i data-lucide="percent" class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white"></i>
+                <div class="budget-card shimmer-card reveal-scale p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl">
+                    <div class="icon-wrapper w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-violet-600 to-fuchsia-600 rounded-xl sm:rounded-2xl mb-4 sm:mb-6">
+                        <i data-lucide="percent" class="w-6 h-6 sm:w-7 sm:h-7 text-white"></i>
                     </div>
                     <h3 class="text-base sm:text-lg md:text-xl font-bold mb-2 sm:mb-3">Metode 50/30/20</h3>
-                    <p class="text-xs sm:text-sm opacity-60 leading-relaxed">
-                        50% untuk kebutuhan, 30% untuk keinginan, dan 20% untuk tabungan & investasi.
-                    </p>
+                    <p class="text-xs sm:text-sm opacity-60 leading-relaxed">50% untuk kebutuhan, 30% untuk keinginan, dan 20% untuk tabungan & investasi.</p>
                 </div>
-
-                <div class="budget-card p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl">
-                    <div
-                        class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-cyan-600 to-blue-600 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6">
-                        <i data-lucide="alert-circle" class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white"></i>
+                <div class="budget-card shimmer-card reveal-scale p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl" data-delay="120">
+                    <div class="icon-wrapper w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-cyan-600 to-blue-600 rounded-xl sm:rounded-2xl mb-4 sm:mb-6">
+                        <i data-lucide="alert-circle" class="w-6 h-6 sm:w-7 sm:h-7 text-white"></i>
                     </div>
                     <h3 class="text-base sm:text-lg md:text-xl font-bold mb-2 sm:mb-3">Dana Darurat</h3>
-                    <p class="text-xs sm:text-sm opacity-60 leading-relaxed">
-                        Sisihkan dana darurat 3-6 bulan pengeluaran untuk antisipasi hal tak terduga.
-                    </p>
+                    <p class="text-xs sm:text-sm opacity-60 leading-relaxed">Sisihkan dana darurat 3-6 bulan pengeluaran untuk antisipasi hal tak terduga.</p>
                 </div>
-
-                <div class="budget-card p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl sm:col-span-2 lg:col-span-1">
-                    <div
-                        class="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-emerald-600 to-green-600 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6">
-                        <i data-lucide="trending-up" class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 text-white"></i>
+                <div class="budget-card shimmer-card reveal-scale p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl sm:col-span-2 lg:col-span-1" data-delay="240">
+                    <div class="icon-wrapper w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16 bg-gradient-to-br from-emerald-600 to-green-600 rounded-xl sm:rounded-2xl mb-4 sm:mb-6">
+                        <i data-lucide="trending-up" class="w-6 h-6 sm:w-7 sm:h-7 text-white"></i>
                     </div>
                     <h3 class="text-base sm:text-lg md:text-xl font-bold mb-2 sm:mb-3">Investasi Dini</h3>
-                    <p class="text-xs sm:text-sm opacity-60 leading-relaxed">
-                        Mulai investasi sedini mungkin untuk memaksimalkan keuntungan jangka panjang.
-                    </p>
+                    <p class="text-xs sm:text-sm opacity-60 leading-relaxed">Mulai investasi sedini mungkin untuk memaksimalkan keuntungan jangka panjang.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- FOOTER -->
+    <!-- Footer -->
     <footer class="bg-[#020617] pt-24 pb-12 border-t border-white/5">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid md:grid-cols-4 gap-12 mb-16">
                 <div>
                     <div class="flex items-center space-x-3 mb-6">
                         <div class="w-10 h-10 overflow-hidden rounded-xl border border-white/10">
-                            <img src="assets/img/image.jpeg" alt="Monetra Logo" class="w-full h-full object-cover">
+                            <img src="assets/img/image.jpeg" alt="Monetra Logo" class="w-full h-full object-cover"
+                                 onerror="this.style.display='none'">
                         </div>
-                        <span class="text-2xl font-bold">Monetra</span>
+                        <span class="text-2xl font-bold text-white">Monetra</span>
                     </div>
-                    <p class="opacity-50 text-sm leading-relaxed">Platform edukasi finansial interaktif yang membantu
-                        generasi muda Indonesia memahami, merencanakan, dan mengoptimalkan keuangan mereka secara lebih
-                        bijak.</p>
+                    <p class="opacity-50 text-sm leading-relaxed text-white">Platform edukasi finansial interaktif yang membantu generasi muda Indonesia memahami, merencanakan, dan mengoptimalkan keuangan mereka secara lebih bijak.</p>
                 </div>
                 <div>
-                    <h4 class="font-bold mb-6">Produk</h4>
+                    <h4 class="font-bold mb-6 text-white">Produk</h4>
                     <ul class="space-y-4 text-sm opacity-60">
-                        <li><a href="personality-test.html" class="hover:text-violet-400 transition">Tes Kepribadian</a>
-                        </li>
-                        <li><a href="budget-simulator.html" class="hover:text-violet-400 transition">Simulasi Budget</a>
-                        </li>
-                        <li><a href="goal-tracker.html" class="hover:text-violet-400 transition">Target Tabungan</a>
-                        </li>
-                        <li><a href="challenge.html" class="hover:text-violet-400 transition">Saving Challenge</a></li>
+                        <li><a href="personality-test.html" class="hover:text-violet-400 transition text-white">Tes Kepribadian</a></li>
+                        <li><a href="budget-simulator.html" class="hover:text-violet-400 transition text-white">Simulasi Budget</a></li>
+                        <li><a href="goal-tracker.html" class="hover:text-violet-400 transition text-white">Target Tabungan</a></li>
+                        <li><a href="challenge.html" class="hover:text-violet-400 transition text-white">Saving Challenge</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-bold mb-6">Perusahaan</h4>
+                    <h4 class="font-bold mb-6 text-white">Perusahaan</h4>
                     <ul class="space-y-4 text-sm opacity-60">
-                        <li><a href="about.html" class="hover:text-violet-400 transition">Tentang Kami</a></li>
-                        <li><a href="contact.html" class="hover:text-violet-400 transition">Hubungi Kami</a></li>
+                        <li><a href="about.html" class="hover:text-violet-400 transition text-white">Tentang Kami</a></li>
+                        <li><a href="contact.html" class="hover:text-violet-400 transition text-white">Hubungi Kami</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="font-bold mb-6">Ikuti Kami</h4>
+                    <h4 class="font-bold mb-6 text-white">Ikuti Kami</h4>
                     <div class="flex space-x-4">
-                        <a href="#"
-                            class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10">
+                        <a href="#" class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10 text-white">
                             <i data-lucide="twitter" class="w-5 h-5"></i>
                         </a>
-                        <a href="#"
-                            class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10">
+                        <a href="#" class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10 text-white">
                             <i data-lucide="instagram" class="w-5 h-5"></i>
                         </a>
-                        <a href="#"
-                            class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10">
+                        <a href="#" class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10 text-white">
                             <i data-lucide="linkedin" class="w-5 h-5"></i>
                         </a>
                     </div>
                 </div>
             </div>
             <div class="border-t border-white/5 pt-8 text-center opacity-40 text-sm">
-                <p>&copy; 2026 Monetra. All rights reserved.</p>
+                <p class="text-white">&copy; 2026 Monetra. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
+    <div id="printReport"></div>
+
     <script>
-        lucide.createIcons();
-
-        // Loading
-        window.addEventListener('load', function () {
-            setTimeout(() => document.getElementById('loader').classList.add('slide-up'), 3000);
-        });
-
-        // AOS
-        AOS.init({ duration: 900, once: true, offset: 60, easing: 'ease-out-cubic' });
-
-        // Theme Toggle
-        const themeToggle = document.getElementById('themeToggle');
-        const themeToggleMobile = document.getElementById('themeToggleMobile');
-        const html = document.documentElement;
-
-        function toggleTheme() {
-            html.classList.toggle('dark');
-            html.classList.toggle('light');
-            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-            lucide.createIcons();
-            if (budgetChart) updateChart();
+        // ====================================================
+        // FIX 10: Init Lucide dengan error handling + retry
+        // ====================================================
+        function initLucide() {
+            if (typeof lucide !== 'undefined') {
+                try {
+                    lucide.createIcons();
+                } catch(e) {
+                    console.warn('Lucide error, using fallback:', e);
+                    window.__applyLucideFallback();
+                }
+            } else {
+                // CDN gagal - pakai inline SVG fallback langsung
+                console.warn('Lucide CDN gagal, pakai SVG fallback');
+                window.__applyLucideFallback();
+            }
         }
 
-        if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
-        if (themeToggleMobile) themeToggleMobile.addEventListener('click', toggleTheme);
+        // Panggil setelah DOM ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initLucide);
+        } else {
+            initLucide();
+        }
 
-        // Load saved theme
+        // Theme Toggle
+        const html = document.documentElement;
+
+        const SVG_SUN  = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fde047" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>';
+        const SVG_MOON = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/></svg>';
+
+        function updateThemeIcons() {
+            const isDark = html.classList.contains('dark');
+            // dark mode -> tampilkan sun (untuk switch ke light)
+            // light mode -> tampilkan moon (untuk switch ke dark)
+            const icon = isDark ? SVG_SUN : SVG_MOON;
+            const ti = document.getElementById('themeIcon');
+            const tim = document.getElementById('themeIconMobile');
+            if (ti) ti.innerHTML = icon;
+            if (tim) tim.innerHTML = icon;
+        }
+
+        function toggleTheme() {
+            const isDark = html.classList.contains('dark');
+            html.classList.toggle('dark', !isDark);
+            html.classList.toggle('light', isDark);
+            localStorage.setItem('theme', isDark ? 'light' : 'dark');
+            updateThemeIcons();
+            if (typeof budgetChart !== 'undefined' && budgetChart) updateChart();
+        }
+
+        document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
+        document.getElementById('themeToggleMobile')?.addEventListener('click', toggleTheme);
+
+        // Terapkan tema tersimpan
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'light') {
             html.classList.remove('dark');
             html.classList.add('light');
-        } else if (!savedTheme) {
+        } else {
             html.classList.add('dark');
+            html.classList.remove('light');
         }
 
-        // Floating Navbar on Scroll
+        // Render icon tema setelah DOM ready
+        document.addEventListener('DOMContentLoaded', updateThemeIcons);
+
+        // Floating Navbar
         const navbar = document.querySelector('.navbar');
-        window.addEventListener('scroll', function () {
-            if (window.scrollY > 100) {
-                navbar.classList.add('floating');
-            } else {
-                navbar.classList.remove('floating');
-            }
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('floating', window.scrollY > 100);
         });
 
         // Mobile Menu
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const closeMobileMenu = document.getElementById('closeMobileMenu');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-
         function openMobileMenu() {
-            if (mobileMenu && mobileMenuOverlay) {
-                mobileMenu.classList.add('active');
-                mobileMenuOverlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
+            document.getElementById('mobileMenu')?.classList.add('active');
+            document.getElementById('mobileMenuOverlay')?.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        function closeMobileMenuFn() {
+            document.getElementById('mobileMenu')?.classList.remove('active');
+            document.getElementById('mobileMenuOverlay')?.classList.remove('active');
+            document.body.style.overflow = '';
         }
 
-        function closeMobileMenuFunc() {
-            if (mobileMenu && mobileMenuOverlay) {
-                mobileMenu.classList.remove('active');
-                mobileMenuOverlay.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        }
+        document.getElementById('mobileMenuBtn')?.addEventListener('click', openMobileMenu);
+        document.getElementById('closeMobileMenu')?.addEventListener('click', closeMobileMenuFn);
+        document.getElementById('mobileMenuOverlay')?.addEventListener('click', closeMobileMenuFn);
+        document.querySelectorAll('.mobile-menu a').forEach(l => l.addEventListener('click', closeMobileMenuFn));
+        document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMobileMenuFn(); });
 
-        if (mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', openMobileMenu);
-        }
-
-        if (closeMobileMenu) {
-            closeMobileMenu.addEventListener('click', closeMobileMenuFunc);
-        }
-
-        if (mobileMenuOverlay) {
-            mobileMenuOverlay.addEventListener('click', closeMobileMenuFunc);
-        }
-
-        document.querySelectorAll('.mobile-menu a').forEach(link => {
-            link.addEventListener('click', closeMobileMenuFunc);
-        });
-
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && mobileMenu && mobileMenu.classList.contains('active')) {
-                closeMobileMenuFunc();
-            }
-        });
-
-        // Budget Simulator Logic
-        const formatRupiah = (number) => {
-            return 'Rp ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        };
-
+        // ====================================================
+        // Budget Logic
+        // ====================================================
+        const formatRupiah = (n) => 'Rp ' + Math.abs(Math.round(n)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         const formatInputRupiah = (input) => {
-            let value = input.value.replace(/\D/g, '');
-            if (value) {
-                input.value = parseInt(value).toLocaleString('id-ID');
-            } else {
-                input.value = '0';
-            }
+            let v = input.value.replace(/\D/g, '');
+            input.value = v ? parseInt(v).toLocaleString('id-ID') : '0';
         };
-
-        const parseInputRupiah = (input) => {
-            return parseInt(input.value.replace(/\D/g, '') || '0');
-        };
+        const parseInputRupiah = (input) => parseInt(input.value.replace(/\D/g, '') || '0');
 
         const mainIncome = document.getElementById('mainIncome');
         const additionalIncome = document.getElementById('additionalIncome');
         const passiveIncome = document.getElementById('passiveIncome');
-        const totalIncomeSpan = document.getElementById('totalIncome');
-
         const needsSlider = document.getElementById('needsSlider');
         const transportSlider = document.getElementById('transportSlider');
         const entertainmentSlider = document.getElementById('entertainmentSlider');
         const savingsSlider = document.getElementById('savingsSlider');
         const othersSlider = document.getElementById('othersSlider');
 
-        const needsValue = document.getElementById('needsValue');
-        const transportValue = document.getElementById('transportValue');
-        const entertainmentValue = document.getElementById('entertainmentValue');
-        const savingsValue = document.getElementById('savingsValue');
-        const othersValue = document.getElementById('othersValue');
-        const totalExpensesSpan = document.getElementById('totalExpenses');
-
-        const remainingBudgetSpan = document.getElementById('remainingBudget');
-        const budgetPercentage = document.getElementById('budgetPercentage');
-        const percentageText = document.getElementById('percentageText');
-
-        const needsPercentage = document.getElementById('needsPercentage');
-        const transportPercentage = document.getElementById('transportPercentage');
-        const entertainmentPercentage = document.getElementById('entertainmentPercentage');
-        const savingsPercentage = document.getElementById('savingsPercentage');
-        const othersPercentage = document.getElementById('othersPercentage');
-
-        const budgetTip = document.getElementById('budgetTip');
-
         let budgetChart;
 
         function calculateTotalIncome() {
             const total = parseInputRupiah(mainIncome) + parseInputRupiah(additionalIncome) + parseInputRupiah(passiveIncome);
-            totalIncomeSpan.textContent = formatRupiah(total);
+            document.getElementById('totalIncome').textContent = formatRupiah(total);
             return total;
         }
 
         function calculateTotalExpenses() {
-            const total = Number(needsSlider.value) + Number(transportSlider.value) +
-                Number(entertainmentSlider.value) + Number(savingsSlider.value) +
-                Number(othersSlider.value);
-            totalExpensesSpan.textContent = formatRupiah(total);
+            const total = +needsSlider.value + +transportSlider.value + +entertainmentSlider.value + +savingsSlider.value + +othersSlider.value;
+            document.getElementById('totalExpenses').textContent = formatRupiah(total);
             return total;
         }
 
         function updateValues() {
-            needsValue.textContent = formatRupiah(Number(needsSlider.value));
-            transportValue.textContent = formatRupiah(Number(transportSlider.value));
-            entertainmentValue.textContent = formatRupiah(Number(entertainmentSlider.value));
-            savingsValue.textContent = formatRupiah(Number(savingsSlider.value));
-            othersValue.textContent = formatRupiah(Number(othersSlider.value));
+            document.getElementById('needsValue').textContent = formatRupiah(+needsSlider.value);
+            document.getElementById('transportValue').textContent = formatRupiah(+transportSlider.value);
+            document.getElementById('entertainmentValue').textContent = formatRupiah(+entertainmentSlider.value);
+            document.getElementById('savingsValue').textContent = formatRupiah(+savingsSlider.value);
+            document.getElementById('othersValue').textContent = formatRupiah(+othersSlider.value);
 
             const totalIncome = calculateTotalIncome();
             const totalExpenses = calculateTotalExpenses();
             const remaining = totalIncome - totalExpenses;
 
-            remainingBudgetSpan.textContent = formatRupiah(remaining);
+            const remEl = document.getElementById('remainingBudget');
+            remEl.textContent = (remaining < 0 ? '-' : '') + formatRupiah(remaining);
+            remEl.style.color = remaining < 0 ? '#f43f5e' : remaining === 0 ? '#94a3b8' : '#a78bfa';
 
-            const percentage = totalIncome > 0 ? (totalExpenses / totalIncome) * 100 : 0;
-            const percentageValue = Math.min(percentage, 100);
-            budgetPercentage.style.width = percentageValue + '%';
-            percentageText.textContent = Math.round(percentageValue) + '%';
+            const pct = totalIncome > 0 ? Math.min((totalExpenses / totalIncome) * 100, 100) : 0;
+            document.getElementById('budgetPercentage').style.width = pct + '%';
+            document.getElementById('percentageText').textContent = Math.round(pct) + '%';
 
             if (totalExpenses > 0) {
-                needsPercentage.textContent = ((Number(needsSlider.value) / totalExpenses) * 100).toFixed(1) + '%';
-                transportPercentage.textContent = ((Number(transportSlider.value) / totalExpenses) * 100).toFixed(1) + '%';
-                entertainmentPercentage.textContent = ((Number(entertainmentSlider.value) / totalExpenses) * 100).toFixed(1) + '%';
-                savingsPercentage.textContent = ((Number(savingsSlider.value) / totalExpenses) * 100).toFixed(1) + '%';
-                othersPercentage.textContent = ((Number(othersSlider.value) / totalExpenses) * 100).toFixed(1) + '%';
+                document.getElementById('needsPercentage').textContent = ((+needsSlider.value / totalExpenses) * 100).toFixed(1) + '%';
+                document.getElementById('transportPercentage').textContent = ((+transportSlider.value / totalExpenses) * 100).toFixed(1) + '%';
+                document.getElementById('entertainmentPercentage').textContent = ((+entertainmentSlider.value / totalExpenses) * 100).toFixed(1) + '%';
+                document.getElementById('savingsPercentage').textContent = ((+savingsSlider.value / totalExpenses) * 100).toFixed(1) + '%';
+                document.getElementById('othersPercentage').textContent = ((+othersSlider.value / totalExpenses) * 100).toFixed(1) + '%';
             } else {
-                needsPercentage.textContent = '0%';
-                transportPercentage.textContent = '0%';
-                entertainmentPercentage.textContent = '0%';
-                savingsPercentage.textContent = '0%';
-                othersPercentage.textContent = '0%';
+                ['needsPercentage','transportPercentage','entertainmentPercentage','savingsPercentage','othersPercentage']
+                    .forEach(id => document.getElementById(id).textContent = '0%');
             }
 
-            if (totalIncome === 0) {
-                budgetTip.textContent = 'Mulai dengan mengisi pemasukan dan pengeluaran bulananmu.';
-            } else if (percentage > 90) {
-                budgetTip.textContent = 'Peringatan: Pengeluaran >90% dari pemasukan! Evaluasi kembali anggaranmu.';
-            } else if (percentage > 80) {
-                budgetTip.textContent = 'Pengeluaran cukup tinggi. Coba kurangi pos yang tidak terlalu penting.';
-            } else if (percentage < 50) {
-                budgetTip.textContent = 'Hemat sekali! Pertimbangkan untuk menambah investasi.';
-            } else {
-                budgetTip.textContent = 'Pengeluaran sudah cukup ideal. Pertahankan!';
-            }
+            const tip = document.getElementById('budgetTip');
+            const p = totalIncome > 0 ? (totalExpenses / totalIncome) * 100 : 0;
+            if (totalIncome === 0) tip.textContent = 'Mulai dengan mengisi pemasukan dan pengeluaran bulananmu.';
+            else if (p > 100) tip.textContent = '[!] Pengeluaran melebihi pemasukan! Segera kurangi pengeluaran.';
+            else if (p > 90) tip.textContent = 'Peringatan: Pengeluaran >90% dari pemasukan! Evaluasi kembali anggaranmu.';
+            else if (p > 80) tip.textContent = 'Pengeluaran cukup tinggi. Coba kurangi pos yang tidak terlalu penting.';
+            else if (p < 50) tip.textContent = 'Hemat sekali! Pertimbangkan untuk menambah investasi.';
+            else tip.textContent = 'Pengeluaran sudah cukup ideal. Pertahankan!';
 
             updateChart();
         }
 
         function initChart() {
             const ctx = document.getElementById('budgetChart').getContext('2d');
-
             budgetChart = new Chart(ctx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['Kebutuhan Pokok', 'Transportasi', 'Hiburan', 'Tabungan', 'Lain-lain'],
+                    labels: ['Kebutuhan Pokok','Transportasi','Hiburan','Tabungan','Lain-lain'],
                     datasets: [{
-                        data: [
-                            Number(needsSlider.value),
-                            Number(transportSlider.value),
-                            Number(entertainmentSlider.value),
-                            Number(savingsSlider.value),
-                            Number(othersSlider.value)
-                        ],
-                        backgroundColor: [
-                            '#8b5cf6',
-                            '#06b6d4',
-                            '#f59e0b',
-                            '#10b981',
-                            '#6b7280'
-                        ],
+                        data: [0,0,0,0,0],
+                        backgroundColor: ['#8b5cf6','#06b6d4','#f59e0b','#10b981','#6b7280'],
                         borderWidth: 0,
                         borderRadius: 8
                     }]
@@ -1616,11 +1172,7 @@
                     responsive: true,
                     maintainAspectRatio: false,
                     cutout: '70%',
-                    plugins: {
-                        legend: {
-                            display: false
-                        }
-                    }
+                    plugins: { legend: { display: false } }
                 }
             });
         }
@@ -1628,195 +1180,219 @@
         function updateChart() {
             if (budgetChart) {
                 budgetChart.data.datasets[0].data = [
-                    Number(needsSlider.value),
-                    Number(transportSlider.value),
-                    Number(entertainmentSlider.value),
-                    Number(savingsSlider.value),
-                    Number(othersSlider.value)
+                    +needsSlider.value, +transportSlider.value,
+                    +entertainmentSlider.value, +savingsSlider.value, +othersSlider.value
                 ];
                 budgetChart.update();
             }
         }
 
         [mainIncome, additionalIncome, passiveIncome].forEach(input => {
-            if (input) {
-                input.addEventListener('input', function () {
-                    formatInputRupiah(this);
-                    updateValues();
-                });
-
-                input.addEventListener('blur', function () {
-                    formatInputRupiah(this);
-                });
-
-                formatInputRupiah(input);
-            }
+            if (!input) return;
+            input.addEventListener('input', function() { formatInputRupiah(this); updateValues(); });
+            input.addEventListener('blur', function() { formatInputRupiah(this); });
+            formatInputRupiah(input);
         });
 
-        [needsSlider, transportSlider, entertainmentSlider, savingsSlider, othersSlider].forEach(slider => {
-            if (slider) slider.addEventListener('input', updateValues);
-        });
+        [needsSlider, transportSlider, entertainmentSlider, savingsSlider, othersSlider]
+            .forEach(s => s?.addEventListener('input', updateValues));
 
-        if (needsSlider && transportSlider && entertainmentSlider && savingsSlider && othersSlider) {
-            updateValues();
+        // Inisialisasi chart & nilai awal
+        document.addEventListener('DOMContentLoaded', () => {
             initChart();
-        }
+            updateValues();
+        });
 
-        function captureChart() {
-            if (budgetChart) {
-                return budgetChart.toBase64Image();
-            }
-            return '';
-        }
-
+        // Print/Download functions
         function generatePrintContent() {
             const totalIncome = calculateTotalIncome();
             const totalExpenses = calculateTotalExpenses();
             const remaining = totalIncome - totalExpenses;
-            const chartImage = captureChart();
-            const date = new Date().toLocaleDateString('id-ID', {
-                day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit'
-            });
+            const chartImage = budgetChart ? budgetChart.toBase64Image() : '';
+            const date = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
 
-            return `
-                <div class="print-report" style="display: block;">
-                    <div class="print-header">
-                        <div class="print-logo-section">
-                            <img src="assets/img/image.jpeg" alt="Monetra Logo">
-                            <div>
-                                <h2 style="margin:0; font-size: 20px;">Monetra</h2>
-                                <p style="margin:0; font-size: 10px; color: #64748b;">Financial Intelligence Platform</p>
-                            </div>
-                        </div>
-                        <div class="print-title">
-                            <h1>Laporan Simulasi Anggaran Bulanan</h1>
-                        </div>
-                        <div class="print-meta">
-                            <p>Dicetak pada: ${date}</p>
-                            <p>Dokumen Simulasi Keuangan Pribadi</p>
-                        </div>
+            return `<div style="font-family:Inter,sans-serif;padding:40px;background:white;color:#0f172a">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:30px;padding-bottom:20px;border-bottom:2px solid #8b5cf6">
+                    <div style="display:flex;align-items:center;gap:15px">
+                        <img src="assets/img/image.jpeg" alt="Monetra Logo" style="width:50px;height:50px;border-radius:10px;object-fit:cover;display:block;">
+                        <div><h2 style="margin:0;font-size:20px">Monetra</h2><p style="margin:0;font-size:10px;color:#64748b">Financial Intelligence Platform</p></div>
                     </div>
-
-                    <div class="summary-grid">
-                        <div class="summary-item">
-                            <div class="summary-item-label">Total Pemasukan</div>
-                            <div class="summary-item-value" style="color: #10b981;">${formatRupiah(totalIncome)}</div>
+                    <div><h1 style="font-size:18px;font-weight:900;margin:0">Laporan Simulasi Anggaran Bulanan</h1></div>
+                    <div style="text-align:right;font-size:10px;color:#475569"><p>Dicetak: ${date}</p></div>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin-bottom:30px">
+                    <div style="background:#f8fafc;padding:15px;border-radius:12px;border:1px solid #e2e8f0"><div style="font-size:10px;text-transform:uppercase;color:#64748b;margin-bottom:5px">Total Pemasukan</div><div style="font-size:18px;font-weight:700;color:#10b981">${formatRupiah(totalIncome)}</div></div>
+                    <div style="background:#f8fafc;padding:15px;border-radius:12px;border:1px solid #e2e8f0"><div style="font-size:10px;text-transform:uppercase;color:#64748b;margin-bottom:5px">Total Pengeluaran</div><div style="font-size:18px;font-weight:700;color:#f43f5e">${formatRupiah(totalExpenses)}</div></div>
+                    <div style="background:#f8fafc;padding:15px;border-radius:12px;border:1px solid #e2e8f0"><div style="font-size:10px;text-transform:uppercase;color:#64748b;margin-bottom:5px">Sisa Anggaran</div><div style="font-size:18px;font-weight:700;color:#8b5cf6">${formatRupiah(remaining)}</div></div>
+                </div>
+                ${chartImage ? `<div style="text-align:center;margin-bottom:30px"><h2 style="font-size:16px;margin-bottom:15px">Visualisasi Alokasi Dana</h2><img src="${chartImage}" style="width:300px;height:auto"></div>` : ''}
+                <div style="margin-top:30px">
+                    <div style="font-size:18px;font-weight:700;margin-bottom:15px;padding-bottom:8px;border-bottom:2px solid #8b5cf6">Detail Alokasi</div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+                        <div style="border:1px solid #e2e8f0;border-radius:12px;padding:15px">
+                            <h3 style="font-size:14px;font-weight:700;margin-bottom:10px">Pemasukan</h3>
+                            <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px solid #f1f5f9"><span>Utama</span><span>${mainIncome.value}</span></div>
+                            <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px solid #f1f5f9"><span>Tambahan</span><span>${additionalIncome.value}</span></div>
+                            <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0"><span>Pasif</span><span>${passiveIncome.value}</span></div>
                         </div>
-                        <div class="summary-item">
-                            <div class="summary-item-label">Total Pengeluaran</div>
-                            <div class="summary-item-value" style="color: #f43f5e;">${formatRupiah(totalExpenses)}</div>
+                        <div style="border:1px solid #e2e8f0;border-radius:12px;padding:15px">
+                            <h3 style="font-size:14px;font-weight:700;margin-bottom:10px">Pengeluaran</h3>
+                            <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px solid #f1f5f9"><span>Kebutuhan Pokok</span><span>${formatRupiah(+needsSlider.value)}</span></div>
+                            <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px solid #f1f5f9"><span>Transportasi</span><span>${formatRupiah(+transportSlider.value)}</span></div>
+                            <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px solid #f1f5f9"><span>Hiburan</span><span>${formatRupiah(+entertainmentSlider.value)}</span></div>
+                            <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px solid #f1f5f9"><span>Tabungan</span><span>${formatRupiah(+savingsSlider.value)}</span></div>
+                            <div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0"><span>Lain-lain</span><span>${formatRupiah(+othersSlider.value)}</span></div>
                         </div>
-                        <div class="summary-item">
-                            <div class="summary-item-label">Sisa Anggaran</div>
-                            <div class="summary-item-value" style="color: #8b5cf6;">${formatRupiah(remaining)}</div>
-                        </div>
-                    </div>
-
-                    <div class="chart-section text-center">
-                        <h2>Visualisasi Alokasi Dana</h2>
-                        <div class="chart-image-container mx-auto" style="width: 300px; height: 300px;">
-                            <img src="${chartImage}" style="width: 100%; height: auto;">
-                        </div>
-                    </div>
-
-                    <div class="details-section">
-                        <div class="details-title">Detail Alokasi Pengeluaran</div>
-                        <div class="details-grid">
-                            <div class="details-card">
-                                <h3>Pemasukan</h3>
-                                <div class="details-list">
-                                    <div class="details-list-item"><span>Utama</span> <span>${mainIncome.value}</span></div>
-                                    <div class="details-list-item"><span>Tambahan</span> <span>${additionalIncome.value}</span></div>
-                                    <div class="details-list-item"><span>Pasif</span> <span>${passiveIncome.value}</span></div>
-                                </div>
-                            </div>
-                            <div class="details-card">
-                                <h3>Pengeluaran</h3>
-                                <div class="details-list">
-                                    <div class="details-list-item"><span>Kebutuhan Pokok</span> <span>${formatRupiah(Number(needsSlider.value))}</span></div>
-                                    <div class="details-list-item"><span>Transportasi</span> <span>${formatRupiah(Number(transportSlider.value))}</span></div>
-                                    <div class="details-list-item"><span>Hiburan</span> <span>${formatRupiah(Number(entertainmentSlider.value))}</span></div>
-                                    <div class="details-list-item"><span>Tabungan</span> <span>${formatRupiah(Number(savingsSlider.value))}</span></div>
-                                    <div class="details-list-item"><span>Lain-lain</span> <span>${formatRupiah(Number(othersSlider.value))}</span></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="print-footer">
-                        <p>© ${new Date().getFullYear()} Monetra - Rencanakan Keuanganmu Sejak Dini</p>
-                        <p>Simulasi ini adalah estimasi berdasarkan input pengguna. Gunakan sebagai panduan umum.</p>
                     </div>
                 </div>
-            `;
+                <div style="margin-top:40px;padding-top:15px;border-top:1px dashed #cbd5e1;text-align:center;font-size:9px;color:#94a3b8">
+                    <p>&copy; ${new Date().getFullYear()} Monetra - Rencanakan Keuanganmu Sejak Dini</p>
+                </div>
+            </div>`;
         }
 
         function downloadResult() {
-            const printContent = generatePrintContent();
-            const printWindow = window.open('', '_blank');
-
-            printWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>Laporan Simulasi Budget - Monetra</title>
-                    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-                    <style>
-                        ${document.querySelector('style').innerHTML}
-                        body {
-                            font-family: 'Inter', sans-serif;
-                            padding: 40px;
-                            background: white;
-                            margin: 0;
-                        }
-                        @media print {
-                            body { padding: 0; }
-                        }
-                    </style>
-                </head>
-                <body>
-                    ${printContent}
-                    <div style="text-align: center; margin-top: 30px; display: none;" class="no-print">
-                        <button onclick="window.print()" style="padding: 12px 30px; background: #8b5cf6; color: white; border: none; border-radius: 50px; font-size: 16px; cursor: pointer; margin-right: 10px;">Cetak</button>
-                        <button onclick="window.close()" style="padding: 12px 30px; background: #e2e8f0; border: none; border-radius: 50px; font-size: 16px; cursor: pointer;">Tutup</button>
-                    </div>
-                </body>
-                </html>
-            `);
-
-            printWindow.document.close();
-            setTimeout(() => {
-                printWindow.print();
-            }, 800);
+            const content = generatePrintContent();
+            const w = window.open('', '_blank');
+            w.document.write('<!DOCTYPE html><html><head><title>Laporan Budget - Monetra<\/title><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet"><\/head><body>' + content + '<\/body><\/html>');
+            w.document.close();
+            setTimeout(() => w.print(), 800);
         }
 
         function printResult() {
-            const printReport = document.getElementById('printReport');
-            printReport.innerHTML = generatePrintContent();
-            printReport.style.display = 'block';
-
+            const pr = document.getElementById('printReport');
+            pr.innerHTML = generatePrintContent();
+            pr.style.display = 'block';
             window.print();
-
-            setTimeout(() => {
-                printReport.style.display = 'none';
-            }, 1000);
+            setTimeout(() => { pr.style.display = 'none'; }, 1000);
         }
 
-        window.saveSimulation = saveSimulation;
         window.downloadResult = downloadResult;
         window.printResult = printResult;
+
+        // Scroll Reveal
+        function initReveal() {
+            const els = document.querySelectorAll(
+                '.reveal, .reveal-scale, .reveal-left, .reveal-right, .reveal-card'
+            );
+            els.forEach(el => el.classList.add('pre-reveal'));
+
+            const obs = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) {
+                        // Ambil stagger delay dari attribute atau hitung dari sibling
+                        const delay = e.target.dataset.delay
+                            ? parseInt(e.target.dataset.delay)
+                            : 0;
+                        setTimeout(() => {
+                            e.target.classList.remove('pre-reveal');
+                        }, delay);
+                        obs.unobserve(e.target);
+                    }
+                });
+            }, { threshold: 0.06, rootMargin: '0px 0px -40px 0px' });
+
+            // Auto-stagger siblings dalam container yang sama
+            const containers = {};
+            els.forEach(el => {
+                const parent = el.parentElement;
+                if (!containers[parent]) containers[parent] = [];
+                containers[parent].push(el);
+            });
+            Object.values(containers).forEach(group => {
+                group.forEach((el, i) => {
+                    if (!el.dataset.delay) {
+                        el.dataset.delay = i * 90;
+                    }
+                });
+            });
+
+            els.forEach(el => obs.observe(el));
+        }
+
+        requestAnimationFrame(() => requestAnimationFrame(initReveal));
+
+        // Cursor trail -- halus, pakai RAF throttle bukan random
+        (function() {
+            let ticking = false, lastX = 0, lastY = 0, frameCount = 0;
+            const colors = [
+                'rgba(139,92,246,', 'rgba(6,182,212,',
+                'rgba(167,139,250,', 'rgba(34,211,238,'
+            ];
+            document.addEventListener('mousemove', function(e) {
+                const dx = e.clientX - lastX, dy = e.clientY - lastY;
+                const dist = Math.sqrt(dx*dx + dy*dy);
+                lastX = e.clientX; lastY = e.clientY;
+                if (dist < 3) return; // hanya spawn saat benar-benar bergerak
+                if (!ticking) {
+                    ticking = true;
+                    requestAnimationFrame(() => {
+                        frameCount++;
+                        if (frameCount % 2 === 0) { // tiap 2 frame ~ 30fps
+                            const size = (Math.random() * 4 + 3).toFixed(1);
+                            const alpha = (Math.random() * 0.3 + 0.4).toFixed(2);
+                            const color = colors[frameCount % colors.length] + alpha + ')';
+                            const dot = document.createElement('div');
+                            dot.style.cssText = [
+                                'position:fixed',
+                                'left:' + lastX + 'px',
+                                'top:' + lastY + 'px',
+                                'width:' + size + 'px',
+                                'height:' + size + 'px',
+                                'border-radius:50%',
+                                'background:' + color,
+                                'pointer-events:none',
+                                'z-index:9999',
+                                'transition:opacity 1s ease, transform 1s cubic-bezier(0.22,1,0.36,1)',
+                                'transform:translate(-50%,-50%) scale(1)',
+                                'will-change:transform,opacity'
+                            ].join(';');
+                            document.body.appendChild(dot);
+                            requestAnimationFrame(() => {
+                                dot.style.opacity = '0';
+                                dot.style.transform = 'translate(-50%,-50%) scale(0.2)';
+                            });
+                            setTimeout(() => dot.remove(), 1000);
+                        }
+                        ticking = false;
+                    });
+                }
+            });
+        })();
+
+        // ====================================================
+        // Floating Clock (inline - tanpa clock.js/clock.css)
+        // ====================================================
+        (function() {
+            const days = ['MINGGU','SENIN','SELASA','RABU','KAMIS','JUMAT','SABTU'];
+            const months = ['JAN','FEB','MAR','APR','MEI','JUN','JUL','AGU','SEP','OKT','NOV','DES'];
+
+            function updateClock() {
+                const now = new Date();
+                const hh = String(now.getHours()).padStart(2,'0');
+                const mm = String(now.getMinutes()).padStart(2,'0');
+                const ss = String(now.getSeconds()).padStart(2,'0');
+                const day = days[now.getDay()];
+                const date = now.getDate();
+                const month = months[now.getMonth()];
+                const year = now.getFullYear();
+
+                const timeEl = document.querySelector('#floating-clock .clock-time');
+                const dateEl = document.querySelector('#floating-clock .clock-date');
+                if (timeEl) timeEl.textContent = `${hh}:${mm}:${ss}`;
+                if (dateEl) dateEl.textContent = `${day}, ${date} ${month} ${year}`;
+            }
+
+            updateClock();
+            setInterval(updateClock, 1000);
+        })();
     </script>
 
     <!-- Floating Clock -->
-    <div id="floating-clock" class="clock-container no-print">
+    <div id="floating-clock" class="no-print">
         <div class="clock-time">00:00:00</div>
         <div class="clock-date">Memuat...</div>
     </div>
 
-    <!-- Print Report Hidden Container -->
-    <div id="printReport"></div>
-
-    <script src="assets/js/clock.js"></script>
 </body>
-
 </html>

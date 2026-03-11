@@ -97,13 +97,20 @@
         }
 
         .loader-logo-img {
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             object-fit: contain;
             border-radius: 20px;
             box-shadow: 0 0 40px rgba(139, 92, 246, 0.4);
             opacity: 0;
             animation: logoReveal 1s ease forwards 0.5s;
+        }
+
+        @media (min-width: 640px) {
+            .loader-logo-img {
+                width: 100px;
+                height: 100px;
+            }
         }
 
         @keyframes logoReveal {
@@ -114,13 +121,10 @@
         }
 
         .loader-text {
-            margin-top: 24px;
-            font-size: 2rem;
+            margin-top: 20px;
+            font-size: 1.5rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ffffff;
             opacity: 0;
             animation: fadeIn 0.8s ease forwards 1.2s;
         }
@@ -966,7 +970,6 @@
     <div class="loader-wrapper" id="loader">
         <img src="assets/img/image.jpeg" alt="Monetra Logo" class="loader-logo-img">
         <div class="loader-text">MONETRA</div>
-        <div class="loader-subtext">Saving Challenge</div>
     </div>
 
     <!-- Toast Notification -->
@@ -1241,7 +1244,16 @@
 
     <script>
         // ==================== INITIALIZATION ====================
-        lucide.createIcons();
+        window.addEventListener('DOMContentLoaded', function () {
+            // Initialize lucide icons
+            if (typeof lucide !== 'undefined' && lucide.createIcons) {
+                try {
+                    lucide.createIcons();
+                } catch (e) {
+                    console.error('Error loading lucide icons:', e);
+                }
+            }
+        });
 
         window.addEventListener('load', function () {
             const loader = document.getElementById('loader');
@@ -1334,8 +1346,14 @@
         // ==================== CHALLENGE DATA ====================
         let currentChallenge = null;
 
-        if (localStorage.getItem('activeChallenge')) {
-            currentChallenge = JSON.parse(localStorage.getItem('activeChallenge'));
+        try {
+            if (localStorage.getItem('activeChallenge')) {
+                currentChallenge = JSON.parse(localStorage.getItem('activeChallenge'));
+            }
+        } catch (e) {
+            console.error('Error parsing challenge data:', e);
+            localStorage.removeItem('activeChallenge');
+            currentChallenge = null;
         }
 
         const challenges = [
@@ -1862,10 +1880,6 @@
             }, 1000);
         }
 
-        // ==================== INITIAL RENDER ====================
-        updateChallengeDisplay();
-        renderChallenges();
-
         // ==================== MAKE FUNCTIONS GLOBAL ====================
         window.startChallenge = startChallenge;
         window.markDay = markDay;
@@ -1874,6 +1888,63 @@
         window.resetChallenge = resetChallenge;
         window.downloadResult = downloadResult;
         window.printResult = printResult;
+
+        // ==================== INITIAL RENDER ====================
+        function initPage() {
+            try {
+                updateChallengeDisplay();
+            } catch (e) {
+                console.error('Error updating challenge display:', e);
+            }
+            try {
+                renderChallenges();
+            } catch (e) {
+                console.error('Error rendering challenges:', e);
+            }
+            try {
+                lucide.createIcons();
+            } catch (e) {
+                console.error('Error creating lucide icons:', e);
+            }
+        }
+
+        // Initialize after page fully loads (matching index.html pattern)
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                // Small delay to ensure DOM is fully ready
+                setTimeout(initPage, 100);
+            });
+        } else {
+            setTimeout(initPage, 100);
+        }
+
+        // Also hook to window load for extra safety
+        window.addEventListener('load', () => {
+            try {
+                lucide.createIcons();
+            } catch (e) {
+                console.error('Error in window load:', e);
+            }
+        });
+
+        // Hide loader after 800ms
+        window.addEventListener('load', function () {
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                if (loader) loader.classList.add('slide-up');
+            }, 800);
+        });
+
+        // Allow clicking loader to skip
+        const loaderElement = document.getElementById('loader');
+        if (loaderElement) {
+            loaderElement.style.cursor = 'pointer';
+            loaderElement.addEventListener('click', () => {
+                if (loaderElement && !loaderElement.classList.contains('slide-up')) {
+                    loaderElement.classList.add('slide-up');
+                }
+            });
+        }
     </script>
 
     <!-- Floating Clock -->

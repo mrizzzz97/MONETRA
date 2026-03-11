@@ -98,13 +98,20 @@
         }
 
         .loader-logo-img {
-            width: 100px;
-            height: 100px;
+            width: 80px;
+            height: 80px;
             object-fit: contain;
             border-radius: 20px;
             box-shadow: 0 0 40px rgba(139, 92, 246, 0.4);
             opacity: 0;
             animation: logoReveal 1s ease forwards 0.5s;
+        }
+
+        @media (min-width: 640px) {
+            .loader-logo-img {
+                width: 100px;
+                height: 100px;
+            }
         }
 
         @keyframes logoReveal {
@@ -115,13 +122,10 @@
         }
 
         .loader-text {
-            margin-top: 24px;
-            font-size: 2rem;
+            margin-top: 20px;
+            font-size: 1.5rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ffffff;
             opacity: 0;
             animation: fadeIn 0.8s ease forwards 1.2s;
         }
@@ -868,7 +872,6 @@
     <div class="loader-wrapper" id="loader">
         <img src="assets/img/image.jpeg" alt="Monetra Logo" class="loader-logo-img">
         <div class="loader-text">MONETRA</div>
-        <div class="loader-subtext">Target Tabungan</div>
     </div>
 
     <!-- Navbar -->
@@ -1239,6 +1242,17 @@
                 if (loader) loader.classList.add('slide-up');
             }, 800);
         });
+
+        // Allow clicking loader to skip
+        const loaderElement = document.getElementById('loader');
+        if (loaderElement) {
+            loaderElement.style.cursor = 'pointer';
+            loaderElement.addEventListener('click', () => {
+                if (loaderElement && !loaderElement.classList.contains('slide-up')) {
+                    loaderElement.classList.add('slide-up');
+                }
+            });
+        }
 
         AOS.init({
             duration: 800,

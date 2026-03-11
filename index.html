@@ -24,18 +24,13 @@
 
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="assets/css/clock.css">
     <link rel="stylesheet" href="assets/css/main.css">
 
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
@@ -43,121 +38,183 @@
             transition: background-color 0.3s ease;
         }
 
-        html.dark body {
-            background-color: #020617;
-            color: #f8fafc;
-        }
-
-        html.light body {
-            background-color: #f8fafc;
-            color: #0f172a;
-        }
+        html.dark body { background-color: #020617; color: #f8fafc; }
+        html.light body { background-color: #f8fafc; color: #0f172a; }
 
         body::before {
             content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.03;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 1; opacity: 0.03;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
         /* ─── LOADER ─── */
         .loader-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: #020617;
-            z-index: 10000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: #020617; z-index: 10000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+            overflow: hidden;
+        }
+        .loader-wrapper.slide-up { transform: translateY(-100%); }
+
+        /* Loader background particles */
+        .loader-bg-glow {
+            position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none;
+        }
+        .loader-bg-glow-1 {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(139,92,246,0.2), transparent 70%);
+            top: -100px; left: -100px;
+            animation: loaderGlowDrift1 6s ease-in-out infinite;
+        }
+        .loader-bg-glow-2 {
+            width: 300px; height: 300px;
+            background: radial-gradient(circle, rgba(6,182,212,0.15), transparent 70%);
+            bottom: -80px; right: -80px;
+            animation: loaderGlowDrift2 8s ease-in-out infinite;
+        }
+        @keyframes loaderGlowDrift1 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(40px, 30px); }
+        }
+        @keyframes loaderGlowDrift2 {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(-30px, -20px); }
         }
 
-        .loader-wrapper.slide-up {
-            transform: translateY(-100%);
+        /* Logo container with ring animation */
+        .loader-logo-wrap {
+            position: relative; display: flex; align-items: center; justify-content: center;
+            opacity: 0; animation: loaderLogoIn 0.8s cubic-bezier(0.22,1,0.36,1) forwards 0.4s;
+        }
+        @keyframes loaderLogoIn {
+            from { opacity: 0; transform: scale(0.7) translateY(20px); }
+            to   { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* Rotating ring around logo */
+        .loader-ring {
+            position: absolute;
+            width: 120px; height: 120px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: #8b5cf6;
+            border-right-color: rgba(139,92,246,0.3);
+            animation: loaderRingSpin 1.5s linear infinite;
+        }
+        .loader-ring-2 {
+            width: 140px; height: 140px;
+            border-top-color: transparent;
+            border-bottom-color: #06b6d4;
+            border-left-color: rgba(6,182,212,0.3);
+            animation: loaderRingSpin 2.2s linear infinite reverse;
+        }
+        @keyframes loaderRingSpin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
         }
 
         .loader-logo-img {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            border-radius: 20px;
-            box-shadow: 0 0 40px rgba(139, 92, 246, 0.4);
-            opacity: 0;
-            animation: logoReveal 1s ease forwards 0.5s;
+            width: 80px; height: 80px;
+            object-fit: contain; border-radius: 20px;
+            box-shadow: 0 0 40px rgba(139,92,246,0.5), 0 0 80px rgba(139,92,246,0.2);
+            position: relative; z-index: 2;
         }
+        @media (min-width: 640px) { .loader-logo-img { width: 90px; height: 90px; } }
 
-        @keyframes logoReveal {
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        /* Orbiting dots */
+        .loader-orbit {
+            position: absolute; width: 170px; height: 170px;
+            animation: loaderOrbitSpin 3s linear infinite;
+        }
+        .loader-orbit-dot {
+            position: absolute; width: 8px; height: 8px; border-radius: 50%;
+            background: linear-gradient(135deg, #a78bfa, #22d3ee);
+            top: 0; left: 50%; transform: translateX(-50%);
+        }
+        @keyframes loaderOrbitSpin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+        .loader-orbit-2 {
+            width: 200px; height: 200px;
+            animation: loaderOrbitSpin 5s linear infinite reverse;
+            animation-delay: -1.5s;
+        }
+        .loader-orbit-dot-2 {
+            top: auto; bottom: 0;
+            background: linear-gradient(135deg, #22d3ee, #818cf8);
+            width: 6px; height: 6px;
         }
 
         .loader-text {
-            margin-top: 24px;
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            opacity: 0;
-            animation: fadeIn 0.8s ease forwards 1.2s;
+            margin-top: 28px;
+            font-size: 1.75rem; font-weight: 900; color: #ffffff;
+            letter-spacing: 0.15em; text-transform: uppercase;
+            opacity: 0; animation: loaderTextIn 0.7s ease forwards 1.1s;
+        }
+        @keyframes loaderTextIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Animated gradient underline below text */
+        .loader-text-line {
+            height: 3px; width: 0; border-radius: 2px; margin: 8px auto 0;
+            background: linear-gradient(90deg, #8b5cf6, #06b6d4, #a78bfa);
+            animation: loaderLineGrow 0.8s cubic-bezier(0.22,1,0.36,1) forwards 1.7s;
+        }
+        @keyframes loaderLineGrow {
+            from { width: 0; opacity: 0; }
+            to   { width: 80px; opacity: 1; }
         }
 
         .loader-subtext {
-            margin-top: 8px;
-            font-size: 0.875rem;
-            color: #64748b;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            opacity: 0;
-            animation: fadeIn 1s ease forwards 1.8s;
+            margin-top: 12px;
+            font-size: 0.78rem; color: #475569;
+            letter-spacing: 0.25em; text-transform: uppercase;
+            opacity: 0; animation: loaderTextIn 0.8s ease forwards 1.9s;
         }
 
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
+        /* Progress bar at bottom */
+        .loader-progress-bar {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            height: 3px; background: rgba(255,255,255,0.05);
+        }
+        .loader-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8b5cf6, #06b6d4, #8b5cf6);
+            background-size: 200% auto;
+            animation: loaderProgressFill 2.8s cubic-bezier(0.22,1,0.36,1) forwards 0.2s,
+                       loaderProgressShimmer 1.5s linear infinite 0.5s;
+            width: 0;
+        }
+        @keyframes loaderProgressFill {
+            from { width: 0; }
+            to   { width: 100%; }
+        }
+        @keyframes loaderProgressShimmer {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
         }
 
         /* ─── NAVBAR ─── */
         .navbar {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            padding-top: 1.25rem;
-            padding-bottom: 1.25rem;
+            padding-top: 1.25rem; padding-bottom: 1.25rem;
         }
-
         .navbar .navbar-container {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 0;
         }
-
-        .navbar.floating {
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-        }
-
+        .navbar.floating { padding-top: 0.5rem; padding-bottom: 0.5rem; }
         .navbar.floating .navbar-container {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 9999px;
+            background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 9999px;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            padding: 0.75rem 2rem;
-            max-width: 1200px;
+            padding: 0.75rem 2rem; max-width: 1200px;
         }
-
         html.light .navbar.floating .navbar-container {
             background: rgba(255, 255, 255, 0.9);
             border: 1px solid rgba(0, 0, 0, 0.1);
@@ -173,974 +230,422 @@
                 linear-gradient(180deg, #020617 0%, #080c1d 100%);
             overflow: hidden;
         }
-
-        html.light .hero-bg {
-            background: radial-gradient(circle at 50% 0%, #f0f9ff 0%, #f8fafc 100%);
-        }
+        html.light .hero-bg { background: radial-gradient(circle at 50% 0%, #f0f9ff 0%, #f8fafc 100%); }
 
         #network-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            opacity: 0.3;
-            pointer-events: none;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; opacity: 0.3; pointer-events: none;
         }
 
         .gradient-text {
             background: linear-gradient(135deg, #a78bfa 0%, #22d3ee 50%, #818cf8 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
+            -webkit-background-clip: text; background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-size: 200% auto;
-            animation: gradientMove 5s linear infinite;
+            background-size: 200% auto; animation: gradientMove 5s linear infinite;
         }
-
         @keyframes gradientMove {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            100% {
-                background-position: 200% 50%;
-            }
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
         }
-
         html.light .gradient-text {
             background: linear-gradient(135deg, #7c3aed 0%, #0369a1 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
+            -webkit-background-clip: text; background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
         .cta-white-btn {
-            background: #ffffff;
-            font-weight: 900;
-            transition: all 0.3s ease;
+            background: #ffffff; font-weight: 900; transition: all 0.3s ease;
             color: #7c3aed !important;
         }
-
-        .cta-white-btn:hover {
-            background: #f3f0ff;
-            color: #6d28d9 !important;
-        }
-
-        html.dark .cta-white-btn,
-        html.dark .cta-white-btn:hover {
-            color: #7c3aed !important;
-        }
+        .cta-white-btn:hover { background: #f3f0ff; color: #6d28d9 !important; }
+        html.dark .cta-white-btn, html.dark .cta-white-btn:hover { color: #7c3aed !important; }
 
         /* ─── BUTTONS ─── */
         .btn-primary {
             background: linear-gradient(135deg, #7c3aed 0%, #0891b2 100%);
-            color: #ffffff !important;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            color: #ffffff !important; transition: all 0.3s ease;
+            position: relative; overflow: hidden;
         }
-
         .btn-primary::before {
-            content: '';
-            position: absolute;
-            inset: 0;
+            content: ''; position: absolute; inset: 0;
             background: linear-gradient(135deg, #6d28d9 0%, #0e7490 100%);
-            opacity: 0;
-            transition: opacity 0.3s;
+            opacity: 0; transition: opacity 0.3s;
         }
+        .btn-primary:hover::before { opacity: 1; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 35px rgba(139,92,246,0.45); color: #ffffff !important; }
+        .btn-primary, .btn-primary:hover, .btn-primary *, .btn-primary:hover *,
+        .btn-primary i, .btn-primary span { color: #ffffff !important; position: relative; z-index: 1; }
+        .btn-primary > * { position: relative; z-index: 1; }
+        html.light .btn-primary, html.light .btn-primary:hover,
+        html.light .btn-primary *, html.light .btn-primary:hover *,
+        html.light .btn-primary span, html.light .btn-primary i { color: #ffffff !important; }
 
-        .btn-primary:hover::before {
-            opacity: 1;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(139, 92, 246, 0.45);
-            color: #ffffff !important;
-        }
-
-        .btn-primary,
-        .btn-primary:hover,
-        .btn-primary *,
-        .btn-primary:hover *,
-        .btn-primary i,
-        .btn-primary span {
-            color: #ffffff !important;
-            position: relative;
-            z-index: 1;
-        }
-
-        .btn-primary>* {
-            position: relative;
-            z-index: 1;
-        }
-
-        html.light .btn-primary,
-        html.light .btn-primary:hover,
-        html.light .btn-primary *,
-        html.light .btn-primary:hover *,
-        html.light .btn-primary span,
-        html.light .btn-primary i {
-            color: #ffffff !important;
-        }
-
-        /* =============================================
-           FIX: Navbar CTA - Ukuran wajar + teks selalu putih
-           ============================================= */
+        /* ─── NAVBAR CTA ─── */
         .navbar-cta {
             background: linear-gradient(135deg, #7c3aed 0%, #0891b2 100%);
-            color: #ffffff !important;
-            display: inline-block;
-            transition: all 0.3s ease;
-            /* FIX: ukuran proporsional */
+            color: #ffffff !important; -webkit-text-fill-color: #ffffff !important;
+            display: inline-block; transition: all 0.3s ease;
             padding: 0.6rem 1.5rem !important;
-            font-size: 0.875rem !important;
-            font-weight: 700;
+            font-size: 0.875rem !important; font-weight: 700;
         }
-
         .navbar-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(139, 92, 246, 0.45);
+            transform: translateY(-2px); box-shadow: 0 12px 35px rgba(139,92,246,0.45);
             background: linear-gradient(135deg, #6d28d9 0%, #0e7490 100%);
-            color: #ffffff !important;
+            color: #ffffff !important; -webkit-text-fill-color: #ffffff !important;
         }
-
-        html.light .navbar-cta,
-        html.light .navbar-cta:hover,
-        html.light .navbar-cta span,
-        html.light .navbar-cta * {
-            color: #ffffff !important;
-            -webkit-text-fill-color: #ffffff !important;
+        .navbar-cta *, html.light .navbar-cta, html.light .navbar-cta *,
+        html.dark .navbar-cta, html.dark .navbar-cta * {
+            color: #ffffff !important; -webkit-text-fill-color: #ffffff !important;
         }
 
         .btn-ghost {
-            background: transparent;
-            border: 1.5px solid rgba(255, 255, 255, 0.25);
-            color: #ffffff !important;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(8px);
+            background: transparent; border: 1.5px solid rgba(255,255,255,0.25);
+            color: #ffffff !important; transition: all 0.3s ease; backdrop-filter: blur(8px);
         }
-
-        .btn-ghost:hover {
-            border-color: rgba(139, 92, 246, 0.7);
-            background: rgba(139, 92, 246, 0.12);
-            transform: translateY(-2px);
-        }
-
-        html.light .btn-ghost {
-            border-color: rgba(15, 23, 42, 0.25);
-            color: #1e293b !important;
-        }
-
-        html.light .btn-ghost:hover {
-            border-color: #7c3aed;
-            background: rgba(124, 58, 237, 0.08);
-        }
+        .btn-ghost:hover { border-color: rgba(139,92,246,0.7); background: rgba(139,92,246,0.12); transform: translateY(-2px); }
+        html.light .btn-ghost { border-color: rgba(15,23,42,0.25); color: #1e293b !important; }
+        html.light .btn-ghost:hover { border-color: #7c3aed; background: rgba(124,58,237,0.08); }
 
         /* ─── FEATURE CARDS ─── */
         .feature-card {
-            position: relative;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: hidden;
+            position: relative; background: rgba(15,23,42,0.6); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.4s cubic-bezier(0.175,0.885,0.32,1.275); overflow: hidden;
         }
-
-        html.light .feature-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-        }
-
+        html.light .feature-card { background: #ffffff; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
         .feature-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            opacity: 0;
-            background: radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.15), transparent 70%);
+            content: ''; position: absolute; inset: 0; opacity: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(139,92,246,0.15), transparent 70%);
             transition: opacity 0.4s;
         }
-
-        .feature-card:hover {
-            transform: translateY(-10px);
-            border-color: rgba(139, 92, 246, 0.5);
-            box-shadow: 0 24px 48px rgba(139, 92, 246, 0.2);
-        }
-
-        .feature-card:hover::before {
-            opacity: 1;
-        }
-
-        html.light .feature-card:hover {
-            box-shadow: 0 24px 48px rgba(139, 92, 246, 0.15);
-        }
+        .feature-card:hover { transform: translateY(-10px); border-color: rgba(139,92,246,0.5); box-shadow: 0 24px 48px rgba(139,92,246,0.2); }
+        .feature-card:hover::before { opacity: 1; }
+        html.light .feature-card:hover { box-shadow: 0 24px 48px rgba(139,92,246,0.15); }
 
         /* ─── PROBLEM SECTION ─── */
         .problem-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            padding: 1.25rem 1.5rem;
-            border-radius: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            background: rgba(15, 23, 42, 0.4);
-            backdrop-filter: blur(8px);
-            transition: all 0.3s ease;
+            display: flex; align-items: flex-start; gap: 1rem;
+            padding: 1.25rem 1.5rem; border-radius: 1rem;
+            border: 1px solid rgba(255,255,255,0.06); background: rgba(15,23,42,0.4);
+            backdrop-filter: blur(8px); transition: all 0.3s ease;
         }
-
-        html.light .problem-item {
-            background: #fff;
-            border: 1px solid #e2e8f0;
-        }
-
-        .problem-item:hover {
-            border-color: rgba(239, 68, 68, 0.4);
-            transform: translateX(6px);
-            background: rgba(239, 68, 68, 0.05);
-        }
-
-        html.light .problem-item:hover {
-            background: rgba(239, 68, 68, 0.04);
-        }
+        html.light .problem-item { background: #fff; border: 1px solid #e2e8f0; }
+        .problem-item:hover { border-color: rgba(239,68,68,0.4); transform: translateX(6px); background: rgba(239,68,68,0.05); }
+        html.light .problem-item:hover { background: rgba(239,68,68,0.04); }
 
         /* ─── WHY SECTION ─── */
         .why-card {
-            padding: 1.5rem 2rem;
-            border-radius: 1.25rem;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            background: rgba(15, 23, 42, 0.5);
-            backdrop-filter: blur(8px);
-            transition: all 0.3s ease;
+            padding: 1.5rem 2rem; border-radius: 1.25rem;
+            border: 1px solid rgba(255,255,255,0.08); background: rgba(15,23,42,0.5);
+            backdrop-filter: blur(8px); transition: all 0.3s ease;
         }
-
-        html.light .why-card {
-            background: #fff;
-            border: 1px solid #e2e8f0;
-        }
-
-        .why-card:hover {
-            border-color: rgba(139, 92, 246, 0.4);
-            background: rgba(139, 92, 246, 0.06);
-        }
+        html.light .why-card { background: #fff; border: 1px solid #e2e8f0; }
+        .why-card:hover { border-color: rgba(139,92,246,0.4); background: rgba(139,92,246,0.06); }
 
         /* ─── IMPACT SECTION ─── */
         .impact-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1.25rem 1.5rem;
-            border-radius: 1rem;
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            background: rgba(15, 23, 42, 0.4);
+            display: flex; align-items: center; gap: 1rem;
+            padding: 1.25rem 1.5rem; border-radius: 1rem;
+            border: 1px solid rgba(255,255,255,0.06); background: rgba(15,23,42,0.4);
             transition: all 0.3s ease;
         }
-
-        html.light .impact-item {
-            background: #fff;
-            border-color: #e2e8f0;
-        }
-
-        .impact-item:hover {
-            border-color: rgba(16, 185, 129, 0.4);
-            transform: translateX(6px);
-        }
+        html.light .impact-item { background: #fff; border-color: #e2e8f0; }
+        .impact-item:hover { border-color: rgba(16,185,129,0.4); transform: translateX(6px); }
 
         /* ─── CTA ─── */
-        .cta-section {
-            position: relative;
-            overflow: hidden;
+        .cta-section { position: relative; overflow: hidden; }
+        .cta-section h2, .cta-section p, .cta-section a,
+        .cta-section span, .cta-section div { color: #ffffff !important; }
+        .cta-section .btn-white { color: #7c3aed !important; }
+        html.light .cta-section h2, html.light .cta-section p,
+        html.light .cta-section a:not(.btn-white), html.light .cta-section span,
+        html.light .cta-section div { color: #ffffff !important; }
+
+        /* ─── FOOTER - ALWAYS WHITE ─── */
+        footer { background-color: #020617 !important; }
+        footer, footer *, html.light footer, html.light footer * {
+            color: #ffffff !important; -webkit-text-fill-color: #ffffff !important;
+        }
+        footer a:hover, html.light footer a:hover {
+            color: #a78bfa !important; -webkit-text-fill-color: #a78bfa !important;
+        }
+        footer .border-t p, html.light footer .border-t p {
+            color: #94a3b8 !important; -webkit-text-fill-color: #94a3b8 !important;
+        }
+        footer p.opacity-50, html.light footer p.opacity-50 {
+            color: #cbd5e1 !important; -webkit-text-fill-color: #cbd5e1 !important; opacity: 1 !important;
         }
 
-        .cta-section h2,
-        .cta-section p,
-        .cta-section a,
-        .cta-section span,
-        .cta-section div {
+        /* ─── LIGHT MODE GENERAL ─── */
+        html.light h1, html.light h2, html.light h3, html.light h5 { color: #0f172a !important; }
+        html.light h4:not(footer h4) { color: #0f172a !important; }
+        html.light footer h4, html.light footer h1, html.light footer h2,
+        html.light footer h3, html.light footer h5 { color: #ffffff !important; }
+        html.light p:not(footer p), html.light span:not(footer span):not(.btn-primary span),
+        html.light li:not(footer li) { color: #334155 !important; }
+        html.light a:not(.btn-primary):not(.btn-ghost):not(footer a):not(.navbar-cta) { color: #334155 !important; }
+        html.light .btn-primary, html.light .btn-primary *, html.light .btn-primary span,
+        html.light .btn-primary i { color: #ffffff !important; }
+        html.light .text-gray-300, html.light .text-gray-400, html.light .text-gray-500 { color: #64748b !important; }
+        html.light .navbar a { color: #1e293b !important; }
+        html.light .opacity-60 { color: #475569 !important; }
+        html.light .opacity-70 { color: #475569 !important; }
+        html.light .opacity-80 { color: #334155 !important; }
+
+        /* ─── DROPDOWN ─── */
+        .dropdown { position: relative; }
+        .dropdown-menu {
+            position: absolute; top: 100%; left: 0; margin-top: 0.5rem;
+            background: rgba(15,23,42,0.95); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 1rem;
+            padding: 0.5rem; min-width: 200px;
+            opacity: 0; visibility: hidden; transform: translateY(-10px);
+            transition: all 0.3s ease; z-index: 100;
+        }
+        html.light .dropdown-menu { background: rgba(255,255,255,0.95); border: 1px solid rgba(0,0,0,0.1); }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: 0.5rem; transition: all 0.2s ease; color: #f8fafc; }
+        html.light .dropdown-item { color: #0f172a; }
+        .dropdown-item:hover { background: rgba(139,92,246,0.2); }
+
+        /* ─── MOBILE MENU ─── */
+        .mobile-menu {
+            transform: translateX(100%); transition: transform 0.3s ease;
+            background: #0f172a; z-index: 9999;
+        }
+        html.light .mobile-menu { background: #ffffff; border-left: 1px solid #e2e8f0; }
+        .mobile-menu.active { transform: translateX(0); }
+        #closeMobileMenu { position: relative; z-index: 10000; cursor: pointer; }
+        .mobile-menu-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); z-index: 9998;
+            opacity: 0; visibility: hidden; transition: all 0.3s ease;
+        }
+        .mobile-menu-overlay.active { opacity: 1; visibility: visible; }
+
+        /* ─── SCROLLBAR ─── */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        html.light ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+
+        /* ─── ANIMATIONS ─── */
+        @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-12px); } }
+        @keyframes pulse-ring { 0% { transform: scale(1); opacity: 0.4; } 100% { transform: scale(1.6); opacity: 0; } }
+        @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+        .float-anim { animation: float 6s ease-in-out infinite; }
+        .float-anim-delay { animation: float 6s ease-in-out infinite 2s; }
+
+        .icon-ring { position: relative; }
+        .icon-ring::before, .icon-ring::after {
+            content: ''; position: absolute; inset: -4px; border-radius: inherit;
+            border: 2px solid rgba(139,92,246,0.3); animation: pulse-ring 2.5s ease-out infinite;
+        }
+        .icon-ring::after { animation-delay: 1.25s; }
+
+        .marquee-track { display: flex; animation: marquee 30s linear infinite; }
+        .marquee-track:hover { animation-play-state: paused; }
+
+        .section-tag {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.35rem 1rem; border-radius: 9999px;
+            border: 1px solid rgba(139,92,246,0.3); background: rgba(139,92,246,0.08);
+            font-size: 0.72rem; font-weight: 700; letter-spacing: 0.15em;
+            text-transform: uppercase; color: #a78bfa;
+        }
+        html.light .section-tag { color: #7c3aed; background: rgba(124,58,237,0.08); border-color: rgba(124,58,237,0.3); }
+
+        .underline-accent { position: relative; display: inline-block; }
+        .underline-accent::after {
+            content: ''; position: absolute; left: 0; bottom: -4px;
+            width: 100%; height: 3px;
+            background: linear-gradient(90deg, #a78bfa, #22d3ee); border-radius: 2px;
+            transform: scaleX(0); transform-origin: left;
+            transition: transform 0.6s cubic-bezier(0.23,1,0.32,1);
+        }
+        .underline-accent.visible::after, .aos-animate .underline-accent::after { transform: scaleX(1); }
+
+        .glow-blob { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
+
+        .num-circle {
+            width: 2.5rem; height: 2.5rem; border-radius: 50%;
+            background: linear-gradient(135deg, #7c3aed, #0891b2);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 0.85rem; color: #fff; flex-shrink: 0;
+        }
+
+        .cta-orb {
+            position: absolute; border-radius: 50%;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        a.btn-primary, a.btn-primary span, a.btn-primary i,
+        html.light a.btn-primary, html.light a.btn-primary span, html.light a.btn-primary i,
+        html.dark a.btn-primary, html.dark a.btn-primary span, html.dark a.btn-primary i {
             color: #ffffff !important;
         }
 
-        .cta-section .btn-white {
-            color: #7c3aed !important;
-        }
-
-        html.light .cta-section h2,
-        html.light .cta-section p,
-        html.light .cta-section a:not(.btn-white),
-        html.light .cta-section span,
-        html.light .cta-section div {
+        /* ─── MORPH BUTTON - ALWAYS WHITE TEXT ─── */
+        .morph-btn {
+            position: relative; padding: 16px 44px;
+            font-family: "Inter", system-ui, sans-serif;
+            font-size: 13px; font-weight: 700;
+            letter-spacing: 2.5px; text-transform: uppercase;
             color: #ffffff !important;
+            background: transparent; border: none; cursor: pointer;
+            overflow: visible; isolation: isolate; text-decoration: none;
+            display: inline-block;
         }
-
-        /* ─── FOOTER ─── */
-        footer {
-            background-color: #020617 !important;
-        }
-
-        footer * {
-            color: #ffffff !important;
-        }
-
-        html.light footer {
-            background-color: #020617 !important;
-        }
-
-        html.light footer * {
+        /* Force white on morph-btn in ALL modes */
+        .morph-btn,
+        .morph-btn *,
+        .morph-btn .btn-text,
+        .morph-btn .btn-text span,
+        html.light .morph-btn,
+        html.light .morph-btn *,
+        html.light .morph-btn .btn-text,
+        html.light .morph-btn .btn-text span,
+        html.dark .morph-btn,
+        html.dark .morph-btn * {
             color: #ffffff !important;
             -webkit-text-fill-color: #ffffff !important;
         }
 
-        /* ─── LIGHT MODE ─── */
-        html.light h1,
-        html.light h2,
-        html.light h3,
-        html.light h5 {
-            color: #0f172a !important;
-        }
-
-        html.light h4:not(footer h4) {
-            color: #0f172a !important;
-        }
-
-        html.light footer h4,
-        html.light footer h1,
-        html.light footer h2,
-        html.light footer h3,
-        html.light footer h5 {
-            color: #ffffff !important;
-        }
-
-        html.light p:not(footer p),
-        html.light span:not(footer span):not(.btn-primary span),
-        html.light li:not(footer li) {
-            color: #334155 !important;
-        }
-
-        html.light a:not(.btn-primary):not(.btn-ghost):not(footer a) {
-            color: #334155 !important;
-        }
-
-        html.light .btn-primary,
-        html.light .btn-primary *,
-        html.light .btn-primary span,
-        html.light .btn-primary i {
-            color: #ffffff !important;
-        }
-
-        html.light .text-gray-300,
-        html.light .text-gray-400,
-        html.light .text-gray-500 {
-            color: #64748b !important;
-        }
-
-        html.light .navbar a {
-            color: #1e293b !important;
-        }
-
-        html.light .opacity-60 {
-            color: #475569 !important;
-        }
-
-        html.light .opacity-70 {
-            color: #475569 !important;
-        }
-
-        html.light .opacity-80 {
-            color: #334155 !important;
-        }
-
-        /* ─── DROPDOWN ─── */
-        .dropdown {
-            position: relative;
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 0.5rem;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
-            padding: 0.5rem;
-            min-width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            z-index: 100;
-        }
-
-        html.light .dropdown-menu {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .dropdown:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .dropdown-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            transition: all 0.2s ease;
-            color: #f8fafc;
-        }
-
-        html.light .dropdown-item {
-            color: #0f172a;
-        }
-
-        .dropdown-item:hover {
-            background: rgba(139, 92, 246, 0.2);
-        }
-
-        /* ─── MOBILE MENU ─── */
-        .mobile-menu {
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            background: #0f172a;
-            z-index: 9999;
-        }
-
-        html.light .mobile-menu {
-            background: #ffffff;
-            border-left: 1px solid #e2e8f0;
-        }
-
-        .mobile-menu.active {
-            transform: translateX(0);
-        }
-
-        #closeMobileMenu {
-            position: relative;
-            z-index: 10000;
-            cursor: pointer;
-        }
-
-        .mobile-menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 9998;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .mobile-menu-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        /* ─── SCROLLBAR ─── */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #0f172a;
-        }
-
-        html.light ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 4px;
-        }
-
-        /* ─── ANIMATIONS ─── */
-        @keyframes float {
-
-            0%,
-            100% {
-                transform: translateY(0px);
-            }
-
-            50% {
-                transform: translateY(-12px);
-            }
-        }
-
-        @keyframes pulse-ring {
-            0% {
-                transform: scale(1);
-                opacity: 0.4;
-            }
-
-            100% {
-                transform: scale(1.6);
-                opacity: 0;
-            }
-        }
-
-        @keyframes marquee {
-            from {
-                transform: translateX(0);
-            }
-
-            to {
-                transform: translateX(-50%);
-            }
-        }
-
-        .float-anim {
-            animation: float 6s ease-in-out infinite;
-        }
-
-        .float-anim-delay {
-            animation: float 6s ease-in-out infinite 2s;
-        }
-
-        .icon-ring {
-            position: relative;
-        }
-
-        .icon-ring::before,
-        .icon-ring::after {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: inherit;
-            border: 2px solid rgba(139, 92, 246, 0.3);
-            animation: pulse-ring 2.5s ease-out infinite;
-        }
-
-        .icon-ring::after {
-            animation-delay: 1.25s;
-        }
-
-        .marquee-track {
-            display: flex;
-            animation: marquee 30s linear infinite;
-        }
-
-        .marquee-track:hover {
-            animation-play-state: paused;
-        }
-
-        .section-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.35rem 1rem;
-            border-radius: 9999px;
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            background: rgba(139, 92, 246, 0.08);
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: #a78bfa;
-        }
-
-        html.light .section-tag {
-            color: #7c3aed;
-            background: rgba(124, 58, 237, 0.08);
-            border-color: rgba(124, 58, 237, 0.3);
-        }
-
-        .underline-accent {
-            position: relative;
-            display: inline-block;
-        }
-
-        .underline-accent::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            bottom: -4px;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, #a78bfa, #22d3ee);
-            border-radius: 2px;
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-        }
-
-        .underline-accent.visible::after,
-        .aos-animate .underline-accent::after {
-            transform: scaleX(1);
-        }
-
-        .glow-blob {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            pointer-events: none;
-        }
-
-        .num-circle {
-            width: 2.5rem;
-            height: 2.5rem;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #7c3aed, #0891b2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 800;
-            font-size: 0.85rem;
-            color: #fff;
-            flex-shrink: 0;
-        }
-
-        .cta-orb {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        a.btn-primary,
-        a.btn-primary span,
-        a.btn-primary i,
-        html.light a.btn-primary,
-        html.light a.btn-primary span,
-        html.light a.btn-primary i,
-        html.dark a.btn-primary,
-        html.dark a.btn-primary span,
-        html.dark a.btn-primary i {
-            color: #ffffff !important;
-        }
-
-        /* ─── MORPH BUTTON ─── */
-        .morph-btn {
-            position: relative;
-            padding: 16px 44px;
-            font-family: "Segoe UI", system-ui, sans-serif;
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            color: #ffffff;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-            overflow: visible;
-            isolation: isolate;
-            text-decoration: none;
-            display: inline-block;
-        }
-
         .morph-btn .btn-fill {
-            position: absolute;
-            inset: 0;
+            position: absolute; inset: 0;
             background: linear-gradient(135deg, #7c3aed 0%, #0891b2 100%);
             border-radius: 6px;
-            transition: border-radius 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transition: border-radius 0.5s cubic-bezier(0.68,-0.55,0.265,1.55);
             z-index: 1;
         }
-
-        .morph-btn:hover .btn-fill {
-            border-radius: 50px;
-            animation: morphJelly 0.5s ease;
-        }
-
+        .morph-btn:hover .btn-fill { border-radius: 50px; animation: morphJelly 0.5s ease; }
         @keyframes morphJelly {
-            0% {
-                transform: scale(1, 1);
-            }
-
-            30% {
-                transform: scale(1.1, 0.88);
-            }
-
-            50% {
-                transform: scale(0.93, 1.08);
-            }
-
-            70% {
-                transform: scale(1.04, 0.96);
-            }
-
-            100% {
-                transform: scale(1, 1);
-            }
+            0% { transform: scale(1,1); } 30% { transform: scale(1.1,0.88); }
+            50% { transform: scale(0.93,1.08); } 70% { transform: scale(1.04,0.96); }
+            100% { transform: scale(1,1); }
         }
 
-        .morph-btn .orbit-dots {
-            position: absolute;
-            inset: -20px;
-            pointer-events: none;
-        }
-
+        .morph-btn .orbit-dots { position: absolute; inset: -20px; pointer-events: none; }
         .morph-btn .orbit-dots span {
-            position: absolute;
-            width: 7px;
-            height: 7px;
+            position: absolute; width: 7px; height: 7px;
             background: linear-gradient(135deg, #a78bfa, #22d3ee);
-            border-radius: 50%;
-            opacity: 1;
-            transition: opacity 0.3s ease;
+            border-radius: 50%; opacity: 1; transition: opacity 0.3s ease;
         }
-
-        .morph-btn .orbit-dots span:nth-child(1) {
-            top: 0;
-            left: 50%;
-            animation: morphOrbit1 3s linear infinite;
-        }
-
-        .morph-btn .orbit-dots span:nth-child(2) {
-            bottom: 0;
-            left: 50%;
-            animation: morphOrbit2 3s linear infinite;
-        }
-
-        .morph-btn .orbit-dots span:nth-child(3) {
-            top: 50%;
-            left: 0;
-            animation: morphOrbit3 4s linear infinite;
-        }
-
-        .morph-btn .orbit-dots span:nth-child(4) {
-            top: 50%;
-            right: 0;
-            animation: morphOrbit4 4s linear infinite;
-        }
-
+        .morph-btn .orbit-dots span:nth-child(1) { top: 0; left: 50%; animation: morphOrbit1 3s linear infinite; }
+        .morph-btn .orbit-dots span:nth-child(2) { bottom: 0; left: 50%; animation: morphOrbit2 3s linear infinite; }
+        .morph-btn .orbit-dots span:nth-child(3) { top: 50%; left: 0; animation: morphOrbit3 4s linear infinite; }
+        .morph-btn .orbit-dots span:nth-child(4) { top: 50%; right: 0; animation: morphOrbit4 4s linear infinite; }
         @keyframes morphOrbit1 {
-            0% {
-                transform: translateX(-50%) translateY(0) scale(1);
-            }
-
-            25% {
-                transform: translateX(24px) translateY(8px) scale(0.6);
-            }
-
-            50% {
-                transform: translateX(-50%) translateY(16px) scale(1);
-            }
-
-            75% {
-                transform: translateX(-64px) translateY(8px) scale(0.6);
-            }
-
-            100% {
-                transform: translateX(-50%) translateY(0) scale(1);
-            }
+            0% { transform: translateX(-50%) translateY(0) scale(1); } 25% { transform: translateX(24px) translateY(8px) scale(0.6); }
+            50% { transform: translateX(-50%) translateY(16px) scale(1); } 75% { transform: translateX(-64px) translateY(8px) scale(0.6); }
+            100% { transform: translateX(-50%) translateY(0) scale(1); }
         }
-
         @keyframes morphOrbit2 {
-            0% {
-                transform: translateX(-50%) translateY(0) scale(0.6);
-            }
-
-            25% {
-                transform: translateX(-64px) translateY(-8px) scale(1);
-            }
-
-            50% {
-                transform: translateX(-50%) translateY(-16px) scale(0.6);
-            }
-
-            75% {
-                transform: translateX(24px) translateY(-8px) scale(1);
-            }
-
-            100% {
-                transform: translateX(-50%) translateY(0) scale(0.6);
-            }
+            0% { transform: translateX(-50%) translateY(0) scale(0.6); } 25% { transform: translateX(-64px) translateY(-8px) scale(1); }
+            50% { transform: translateX(-50%) translateY(-16px) scale(0.6); } 75% { transform: translateX(24px) translateY(-8px) scale(1); }
+            100% { transform: translateX(-50%) translateY(0) scale(0.6); }
         }
-
         @keyframes morphOrbit3 {
-            0% {
-                transform: translateY(-50%) translateX(0) scale(0.8);
-            }
-
-            50% {
-                transform: translateY(-50%) translateX(-12px) scale(1.2);
-            }
-
-            100% {
-                transform: translateY(-50%) translateX(0) scale(0.8);
-            }
+            0% { transform: translateY(-50%) translateX(0) scale(0.8); } 50% { transform: translateY(-50%) translateX(-12px) scale(1.2); }
+            100% { transform: translateY(-50%) translateX(0) scale(0.8); }
         }
-
         @keyframes morphOrbit4 {
-            0% {
-                transform: translateY(-50%) translateX(0) scale(1.2);
-            }
-
-            50% {
-                transform: translateY(-50%) translateX(12px) scale(0.8);
-            }
-
-            100% {
-                transform: translateY(-50%) translateX(0) scale(1.2);
-            }
+            0% { transform: translateY(-50%) translateX(0) scale(1.2); } 50% { transform: translateY(-50%) translateX(12px) scale(0.8); }
+            100% { transform: translateY(-50%) translateX(0) scale(1.2); }
         }
 
         .morph-btn .btn-text {
-            position: relative;
-            display: inline-block;
-            z-index: 3;
+            position: relative; display: inline-block; z-index: 3;
+            color: #ffffff !important; -webkit-text-fill-color: #ffffff !important;
         }
-
         .morph-btn .btn-text span {
-            display: inline-block;
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: inline-block; color: #ffffff !important; -webkit-text-fill-color: #ffffff !important;
+            transition: transform 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
             transition-delay: calc(var(--i) * 0.03s);
         }
-
         .morph-btn:hover .btn-text span {
-            animation: morphLetterBounce 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+            animation: morphLetterBounce 0.6s cubic-bezier(0.68,-0.55,0.265,1.55) forwards;
             animation-delay: calc(var(--i) * 0.03s);
         }
-
         @keyframes morphLetterBounce {
-            0% {
-                transform: translateY(0);
-            }
-
-            40% {
-                transform: translateY(-110%);
-            }
-
-            70% {
-                transform: translateY(8%);
-            }
-
-            100% {
-                transform: translateY(0);
-            }
+            0% { transform: translateY(0); } 40% { transform: translateY(-110%); }
+            70% { transform: translateY(8%); } 100% { transform: translateY(0); }
         }
 
         .morph-btn .corners span {
-            position: absolute;
-            width: 16px;
-            height: 16px;
-            border: 2px solid rgba(167, 139, 250, 0.7);
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: absolute; width: 16px; height: 16px;
+            border: 2px solid rgba(167,139,250,0.7);
+            transition: all 0.4s cubic-bezier(0.68,-0.55,0.265,1.55);
         }
-
-        .morph-btn .corners span:nth-child(1) {
-            top: -8px;
-            left: -8px;
-            border-right: none;
-            border-bottom: none;
-        }
-
-        .morph-btn .corners span:nth-child(2) {
-            top: -8px;
-            right: -8px;
-            border-left: none;
-            border-bottom: none;
-        }
-
-        .morph-btn .corners span:nth-child(3) {
-            bottom: -8px;
-            left: -8px;
-            border-right: none;
-            border-top: none;
-        }
-
-        .morph-btn .corners span:nth-child(4) {
-            bottom: -8px;
-            right: -8px;
-            border-left: none;
-            border-top: none;
-        }
-
-        .morph-btn:hover .corners span:nth-child(1) {
-            transform: translate(-5px, -5px) rotate(-5deg);
-        }
-
-        .morph-btn:hover .corners span:nth-child(2) {
-            transform: translate(5px, -5px) rotate(5deg);
-        }
-
-        .morph-btn:hover .corners span:nth-child(3) {
-            transform: translate(-5px, 5px) rotate(5deg);
-        }
-
-        .morph-btn:hover .corners span:nth-child(4) {
-            transform: translate(5px, 5px) rotate(-5deg);
-        }
+        .morph-btn .corners span:nth-child(1) { top: -8px; left: -8px; border-right: none; border-bottom: none; }
+        .morph-btn .corners span:nth-child(2) { top: -8px; right: -8px; border-left: none; border-bottom: none; }
+        .morph-btn .corners span:nth-child(3) { bottom: -8px; left: -8px; border-right: none; border-top: none; }
+        .morph-btn .corners span:nth-child(4) { bottom: -8px; right: -8px; border-left: none; border-top: none; }
+        .morph-btn:hover .corners span:nth-child(1) { transform: translate(-5px,-5px) rotate(-5deg); }
+        .morph-btn:hover .corners span:nth-child(2) { transform: translate(5px,-5px) rotate(5deg); }
+        .morph-btn:hover .corners span:nth-child(3) { transform: translate(-5px,5px) rotate(5deg); }
+        .morph-btn:hover .corners span:nth-child(4) { transform: translate(5px,5px) rotate(-5deg); }
 
         .morph-btn .shadow {
-            position: absolute;
-            inset: 4px;
-            background: rgba(124, 58, 237, 0.35);
-            border-radius: 6px;
-            filter: blur(12px);
-            z-index: 0;
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: absolute; inset: 4px;
+            background: rgba(124,58,237,0.35); border-radius: 6px;
+            filter: blur(12px); z-index: 0;
+            transition: all 0.5s cubic-bezier(0.68,-0.55,0.265,1.55);
             transform: translateY(8px);
         }
-
         .morph-btn:hover .shadow {
-            border-radius: 50px;
-            transform: translateY(14px) scale(1.1);
-            filter: blur(18px);
-            background: rgba(8, 145, 178, 0.4);
+            border-radius: 50px; transform: translateY(14px) scale(1.1);
+            filter: blur(18px); background: rgba(8,145,178,0.4);
         }
-
-        .morph-btn:active .btn-fill {
-            transform: scale(0.93);
-            transition: transform 0.1s ease;
-        }
-
-        .morph-btn:active .shadow {
-            transform: translateY(3px) scale(0.85);
-            filter: blur(8px);
-            opacity: 0.5;
-            transition: all 0.1s ease;
-        }
-
-        .morph-btn:active .btn-text {
-            transform: scale(0.95);
-            transition: transform 0.1s ease;
-        }
-
-        .morph-btn:active .corners span:nth-child(1) {
-            transform: translate(-12px, -12px) rotate(-12deg) scale(0.8);
-        }
-
-        .morph-btn:active .corners span:nth-child(2) {
-            transform: translate(12px, -12px) rotate(12deg) scale(0.8);
-        }
-
-        .morph-btn:active .corners span:nth-child(3) {
-            transform: translate(-12px, 12px) rotate(12deg) scale(0.8);
-        }
-
-        .morph-btn:active .corners span:nth-child(4) {
-            transform: translate(12px, 12px) rotate(-12deg) scale(0.8);
-        }
+        .morph-btn:active .btn-fill { transform: scale(0.93); transition: transform 0.1s ease; }
+        .morph-btn:active .shadow { transform: translateY(3px) scale(0.85); filter: blur(8px); opacity: 0.5; transition: all 0.1s ease; }
+        .morph-btn:active .btn-text { transform: scale(0.95); transition: transform 0.1s ease; }
+        .morph-btn:active .corners span:nth-child(1) { transform: translate(-12px,-12px) rotate(-12deg) scale(0.8); }
+        .morph-btn:active .corners span:nth-child(2) { transform: translate(12px,-12px) rotate(12deg) scale(0.8); }
+        .morph-btn:active .corners span:nth-child(3) { transform: translate(-12px,12px) rotate(12deg) scale(0.8); }
+        .morph-btn:active .corners span:nth-child(4) { transform: translate(12px,12px) rotate(-12deg) scale(0.8); }
     </style>
 </head>
 
 <body>
     <!-- Loading Screen -->
     <div class="loader-wrapper" id="loader">
-        <img src="assets/img/image.jpeg" alt="Monetra Logo" class="loader-logo-img">
+        <!-- Background glows -->
+        <div class="loader-bg-glow loader-bg-glow-1"></div>
+        <div class="loader-bg-glow loader-bg-glow-2"></div>
+
+        <!-- Logo with rings and orbit -->
+        <div class="loader-logo-wrap">
+            <div class="loader-ring"></div>
+            <div class="loader-ring loader-ring-2"></div>
+            <div class="loader-orbit">
+                <div class="loader-orbit-dot"></div>
+            </div>
+            <div class="loader-orbit loader-orbit-2">
+                <div class="loader-orbit-dot loader-orbit-dot-2"></div>
+            </div>
+            <img src="assets/img/image.jpeg" alt="Monetra Logo" class="loader-logo-img">
+        </div>
+
         <div class="loader-text">MONETRA</div>
-        <div class="loader-subtext">Platform Edukasi Finansial</div>
+        <div class="loader-text-line"></div>
+        <div class="loader-subtext">Financial Intelligence Platform</div>
+
+        <!-- Progress bar -->
+        <div class="loader-progress-bar">
+            <div class="loader-progress-fill"></div>
+        </div>
     </div>
 
     <!-- Navbar -->
     <nav class="navbar fixed w-full top-0 z-50 px-6">
         <div class="navbar-container max-w-7xl mx-auto flex items-center justify-between relative">
             <div class="flex items-center space-x-3 cursor-pointer group">
-                <div
-                    class="relative w-10 h-10 overflow-hidden rounded-xl border border-white/10 group-hover:border-violet-500/50 transition-colors">
+                <div class="relative w-10 h-10 overflow-hidden rounded-xl border border-white/10 group-hover:border-violet-500/50 transition-colors">
                     <img src="assets/img/image.jpeg" alt="Monetra Logo" class="w-full h-full object-cover">
                 </div>
-                <span
-                    class="text-xl font-bold tracking-tight group-hover:text-violet-400 transition-colors">Monetra</span>
+                <span class="text-xl font-bold tracking-tight group-hover:text-violet-400 transition-colors">Monetra</span>
             </div>
             <div class="hidden md:flex items-center space-x-8">
                 <a href="index.html" class="text-sm font-medium hover:text-violet-400 transition-colors">Home</a>
@@ -1150,14 +655,10 @@
                         Features <i data-lucide="chevron-down" class="w-4 h-4"></i>
                     </button>
                     <div class="dropdown-menu">
-                        <a href="personality-test.html" class="dropdown-item"><i data-lucide="user-circle"
-                                class="w-4 h-4"></i><span>Tes Kepribadian</span></a>
-                        <a href="budget-simulator.html" class="dropdown-item"><i data-lucide="wallet"
-                                class="w-4 h-4"></i><span>Simulasi Budget</span></a>
-                        <a href="goal-tracker.html" class="dropdown-item"><i data-lucide="target"
-                                class="w-4 h-4"></i><span>Target Tabungan</span></a>
-                        <a href="challenge.html" class="dropdown-item"><i data-lucide="trophy"
-                                class="w-4 h-4"></i><span>Saving Challenge</span></a>
+                        <a href="personality-test.html" class="dropdown-item"><i data-lucide="user-circle" class="w-4 h-4"></i><span>Tes Kepribadian</span></a>
+                        <a href="budget-simulator.html" class="dropdown-item"><i data-lucide="wallet" class="w-4 h-4"></i><span>Simulasi Budget</span></a>
+                        <a href="goal-tracker.html" class="dropdown-item"><i data-lucide="target" class="w-4 h-4"></i><span>Target Tabungan</span></a>
+                        <a href="challenge.html" class="dropdown-item"><i data-lucide="trophy" class="w-4 h-4"></i><span>Saving Challenge</span></a>
                     </div>
                 </div>
                 <a href="contact.html" class="text-sm font-medium hover:text-violet-400 transition-colors">Contact</a>
@@ -1165,7 +666,6 @@
                     <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-yellow-300"></i>
                     <i data-lucide="moon" class="w-5 h-5 block dark:hidden text-slate-700"></i>
                 </button>
-                <!-- FIX: hapus px-9 py-4 text-base, pakai .navbar-cta saja -->
                 <a href="personality-test.html" class="navbar-cta rounded-full flex items-center gap-2">
                     <span>Mulai Sekarang</span>
                 </a>
@@ -1181,21 +681,16 @@
     </nav>
     <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
     <div class="mobile-menu fixed top-0 right-0 w-72 h-full p-6 md:hidden shadow-2xl">
-        <div class="flex justify-end mb-8"><button id="closeMobileMenu"><i data-lucide="x" class="w-6 h-6"></i></button>
-        </div>
+        <div class="flex justify-end mb-8"><button id="closeMobileMenu"><i data-lucide="x" class="w-6 h-6"></i></button></div>
         <div class="flex flex-col space-y-4">
             <a href="index.html" class="text-lg font-medium hover:text-violet-400 transition">Home</a>
             <a href="about.html" class="text-lg font-medium hover:text-violet-400 transition">About</a>
             <div class="border-t border-white/10 pt-4">
                 <div class="text-xs uppercase tracking-wider opacity-50 mb-3">Features</div>
-                <a href="personality-test.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition"><i
-                        data-lucide="user-circle" class="w-4 h-4"></i><span>Tes Kepribadian</span></a>
-                <a href="budget-simulator.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition"><i
-                        data-lucide="wallet" class="w-4 h-4"></i><span>Simulasi Budget</span></a>
-                <a href="goal-tracker.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition"><i
-                        data-lucide="target" class="w-4 h-4"></i><span>Target Tabungan</span></a>
-                <a href="challenge.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition"><i
-                        data-lucide="trophy" class="w-4 h-4"></i><span>Saving Challenge</span></a>
+                <a href="personality-test.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition"><i data-lucide="user-circle" class="w-4 h-4"></i><span>Tes Kepribadian</span></a>
+                <a href="budget-simulator.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition"><i data-lucide="wallet" class="w-4 h-4"></i><span>Simulasi Budget</span></a>
+                <a href="goal-tracker.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition"><i data-lucide="target" class="w-4 h-4"></i><span>Target Tabungan</span></a>
+                <a href="challenge.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition"><i data-lucide="trophy" class="w-4 h-4"></i><span>Saving Challenge</span></a>
             </div>
             <a href="contact.html" class="text-lg font-medium hover:text-violet-400 transition">Contact</a>
             <a href="personality-test.html" class="navbar-cta rounded-full text-center mt-4">Mulai Sekarang</a>
@@ -1210,39 +705,27 @@
 
         <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
             <div class="inline-block mb-6" data-aos="fade-down" data-aos-duration="800"></div>
-
-            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight tracking-tight" data-aos="fade-up"
-                data-aos-delay="100">
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight tracking-tight" data-aos="fade-up" data-aos-delay="100">
                 Kelola Uang dengan<br />
                 <span class="gradient-text">Lebih Terarah,</span><br />
-                <span class="text-3xl md:text-4xl lg:text-5xl font-semibold opacity-70 tracking-normal">Bukan Sekadar
-                    Hemat.</span>
+                <span class="text-3xl md:text-4xl lg:text-5xl font-semibold opacity-70 tracking-normal">Bukan Sekadar Hemat.</span>
             </h1>
-
-            <p class="text-base md:text-lg text-gray-300 mb-10 max-w-xl mx-auto leading-relaxed" data-aos="fade-up"
-                data-aos-delay="200">
-                Pahami pola keuanganmu, rancang strategi yang sesuai dengan kepribadianmu, dan wujudkan target
-                finansialmu dengan sistem yang terstruktur dan mudah dipahami.
+            <p class="text-base md:text-lg text-gray-300 mb-10 max-w-xl mx-auto leading-relaxed" data-aos="fade-up" data-aos-delay="200">
+                Pahami pola keuanganmu, rancang strategi yang sesuai dengan kepribadianmu, dan wujudkan target finansialmu dengan sistem yang terstruktur dan mudah dipahami.
             </p>
-
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20" data-aos="fade-up"
-                data-aos-delay="350">
-                <a href="personality-test.html"
-                    class="btn-primary px-9 py-4 rounded-full font-bold text-base flex items-center gap-2 group">
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20" data-aos="fade-up" data-aos-delay="350">
+                <a href="personality-test.html" class="btn-primary px-9 py-4 rounded-full font-bold text-base flex items-center gap-2 group">
                     <span>Mulai Sekarang</span>
-                    <i data-lucide="arrow-right"
-                        class="w-4 h-4 group-hover:translate-x-1 transition-transform relative z-10"></i>
+                    <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform relative z-10"></i>
                 </a>
-                <a href="about.html"
-                    class="btn-ghost px-9 py-4 rounded-full font-bold text-base flex items-center gap-2">
+                <a href="about.html" class="btn-ghost px-9 py-4 rounded-full font-bold text-base flex items-center gap-2">
                     <i data-lucide="play-circle" class="w-4 h-4"></i>
                     Lihat Demo
                 </a>
             </div>
         </div>
 
-        <div
-            class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 opacity-40 mt-100">
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 opacity-40 mt-100">
             <span class="text-xs tracking-widest uppercase">Scroll</span>
             <div class="w-px h-10 bg-gradient-to-b from-violet-400 to-transparent animate-pulse"></div>
         </div>
@@ -1252,43 +735,31 @@
     <div class="py-5 border-y border-white/5 bg-white/[0.02] overflow-hidden">
         <div class="marquee-track">
             <div class="flex items-center gap-12 px-6 whitespace-nowrap">
-                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="brain-circuit"
-                        class="w-4 h-4 text-violet-400 opacity-100"></i>Tes Kepribadian Finansial</span>
+                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="brain-circuit" class="w-4 h-4 text-violet-400 opacity-100"></i>Tes Kepribadian Finansial</span>
                 <span class="w-1 h-1 rounded-full bg-violet-500/40 inline-block"></span>
-                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="bar-chart-2"
-                        class="w-4 h-4 text-cyan-400 opacity-100"></i>Simulasi Budget Interaktif</span>
+                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="bar-chart-2" class="w-4 h-4 text-cyan-400 opacity-100"></i>Simulasi Budget Interaktif</span>
                 <span class="w-1 h-1 rounded-full bg-violet-500/40 inline-block"></span>
-                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="target"
-                        class="w-4 h-4 text-emerald-400 opacity-100"></i>Target Tabungan Terstruktur</span>
+                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="target" class="w-4 h-4 text-emerald-400 opacity-100"></i>Target Tabungan Terstruktur</span>
                 <span class="w-1 h-1 rounded-full bg-violet-500/40 inline-block"></span>
-                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="trophy"
-                        class="w-4 h-4 text-orange-400 opacity-100"></i>30-Day Saving Challenge</span>
+                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="trophy" class="w-4 h-4 text-orange-400 opacity-100"></i>30-Day Saving Challenge</span>
                 <span class="w-1 h-1 rounded-full bg-violet-500/40 inline-block"></span>
-                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="shield-check"
-                        class="w-4 h-4 text-pink-400 opacity-100"></i>Edukasi Berbasis Perilaku</span>
+                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="shield-check" class="w-4 h-4 text-pink-400 opacity-100"></i>Edukasi Berbasis Perilaku</span>
                 <span class="w-1 h-1 rounded-full bg-violet-500/40 inline-block"></span>
-                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="zap"
-                        class="w-4 h-4 text-yellow-400 opacity-100"></i>Insight Finansial Real-time</span>
+                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="zap" class="w-4 h-4 text-yellow-400 opacity-100"></i>Insight Finansial Real-time</span>
                 <span class="w-1 h-1 rounded-full bg-violet-500/40 inline-block"></span>
             </div>
             <div class="flex items-center gap-12 px-6 whitespace-nowrap">
-                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="brain-circuit"
-                        class="w-4 h-4 text-violet-400 opacity-100"></i>Tes Kepribadian Finansial</span>
+                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="brain-circuit" class="w-4 h-4 text-violet-400 opacity-100"></i>Tes Kepribadian Finansial</span>
                 <span class="w-1 h-1 rounded-full bg-violet-500/40 inline-block"></span>
-                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="bar-chart-2"
-                        class="w-4 h-4 text-cyan-400 opacity-100"></i>Simulasi Budget Interaktif</span>
+                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="bar-chart-2" class="w-4 h-4 text-cyan-400 opacity-100"></i>Simulasi Budget Interaktif</span>
                 <span class="w-1 h-1 rounded-full bg-violet-500/40 inline-block"></span>
-                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="target"
-                        class="w-4 h-4 text-emerald-400 opacity-100"></i>Target Tabungan Terstruktur</span>
+                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="target" class="w-4 h-4 text-emerald-400 opacity-100"></i>Target Tabungan Terstruktur</span>
                 <span class="w-1 h-1 rounded-full bg-violet-500/40 inline-block"></span>
-                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="trophy"
-                        class="w-4 h-4 text-orange-400 opacity-100"></i>30-Day Saving Challenge</span>
+                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="trophy" class="w-4 h-4 text-orange-400 opacity-100"></i>30-Day Saving Challenge</span>
                 <span class="w-1 h-1 rounded-full bg-violet-500/40 inline-block"></span>
-                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="shield-check"
-                        class="w-4 h-4 text-pink-400 opacity-100"></i>Edukasi Berbasis Perilaku</span>
+                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="shield-check" class="w-4 h-4 text-pink-400 opacity-100"></i>Edukasi Berbasis Perilaku</span>
                 <span class="w-1 h-1 rounded-full bg-violet-500/40 inline-block"></span>
-                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="zap"
-                        class="w-4 h-4 text-yellow-400 opacity-100"></i>Insight Finansial Real-time</span>
+                <span class="text-sm font-semibold opacity-30 flex items-center gap-3"><i data-lucide="zap" class="w-4 h-4 text-yellow-400 opacity-100"></i>Insight Finansial Real-time</span>
                 <span class="w-1 h-1 rounded-full bg-violet-500/40 inline-block"></span>
             </div>
         </div>
@@ -1307,19 +778,13 @@
                         Masalah yang <span class="gradient-text">Kebanyakan</span> Orang Alami
                     </h2>
                     <p class="opacity-60 text-base leading-relaxed mb-8">
-                        Monetra hadir untuk membantu kamu memahami kebiasaan finansialmu dan mengubahnya menjadi rencana
-                        yang nyata.
+                        Monetra hadir untuk membantu kamu memahami kebiasaan finansialmu dan mengubahnya menjadi rencana yang nyata.
                     </p>
                     <a href="personality-test.html" class="morph-btn">
                         <span class="btn-fill"></span>
                         <span class="shadow"></span>
                         <span class="btn-text">
-                            <span style="--i:0">T</span><span style="--i:1">e</span><span style="--i:2">m</span><span
-                                style="--i:3">u</span><span style="--i:4">k</span><span style="--i:5">a</span><span
-                                style="--i:6">n</span>&nbsp;<span style="--i:7">S</span><span
-                                style="--i:8">o</span><span style="--i:9">l</span><span style="--i:10">u</span><span
-                                style="--i:11">s</span><span style="--i:12">i</span><span style="--i:13">n</span><span
-                                style="--i:14">y</span><span style="--i:15">a</span>
+                            <span style="--i:0">T</span><span style="--i:1">e</span><span style="--i:2">m</span><span style="--i:3">u</span><span style="--i:4">k</span><span style="--i:5">a</span><span style="--i:6">n</span>&nbsp;<span style="--i:7">S</span><span style="--i:8">o</span><span style="--i:9">l</span><span style="--i:10">u</span><span style="--i:11">s</span><span style="--i:12">i</span><span style="--i:13">n</span><span style="--i:14">y</span><span style="--i:15">a</span>
                         </span>
                         <span class="orbit-dots"><span></span><span></span><span></span><span></span></span>
                         <span class="corners"><span></span><span></span><span></span><span></span></span>
@@ -1336,8 +801,7 @@
                         </div>
                     </div>
                     <div class="problem-item" data-aos="fade-left" data-aos-delay="80">
-                        <div
-                            class="w-10 h-10 rounded-xl bg-orange-500/15 flex items-center justify-center flex-shrink-0">
+                        <div class="w-10 h-10 rounded-xl bg-orange-500/15 flex items-center justify-center flex-shrink-0">
                             <i data-lucide="refresh-cw" class="w-5 h-5 text-orange-400"></i>
                         </div>
                         <div>
@@ -1346,8 +810,7 @@
                         </div>
                     </div>
                     <div class="problem-item" data-aos="fade-left" data-aos-delay="160">
-                        <div
-                            class="w-10 h-10 rounded-xl bg-yellow-500/15 flex items-center justify-center flex-shrink-0">
+                        <div class="w-10 h-10 rounded-xl bg-yellow-500/15 flex items-center justify-center flex-shrink-0">
                             <i data-lucide="help-circle" class="w-5 h-5 text-yellow-400"></i>
                         </div>
                         <div>
@@ -1356,8 +819,7 @@
                         </div>
                     </div>
                     <div class="problem-item" data-aos="fade-left" data-aos-delay="240">
-                        <div
-                            class="w-10 h-10 rounded-xl bg-violet-500/15 flex items-center justify-center flex-shrink-0">
+                        <div class="w-10 h-10 rounded-xl bg-violet-500/15 flex items-center justify-center flex-shrink-0">
                             <i data-lucide="flag" class="w-5 h-5 text-violet-400"></i>
                         </div>
                         <div>
@@ -1375,61 +837,26 @@
         <div class="glow-blob w-96 h-96 bg-violet-700/10 -bottom-20 -left-20" style="position:absolute;"></div>
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center mb-16" data-aos="fade-up">
-                <span class="section-tag mb-5 inline-flex">
-                    <i data-lucide="sparkles" class="w-3 h-3"></i> Kenapa Monetra?
-                </span>
-                <h2 class="text-3xl md:text-5xl font-black mb-5">Bukan Sekadar <span class="gradient-text">Catatan
-                        Keuangan.</span></h2>
-                <p class="opacity-60 max-w-xl mx-auto text-base leading-relaxed">
-                    Monetra dirancang dengan pendekatan berbasis perilaku dan edukasi — kamu tidak hanya mencatat
-                    pengeluaran, tetapi memahami pola dan menemukan solusi yang tepat.
-                </p>
+                <span class="section-tag mb-5 inline-flex"><i data-lucide="sparkles" class="w-3 h-3"></i> Kenapa Monetra?</span>
+                <h2 class="text-3xl md:text-5xl font-black mb-5">Bukan Sekadar <span class="gradient-text">Catatan Keuangan.</span></h2>
+                <p class="opacity-60 max-w-xl mx-auto text-base leading-relaxed">Monetra dirancang dengan pendekatan berbasis perilaku dan edukasi — kamu tidak hanya mencatat pengeluaran, tetapi memahami pola dan menemukan solusi yang tepat.</p>
             </div>
-
             <div class="grid md:grid-cols-2 gap-6" data-aos="fade-up" data-aos-delay="100">
                 <div class="why-card flex items-start gap-4">
-                    <div
-                        class="w-11 h-11 rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center flex-shrink-0">
-                        <i data-lucide="brain" class="w-5 h-5 text-white"></i>
-                    </div>
-                    <div>
-                        <div class="font-bold mb-1">Berbasis Tes Kepribadian Finansial</div>
-                        <div class="text-sm opacity-55 leading-relaxed">Solusi yang disesuaikan dengan tipe dan
-                            kebiasaan keuanganmu secara personal.</div>
-                    </div>
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-violet-600 to-fuchsia-600 flex items-center justify-center flex-shrink-0"><i data-lucide="brain" class="w-5 h-5 text-white"></i></div>
+                    <div><div class="font-bold mb-1">Berbasis Tes Kepribadian Finansial</div><div class="text-sm opacity-55 leading-relaxed">Solusi yang disesuaikan dengan tipe dan kebiasaan keuanganmu secara personal.</div></div>
                 </div>
                 <div class="why-card flex items-start gap-4">
-                    <div
-                        class="w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-600 to-blue-600 flex items-center justify-center flex-shrink-0">
-                        <i data-lucide="activity" class="w-5 h-5 text-white"></i>
-                    </div>
-                    <div>
-                        <div class="font-bold mb-1">Visualisasi Progres Interaktif</div>
-                        <div class="text-sm opacity-55 leading-relaxed">Lihat perkembangan finansialmu secara visual —
-                            bukan sekadar angka di spreadsheet.</div>
-                    </div>
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-600 to-blue-600 flex items-center justify-center flex-shrink-0"><i data-lucide="activity" class="w-5 h-5 text-white"></i></div>
+                    <div><div class="font-bold mb-1">Visualisasi Progres Interaktif</div><div class="text-sm opacity-55 leading-relaxed">Lihat perkembangan finansialmu secara visual — bukan sekadar angka di spreadsheet.</div></div>
                 </div>
                 <div class="why-card flex items-start gap-4">
-                    <div
-                        class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-600 to-green-600 flex items-center justify-center flex-shrink-0">
-                        <i data-lucide="graduation-cap" class="w-5 h-5 text-white"></i>
-                    </div>
-                    <div>
-                        <div class="font-bold mb-1">Dirancang untuk Pelajar & Mahasiswa</div>
-                        <div class="text-sm opacity-55 leading-relaxed">Antarmuka sederhana, konteks relevan, bahasa
-                            yang mudah dipahami semua kalangan.</div>
-                    </div>
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-600 to-green-600 flex items-center justify-center flex-shrink-0"><i data-lucide="graduation-cap" class="w-5 h-5 text-white"></i></div>
+                    <div><div class="font-bold mb-1">Dirancang untuk Pelajar & Mahasiswa</div><div class="text-sm opacity-55 leading-relaxed">Antarmuka sederhana, konteks relevan, bahasa yang mudah dipahami semua kalangan.</div></div>
                 </div>
                 <div class="why-card flex items-start gap-4">
-                    <div
-                        class="w-11 h-11 rounded-xl bg-gradient-to-br from-orange-600 to-red-500 flex items-center justify-center flex-shrink-0">
-                        <i data-lucide="smartphone" class="w-5 h-5 text-white"></i>
-                    </div>
-                    <div>
-                        <div class="font-bold mb-1">Mudah di Berbagai Perangkat</div>
-                        <div class="text-sm opacity-55 leading-relaxed">Akses kapan saja dan di mana saja — dari laptop,
-                            tablet, hingga HP-mu.</div>
-                    </div>
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-orange-600 to-red-500 flex items-center justify-center flex-shrink-0"><i data-lucide="smartphone" class="w-5 h-5 text-white"></i></div>
+                    <div><div class="font-bold mb-1">Mudah di Berbagai Perangkat</div><div class="text-sm opacity-55 leading-relaxed">Akses kapan saja dan di mana saja — dari laptop, tablet, hingga HP-mu.</div></div>
                 </div>
             </div>
         </div>
@@ -1440,74 +867,34 @@
         <div class="glow-blob w-72 h-72 bg-cyan-700/10 top-10 right-10" style="position:absolute;"></div>
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16" data-aos="fade-up">
-                <span class="section-tag mb-5 inline-flex">
-                    <i data-lucide="layers" class="w-3 h-3"></i> Fitur Unggulan
-                </span>
-                <h2 class="text-3xl md:text-5xl font-black mb-5">Semua yang Kamu <span
-                        class="gradient-text">Butuhkan</span></h2>
-                <p class="opacity-60 max-w-lg mx-auto text-base">Fitur-fitur interaktif yang dirancang khusus untuk
-                    membantumu mengelola dan memahami keuangan.</p>
+                <span class="section-tag mb-5 inline-flex"><i data-lucide="layers" class="w-3 h-3"></i> Fitur Unggulan</span>
+                <h2 class="text-3xl md:text-5xl font-black mb-5">Semua yang Kamu <span class="gradient-text">Butuhkan</span></h2>
+                <p class="opacity-60 max-w-lg mx-auto text-base">Fitur-fitur interaktif yang dirancang khusus untuk membantumu mengelola dan memahami keuangan.</p>
             </div>
-
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <a href="personality-test.html" class="feature-card p-7 rounded-3xl group" data-aos="fade-up"
-                    data-aos-delay="0">
-                    <div
-                        class="icon-ring w-14 h-14 bg-gradient-to-br from-violet-600 to-fuchsia-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="brain" class="w-7 h-7 text-white"></i>
-                    </div>
+                <a href="personality-test.html" class="feature-card p-7 rounded-3xl group" data-aos="fade-up" data-aos-delay="0">
+                    <div class="icon-ring w-14 h-14 bg-gradient-to-br from-violet-600 to-fuchsia-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300"><i data-lucide="brain" class="w-7 h-7 text-white"></i></div>
                     <h3 class="text-lg font-bold mb-2">Tes Kepribadian Finansial</h3>
-                    <p class="opacity-55 text-sm leading-relaxed mb-4">Temukan tipe keuanganmu dan pahami bagaimana
-                        kebiasaanmu memengaruhi keputusan finansial.</p>
-                    <div
-                        class="flex items-center gap-1 text-xs text-violet-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
-                        Mulai Tes <i data-lucide="arrow-right" class="w-3 h-3"></i>
-                    </div>
+                    <p class="opacity-55 text-sm leading-relaxed mb-4">Temukan tipe keuanganmu dan pahami bagaimana kebiasaanmu memengaruhi keputusan finansial.</p>
+                    <div class="flex items-center gap-1 text-xs text-violet-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">Mulai Tes <i data-lucide="arrow-right" class="w-3 h-3"></i></div>
                 </a>
-
-                <a href="budget-simulator.html" class="feature-card p-7 rounded-3xl group" data-aos="fade-up"
-                    data-aos-delay="80">
-                    <div
-                        class="icon-ring w-14 h-14 bg-gradient-to-br from-cyan-600 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="pie-chart" class="w-7 h-7 text-white"></i>
-                    </div>
+                <a href="budget-simulator.html" class="feature-card p-7 rounded-3xl group" data-aos="fade-up" data-aos-delay="80">
+                    <div class="icon-ring w-14 h-14 bg-gradient-to-br from-cyan-600 to-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300"><i data-lucide="pie-chart" class="w-7 h-7 text-white"></i></div>
                     <h3 class="text-lg font-bold mb-2">Simulasi Budget</h3>
-                    <p class="opacity-55 text-sm leading-relaxed mb-4">Atur pengeluaran bulanan dengan sistem yang
-                        terstruktur dan realistis sesuai kondisimu.</p>
-                    <div
-                        class="flex items-center gap-1 text-xs text-cyan-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
-                        Coba Sekarang <i data-lucide="arrow-right" class="w-3 h-3"></i>
-                    </div>
+                    <p class="opacity-55 text-sm leading-relaxed mb-4">Atur pengeluaran bulanan dengan sistem yang terstruktur dan realistis sesuai kondisimu.</p>
+                    <div class="flex items-center gap-1 text-xs text-cyan-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">Coba Sekarang <i data-lucide="arrow-right" class="w-3 h-3"></i></div>
                 </a>
-
-                <a href="goal-tracker.html" class="feature-card p-7 rounded-3xl group" data-aos="fade-up"
-                    data-aos-delay="160">
-                    <div
-                        class="icon-ring w-14 h-14 bg-gradient-to-br from-emerald-600 to-green-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="target" class="w-7 h-7 text-white"></i>
-                    </div>
+                <a href="goal-tracker.html" class="feature-card p-7 rounded-3xl group" data-aos="fade-up" data-aos-delay="160">
+                    <div class="icon-ring w-14 h-14 bg-gradient-to-br from-emerald-600 to-green-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300"><i data-lucide="target" class="w-7 h-7 text-white"></i></div>
                     <h3 class="text-lg font-bold mb-2">Target Tabungan</h3>
-                    <p class="opacity-55 text-sm leading-relaxed mb-4">Tetapkan impianmu dan pantau progresnya secara
-                        bertahap dengan visualisasi yang jelas.</p>
-                    <div
-                        class="flex items-center gap-1 text-xs text-emerald-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
-                        Set Target <i data-lucide="arrow-right" class="w-3 h-3"></i>
-                    </div>
+                    <p class="opacity-55 text-sm leading-relaxed mb-4">Tetapkan impianmu dan pantau progresnya secara bertahap dengan visualisasi yang jelas.</p>
+                    <div class="flex items-center gap-1 text-xs text-emerald-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">Set Target <i data-lucide="arrow-right" class="w-3 h-3"></i></div>
                 </a>
-
-                <a href="challenge.html" class="feature-card p-7 rounded-3xl group" data-aos="fade-up"
-                    data-aos-delay="240">
-                    <div
-                        class="icon-ring w-14 h-14 bg-gradient-to-br from-orange-600 to-red-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300">
-                        <i data-lucide="trophy" class="w-7 h-7 text-white"></i>
-                    </div>
+                <a href="challenge.html" class="feature-card p-7 rounded-3xl group" data-aos="fade-up" data-aos-delay="240">
+                    <div class="icon-ring w-14 h-14 bg-gradient-to-br from-orange-600 to-red-600 rounded-2xl flex items-center justify-center mb-6 shadow-lg group-hover:scale-110 transition-transform duration-300"><i data-lucide="trophy" class="w-7 h-7 text-white"></i></div>
                     <h3 class="text-lg font-bold mb-2">Saving Challenge</h3>
-                    <p class="opacity-55 text-sm leading-relaxed mb-4">Bangun konsistensi melalui tantangan menabung
-                        selama 30 hari yang menyenangkan.</p>
-                    <div
-                        class="flex items-center gap-1 text-xs text-orange-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
-                        Ikuti Challenge <i data-lucide="arrow-right" class="w-3 h-3"></i>
-                    </div>
+                    <p class="opacity-55 text-sm leading-relaxed mb-4">Bangun konsistensi melalui tantangan menabung selama 30 hari yang menyenangkan.</p>
+                    <div class="flex items-center gap-1 text-xs text-orange-400 font-semibold opacity-0 group-hover:opacity-100 transition-opacity">Ikuti Challenge <i data-lucide="arrow-right" class="w-3 h-3"></i></div>
                 </a>
             </div>
         </div>
@@ -1519,79 +906,34 @@
         <div class="max-w-6xl mx-auto px-6">
             <div class="grid md:grid-cols-2 gap-16 items-center">
                 <div class="relative" data-aos="fade-right">
-                    <div
-                        class="relative z-10 dark:bg-slate-900/80 bg-white border dark:border-white/8 border-slate-200 rounded-3xl p-8 shadow-2xl float-anim">
+                    <div class="relative z-10 dark:bg-slate-900/80 bg-white border dark:border-white/8 border-slate-200 rounded-3xl p-8 shadow-2xl float-anim">
                         <div class="flex items-center justify-between mb-6">
                             <div class="font-bold text-sm opacity-70">Progres Finansialmu</div>
-                            <span
-                                class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 text-xs font-bold">+24%
-                                ↑</span>
+                            <span class="px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 text-xs font-bold">+24% ↑</span>
                         </div>
                         <div class="flex items-end gap-3 h-28 mb-4">
-                            <div class="flex-1 rounded-lg bg-gradient-to-t from-violet-600 to-violet-400 opacity-60"
-                                style="height:40%"></div>
-                            <div class="flex-1 rounded-lg bg-gradient-to-t from-violet-600 to-violet-400 opacity-75"
-                                style="height:60%"></div>
-                            <div class="flex-1 rounded-lg bg-gradient-to-t from-violet-600 to-violet-400 opacity-85"
-                                style="height:50%"></div>
-                            <div class="flex-1 rounded-lg bg-gradient-to-t from-violet-600 to-violet-400"
-                                style="height:80%"></div>
-                            <div class="flex-1 rounded-lg bg-gradient-to-t from-cyan-600 to-cyan-400"
-                                style="height:100%"></div>
+                            <div class="flex-1 rounded-lg bg-gradient-to-t from-violet-600 to-violet-400 opacity-60" style="height:40%"></div>
+                            <div class="flex-1 rounded-lg bg-gradient-to-t from-violet-600 to-violet-400 opacity-75" style="height:60%"></div>
+                            <div class="flex-1 rounded-lg bg-gradient-to-t from-violet-600 to-violet-400 opacity-85" style="height:50%"></div>
+                            <div class="flex-1 rounded-lg bg-gradient-to-t from-violet-600 to-violet-400" style="height:80%"></div>
+                            <div class="flex-1 rounded-lg bg-gradient-to-t from-cyan-600 to-cyan-400" style="height:100%"></div>
                         </div>
-                        <div class="flex justify-between text-xs opacity-40">
-                            <span>Mar</span><span>Apr</span><span>Mei</span><span>Jun</span><span>Jul</span>
-                        </div>
+                        <div class="flex justify-between text-xs opacity-40"><span>Mar</span><span>Apr</span><span>Mei</span><span>Jun</span><span>Jul</span></div>
                     </div>
-                    <div
-                        class="absolute -bottom-6 -right-6 z-20 dark:bg-slate-900 bg-white rounded-2xl border dark:border-white/10 border-slate-200 p-4 shadow-xl float-anim-delay flex items-center gap-3">
-                        <div class="w-9 h-9 rounded-xl bg-emerald-500/20 flex items-center justify-center">
-                            <i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i>
-                        </div>
-                        <div>
-                            <div class="text-xs opacity-50">Target tercapai</div>
-                            <div class="font-bold text-sm">3 dari 4 Bulan</div>
-                        </div>
+                    <div class="absolute -bottom-6 -right-6 z-20 dark:bg-slate-900 bg-white rounded-2xl border dark:border-white/10 border-slate-200 p-4 shadow-xl float-anim-delay flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-emerald-500/20 flex items-center justify-center"><i data-lucide="trending-up" class="w-4 h-4 text-emerald-400"></i></div>
+                        <div><div class="text-xs opacity-50">Target tercapai</div><div class="font-bold text-sm">3 dari 4 Bulan</div></div>
                     </div>
                 </div>
                 <div data-aos="fade-left">
-                    <span class="section-tag mb-6 inline-flex">
-                        <i data-lucide="trending-up" class="w-3 h-3"></i> Dampak & Manfaat
-                    </span>
-                    <h2 class="text-3xl md:text-4xl font-black mb-4 leading-tight">
-                        Membantu Generasi Muda Lebih <span class="gradient-text">Sadar Finansial</span>
-                    </h2>
-                    <p class="opacity-60 text-sm mb-8 leading-relaxed">Bukan hanya aplikasi, Monetra adalah sistem yang
-                        membentuk pola pikir dan kebiasaan finansialmu secara berkelanjutan.</p>
+                    <span class="section-tag mb-6 inline-flex"><i data-lucide="trending-up" class="w-3 h-3"></i> Dampak & Manfaat</span>
+                    <h2 class="text-3xl md:text-4xl font-black mb-4 leading-tight">Membantu Generasi Muda Lebih <span class="gradient-text">Sadar Finansial</span></h2>
+                    <p class="opacity-60 text-sm mb-8 leading-relaxed">Bukan hanya aplikasi, Monetra adalah sistem yang membentuk pola pikir dan kebiasaan finansialmu secara berkelanjutan.</p>
                     <div class="flex flex-col gap-3">
-                        <div class="impact-item">
-                            <div
-                                class="w-9 h-9 rounded-xl bg-emerald-500/15 flex items-center justify-center flex-shrink-0">
-                                <i data-lucide="heart" class="w-4 h-4 text-emerald-400"></i>
-                            </div>
-                            <span class="text-sm font-medium">Membentuk kebiasaan keuangan yang lebih sehat</span>
-                        </div>
-                        <div class="impact-item">
-                            <div
-                                class="w-9 h-9 rounded-xl bg-blue-500/15 flex items-center justify-center flex-shrink-0">
-                                <i data-lucide="lock" class="w-4 h-4 text-blue-400"></i>
-                            </div>
-                            <span class="text-sm font-medium">Meningkatkan disiplin dalam mengelola uang</span>
-                        </div>
-                        <div class="impact-item">
-                            <div
-                                class="w-9 h-9 rounded-xl bg-violet-500/15 flex items-center justify-center flex-shrink-0">
-                                <i data-lucide="calendar" class="w-4 h-4 text-violet-400"></i>
-                            </div>
-                            <span class="text-sm font-medium">Membantu perencanaan jangka pendek dan panjang</span>
-                        </div>
-                        <div class="impact-item">
-                            <div
-                                class="w-9 h-9 rounded-xl bg-cyan-500/15 flex items-center justify-center flex-shrink-0">
-                                <i data-lucide="bar-chart" class="w-4 h-4 text-cyan-400"></i>
-                            </div>
-                            <span class="text-sm font-medium">Memberikan insight berbasis hasil analisis pengguna</span>
-                        </div>
+                        <div class="impact-item"><div class="w-9 h-9 rounded-xl bg-emerald-500/15 flex items-center justify-center flex-shrink-0"><i data-lucide="heart" class="w-4 h-4 text-emerald-400"></i></div><span class="text-sm font-medium">Membentuk kebiasaan keuangan yang lebih sehat</span></div>
+                        <div class="impact-item"><div class="w-9 h-9 rounded-xl bg-blue-500/15 flex items-center justify-center flex-shrink-0"><i data-lucide="lock" class="w-4 h-4 text-blue-400"></i></div><span class="text-sm font-medium">Meningkatkan disiplin dalam mengelola uang</span></div>
+                        <div class="impact-item"><div class="w-9 h-9 rounded-xl bg-violet-500/15 flex items-center justify-center flex-shrink-0"><i data-lucide="calendar" class="w-4 h-4 text-violet-400"></i></div><span class="text-sm font-medium">Membantu perencanaan jangka pendek dan panjang</span></div>
+                        <div class="impact-item"><div class="w-9 h-9 rounded-xl bg-cyan-500/15 flex items-center justify-center flex-shrink-0"><i data-lucide="bar-chart" class="w-4 h-4 text-cyan-400"></i></div><span class="text-sm font-medium">Memberikan insight berbasis hasil analisis pengguna</span></div>
                     </div>
                 </div>
             </div>
@@ -1604,29 +946,14 @@
         <div class="cta-orb w-80 h-80 -top-20 -left-20" style="position:absolute;"></div>
         <div class="cta-orb w-60 h-60 bottom-10 right-10" style="position:absolute;"></div>
         <div class="cta-orb w-40 h-40 top-1/2 left-1/3" style="position:absolute;"></div>
-        <div
-            style="position:absolute;inset:0;background-image:radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);background-size:32px 32px;pointer-events:none;">
-        </div>
-
+        <div style="position:absolute;inset:0;background-image:radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);background-size:32px 32px;pointer-events:none;"></div>
         <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
             <div data-aos="zoom-in" data-aos-duration="800">
-                <h2 class="text-4xl md:text-6xl font-black mb-6 tracking-tight leading-tight">
-                    Siap Mengubah Cara<br />Kamu Mengelola Uang?
-                </h2>
-                <p class="text-lg mb-10 leading-relaxed max-w-xl mx-auto opacity-80">
-                    Mulai perjalanan finansialmu hari ini dan bangun sistem yang membantumu mencapai tujuan — bukan
-                    hanya sekadar menabung.
-                </p>
+                <h2 class="text-4xl md:text-6xl font-black mb-6 tracking-tight leading-tight">Siap Mengubah Cara<br />Kamu Mengelola Uang?</h2>
+                <p class="text-lg mb-10 leading-relaxed max-w-xl mx-auto opacity-80">Mulai perjalanan finansialmu hari ini dan bangun sistem yang membantumu mencapai tujuan — bukan hanya sekadar menabung.</p>
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a href="personality-test.html"
-                        class="cta-white-btn px-10 py-4 rounded-full font-black text-base hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl">
-                        Mulai Sekarang
-                    </a>
-                    <a href="budget-simulator.html"
-                        class="px-10 py-4 rounded-full border-2 border-white/30 font-bold text-base hover:bg-white/10 transition"
-                        style="color:#ffffff!important;">
-                        Coba Fitur
-                    </a>
+                    <a href="personality-test.html" class="cta-white-btn px-10 py-4 rounded-full font-black text-base hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-2xl">Mulai Sekarang</a>
+                    <a href="budget-simulator.html" class="px-10 py-4 rounded-full border-2 border-white/30 font-bold text-base hover:bg-white/10 transition" style="color:#ffffff!important;">Coba Fitur</a>
                 </div>
             </div>
         </div>
@@ -1638,24 +965,17 @@
             <div class="grid md:grid-cols-4 gap-12 mb-16">
                 <div>
                     <div class="flex items-center space-x-3 mb-6">
-                        <div class="w-10 h-10 overflow-hidden rounded-xl border border-white/10">
-                            <img src="assets/img/image.jpeg" alt="Monetra Logo" class="w-full h-full object-cover">
-                        </div>
+                        <div class="w-10 h-10 overflow-hidden rounded-xl border border-white/10"><img src="assets/img/image.jpeg" alt="Monetra Logo" class="w-full h-full object-cover"></div>
                         <span class="text-2xl font-bold">Monetra</span>
                     </div>
-                    <p class="opacity-50 text-sm leading-relaxed">Platform edukasi finansial interaktif yang membantu
-                        generasi muda Indonesia memahami, merencanakan, dan mengoptimalkan keuangan mereka secara lebih
-                        bijak.</p>
+                    <p class="opacity-50 text-sm leading-relaxed">Platform edukasi finansial interaktif yang membantu generasi muda Indonesia memahami, merencanakan, dan mengoptimalkan keuangan mereka secara lebih bijak.</p>
                 </div>
                 <div>
                     <h4 class="font-bold mb-6">Produk</h4>
                     <ul class="space-y-4 text-sm opacity-60">
-                        <li><a href="personality-test.html" class="hover:text-violet-400 transition">Tes Kepribadian</a>
-                        </li>
-                        <li><a href="budget-simulator.html" class="hover:text-violet-400 transition">Simulasi Budget</a>
-                        </li>
-                        <li><a href="goal-tracker.html" class="hover:text-violet-400 transition">Target Tabungan</a>
-                        </li>
+                        <li><a href="personality-test.html" class="hover:text-violet-400 transition">Tes Kepribadian</a></li>
+                        <li><a href="budget-simulator.html" class="hover:text-violet-400 transition">Simulasi Budget</a></li>
+                        <li><a href="goal-tracker.html" class="hover:text-violet-400 transition">Target Tabungan</a></li>
                         <li><a href="challenge.html" class="hover:text-violet-400 transition">Saving Challenge</a></li>
                     </ul>
                 </div>
@@ -1669,18 +989,9 @@
                 <div>
                     <h4 class="font-bold mb-6">Ikuti Kami</h4>
                     <div class="flex space-x-4">
-                        <a href="#"
-                            class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10">
-                            <i data-lucide="twitter" class="w-5 h-5"></i>
-                        </a>
-                        <a href="#"
-                            class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10">
-                            <i data-lucide="instagram" class="w-5 h-5"></i>
-                        </a>
-                        <a href="#"
-                            class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10">
-                            <i data-lucide="linkedin" class="w-5 h-5"></i>
-                        </a>
+                        <a href="#" class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                        <a href="#" class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                        <a href="#" class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
                     </div>
                 </div>
             </div>
@@ -1695,18 +1006,13 @@
 
         window.addEventListener('load', function () {
             const loader = document.getElementById('loader');
-            // Min 800ms for branding, then fade
+            // Diperlama: min 2.8 detik biar animasi progress bar selesai
             setTimeout(() => {
                 if (loader) loader.classList.add('slide-up');
-            }, 800);
+            }, 2800);
         });
 
-        AOS.init({
-            duration: 800,
-            once: true,
-            offset: 100,
-            easing: 'ease-out-cubic'
-        });
+        AOS.init({ duration: 800, once: true, offset: 100, easing: 'ease-out-cubic' });
 
         const themeToggle = document.getElementById('themeToggle');
         const themeToggleMobile = document.getElementById('themeToggleMobile');
@@ -1747,7 +1053,7 @@
             update() { this.x += this.vx; this.y += this.vy; if (this.x < 0 || this.x > width) this.vx *= -1; if (this.y < 0 || this.y > height) this.vy *= -1; }
             draw() { ctx.fillStyle = html.classList.contains('dark') ? '#8b5cf6' : '#7c3aed'; ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill(); }
         }
-        function init() { particles = []; for (let i = 0; i < 60; i++)particles.push(new Particle()); }
+        function init() { particles = []; for (let i = 0; i < 60; i++) particles.push(new Particle()); }
         function animate() {
             ctx.clearRect(0, 0, width, height);
             for (let i = 0; i < particles.length; i++) {
@@ -1774,13 +1080,12 @@
         }, { threshold: 0.3 });
         underlines.forEach(el => observer.observe(el));
     </script>
+
     <!-- Floating Clock -->
     <div id="floating-clock" class="clock-container">
         <div class="clock-time">00:00:00</div>
         <div class="clock-date">Memuat...</div>
     </div>
-
     <script src="assets/js/clock.js"></script>
 </body>
-
 </html>

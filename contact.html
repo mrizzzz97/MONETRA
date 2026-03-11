@@ -67,74 +67,7 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* ── LOADING SCREEN (UNCHANGED) ── */
-        .loader-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: #020617;
-            z-index: 10000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
-        }
-
-        .loader-wrapper.slide-up {
-            transform: translateY(-100%);
-        }
-
-        .loader-logo-img {
-            width: 100px;
-            height: 100px;
-            object-fit: contain;
-            border-radius: 20px;
-            box-shadow: 0 0 40px rgba(139, 92, 246, 0.4);
-            opacity: 0;
-            animation: logoReveal 1s ease forwards 0.5s;
-        }
-
-        @keyframes logoReveal {
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        /* ── LOADER TEXT: MONETRA BOLD ── */
-        .loader-text {
-            margin-top: 24px;
-            font-size: 2.2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            opacity: 0;
-            animation: fadeIn 0.8s ease forwards 1.2s;
-            letter-spacing: 0.08em;
-        }
-
-        .loader-subtext {
-            margin-top: 8px;
-            font-size: 0.875rem;
-            color: #64748b;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            opacity: 0;
-            animation: fadeIn 1s ease forwards 1.8s;
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
-        /* ── NAVBAR (UNCHANGED) ── */
+        /* ── NAVBAR ── */
         .navbar {
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             padding-top: 1.25rem;
@@ -167,7 +100,7 @@
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
         }
 
-        /* ── PAGE HERO — BIGGER ── */
+        /* ── PAGE HERO ── */
         .page-hero {
             position: relative;
             background: radial-gradient(ellipse 80% 60% at 50% -10%, #1e1b4b 0%, transparent 70%),
@@ -231,17 +164,8 @@
         }
 
         @keyframes pulseGlow {
-
-            0%,
-            100% {
-                box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.5);
-                transform: scale(1);
-            }
-
-            50% {
-                box-shadow: 0 0 0 6px rgba(34, 211, 238, 0);
-                transform: scale(1.1);
-            }
+            0%, 100% { box-shadow: 0 0 0 0 rgba(34, 211, 238, 0.5); transform: scale(1); }
+            50% { box-shadow: 0 0 0 6px rgba(34, 211, 238, 0); transform: scale(1.1); }
         }
 
         .gradient-text {
@@ -255,13 +179,8 @@
         }
 
         @keyframes gradientMove {
-            0% {
-                background-position: 0%
-            }
-
-            100% {
-                background-position: 200%
-            }
+            0% { background-position: 0% }
+            100% { background-position: 200% }
         }
 
         html.light .gradient-text {
@@ -306,7 +225,6 @@
             color: #6d28d9;
         }
 
-        /* BUG FIX: stat-chip icons in light mode */
         html.light .stat-chip .lucide {
             color: inherit !important;
         }
@@ -335,15 +253,8 @@
         }
 
         @keyframes floatOrb {
-
-            0%,
-            100% {
-                transform: translateY(0) scale(1);
-            }
-
-            50% {
-                transform: translateY(-25px) scale(1.06);
-            }
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-25px) scale(1.06); }
         }
 
         /* ── CARDS ── */
@@ -626,7 +537,7 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
         }
 
-        /* ── BUTTONS — ALL white text ── */
+        /* ── BUTTONS ── */
         .btn-submit {
             background: linear-gradient(135deg, #6d28d9 0%, #0e7490 100%);
             color: #ffffff !important;
@@ -661,7 +572,8 @@
             opacity: 1;
         }
 
-        .btn-submit:hover {
+        /* Hanya membesar jika form lengkap (class .ready ditambah via JS) */
+        .btn-submit.ready:hover {
             transform: translateY(-3px);
             box-shadow: 0 14px 36px rgba(109, 40, 217, 0.45), 0 4px 12px rgba(0, 0, 0, 0.2);
         }
@@ -670,8 +582,7 @@
             transform: translateY(-1px);
         }
 
-        /* BUG FIX: Semua anak elemen btn-submit pakai warna putih */
-        .btn-submit>*,
+        .btn-submit > *,
         .btn-submit span,
         .btn-submit i,
         .btn-submit svg,
@@ -715,15 +626,8 @@
         }
 
         @keyframes meshMove {
-            0% {
-                filter: hue-rotate(0deg);
-                transform: scale(1);
-            }
-
-            100% {
-                filter: hue-rotate(12deg);
-                transform: scale(1.04);
-            }
+            0% { filter: hue-rotate(0deg); transform: scale(1); }
+            100% { filter: hue-rotate(12deg); transform: scale(1.04); }
         }
 
         .cta-dots {
@@ -779,7 +683,6 @@
             background: rgba(109, 40, 217, 0.05);
         }
 
-        /* BUG FIX: icon di cta-eyebrow light mode */
         html.light .cta-eyebrow svg {
             color: #6d28d9 !important;
             stroke: #6d28d9 !important;
@@ -851,6 +754,7 @@
             position: relative;
             overflow: hidden;
             letter-spacing: 0.01em;
+            cursor: pointer;
         }
 
         .btn-cta-primary::after {
@@ -863,17 +767,12 @@
             transition: opacity 0.3s;
         }
 
-        .btn-cta-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 16px 40px rgba(109, 40, 217, 0.45);
-        }
-
+        /* CTA tombol TIDAK membesar — hanya sedikit brightness hover, tanpa transform */
         .btn-cta-primary:hover::after {
             opacity: 1;
         }
 
-        /* BUG FIX: semua elemen dalam btn-cta-primary pakai putih */
-        .btn-cta-primary>*,
+        .btn-cta-primary > *,
         .btn-cta-primary span,
         .btn-cta-primary i,
         .btn-cta-primary svg,
@@ -918,24 +817,10 @@
             background: rgba(109, 40, 217, 0.08);
         }
 
-        /* BUG FIX: icon di btn-cta-secondary harus ikut warna teks parent */
-        html.dark .btn-cta-secondary svg {
-            color: #ffffff !important;
-            stroke: #ffffff !important;
-        }
-
-        html.light .btn-cta-secondary svg {
-            color: #6d28d9 !important;
-            stroke: #6d28d9 !important;
-        }
-
-        html.dark .btn-cta-secondary span {
-            color: #ffffff !important;
-        }
-
-        html.light .btn-cta-secondary span {
-            color: #6d28d9 !important;
-        }
+        html.dark .btn-cta-secondary svg { color: #ffffff !important; stroke: #ffffff !important; }
+        html.light .btn-cta-secondary svg { color: #6d28d9 !important; stroke: #6d28d9 !important; }
+        html.dark .btn-cta-secondary span { color: #ffffff !important; }
+        html.light .btn-cta-secondary span { color: #6d28d9 !important; }
 
         .cta-proof {
             display: flex;
@@ -956,15 +841,8 @@
             font-family: 'DM Sans', sans-serif;
         }
 
-        html.light .proof-item {
-            color: #94a3b8;
-        }
-
-        /* BUG FIX: proof-item icons */
-        html.light .proof-item svg {
-            color: #94a3b8 !important;
-            stroke: #94a3b8 !important;
-        }
+        html.light .proof-item { color: #94a3b8; }
+        html.light .proof-item svg { color: #94a3b8 !important; stroke: #94a3b8 !important; }
 
         .proof-dot {
             width: 4px;
@@ -973,9 +851,7 @@
             background: rgba(255, 255, 255, 0.15);
         }
 
-        html.light .proof-dot {
-            background: #cbd5e1;
-        }
+        html.light .proof-dot { background: #cbd5e1; }
 
         .cta-icon-wrap {
             width: 76px;
@@ -998,29 +874,12 @@
             box-shadow: 0 0 40px rgba(139, 92, 246, 0.15);
         }
 
-        /* BUG FIX: icon di cta-icon-wrap dark mode putih, light mode ungu */
-        html.dark .cta-icon-wrap svg {
-            color: #ffffff !important;
-            stroke: #ffffff !important;
-        }
-
-        html.light .cta-icon-wrap svg {
-            color: #6d28d9 !important;
-            stroke: #6d28d9 !important;
-        }
+        html.dark .cta-icon-wrap svg { color: #ffffff !important; stroke: #ffffff !important; }
+        html.light .cta-icon-wrap svg { color: #6d28d9 !important; stroke: #6d28d9 !important; }
 
         @keyframes iconFloat {
-
-            0%,
-            100% {
-                box-shadow: 0 0 40px rgba(139, 92, 246, 0.28);
-                transform: translateY(0);
-            }
-
-            50% {
-                box-shadow: 0 0 64px rgba(139, 92, 246, 0.45);
-                transform: translateY(-6px);
-            }
+            0%, 100% { box-shadow: 0 0 40px rgba(139, 92, 246, 0.28); transform: translateY(0); }
+            50% { box-shadow: 0 0 64px rgba(139, 92, 246, 0.45); transform: translateY(-6px); }
         }
 
         .cta-particle {
@@ -1031,29 +890,13 @@
         }
 
         @keyframes particleFloat {
-            0% {
-                transform: translateY(100vh) rotate(0deg);
-                opacity: 0;
-            }
-
-            10% {
-                opacity: 1;
-            }
-
-            90% {
-                opacity: 1;
-            }
-
-            100% {
-                transform: translateY(-100px) rotate(720deg);
-                opacity: 0;
-            }
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
         }
 
-        .ripple-btn {
-            position: relative;
-            overflow: hidden;
-        }
+        .ripple-btn { position: relative; overflow: hidden; }
 
         .ripple {
             position: absolute;
@@ -1065,218 +908,66 @@
         }
 
         @keyframes rippleAnim {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
+            to { transform: scale(4); opacity: 0; }
         }
 
         @keyframes shake {
-
-            0%,
-            100% {
-                transform: translateX(0);
-            }
-
-            20% {
-                transform: translateX(-6px);
-            }
-
-            40% {
-                transform: translateX(6px);
-            }
-
-            60% {
-                transform: translateX(-4px);
-            }
-
-            80% {
-                transform: translateX(4px);
-            }
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
         }
 
         /* ── LIGHT MODE FIXES ── */
-        html.light h1,
-        html.light h2,
-        html.light h3,
-        html.light h4,
-        html.light h5 {
-            color: #0f172a !important;
-        }
+        html.light h1, html.light h2, html.light h3, html.light h4, html.light h5 { color: #0f172a !important; }
+        html.light p { color: #334155 !important; }
+        html.light li { color: #334155 !important; }
+        html.light span { color: #334155 !important; }
+        html.light .navbar a { color: #1e293b !important; }
+        html.light .opacity-60 { color: #475569 !important; }
 
-        html.light p {
-            color: #334155 !important;
-        }
+        html.light .btn-submit { color: #ffffff !important; }
+        html.light .btn-submit span { color: #ffffff !important; }
+        html.light .btn-submit svg, html.light .btn-submit svg * { color: #ffffff !important; stroke: #ffffff !important; }
+        html.dark .btn-submit span { color: #ffffff !important; }
+        html.dark .btn-submit svg, html.dark .btn-submit svg * { color: #ffffff !important; stroke: #ffffff !important; }
 
-        html.light li {
-            color: #334155 !important;
-        }
+        html.light .btn-cta-primary { color: #ffffff !important; }
+        html.light .btn-cta-primary span { color: #ffffff !important; }
+        html.light .btn-cta-primary svg, html.light .btn-cta-primary svg * { color: #ffffff !important; stroke: #ffffff !important; }
+        html.dark .btn-cta-primary span { color: #ffffff !important; }
+        html.dark .btn-cta-primary svg, html.dark .btn-cta-primary svg * { color: #ffffff !important; stroke: #ffffff !important; }
 
-        html.light span {
-            color: #334155 !important;
-        }
+        html.dark .btn-cta-secondary span { color: #ffffff !important; }
+        html.dark .btn-cta-secondary svg, html.dark .btn-cta-secondary svg * { color: #ffffff !important; stroke: #ffffff !important; }
+        html.light .btn-cta-secondary { color: #6d28d9 !important; }
+        html.light .btn-cta-secondary span { color: #6d28d9 !important; }
+        html.light .btn-cta-secondary svg, html.light .btn-cta-secondary svg * { color: #6d28d9 !important; stroke: #6d28d9 !important; }
 
-        html.light .navbar a {
-            color: #1e293b !important;
-        }
+        html.light span.section-tag[style*="#a78bfa"] { color: #a78bfa !important; }
+        html.light span.section-tag[style*="#a78bfa"] svg { color: #a78bfa !important; stroke: #a78bfa !important; }
+        html.light span.section-tag[style*="#22d3ee"] { color: #22d3ee !important; }
+        html.light span.section-tag[style*="#22d3ee"] svg { color: #22d3ee !important; stroke: #22d3ee !important; }
 
-        html.light .opacity-60 {
-            color: #475569 !important;
-        }
+        html.light .cta-eyebrow { color: #6d28d9 !important; }
+        html.light .cta-eyebrow span { color: #6d28d9 !important; }
+        html.light .cta-eyebrow svg { color: #6d28d9 !important; stroke: #6d28d9 !important; }
 
-        /* ── BUTTON: override setelah global span, pakai html.light + class agar specificity menang ── */
-        html.light .btn-submit {
-            color: #ffffff !important;
-        }
-
-        html.light .btn-submit span {
-            color: #ffffff !important;
-        }
-
-        html.light .btn-submit svg,
-        html.light .btn-submit svg * {
-            color: #ffffff !important;
-            stroke: #ffffff !important;
-        }
-
-        html.dark .btn-submit span {
-            color: #ffffff !important;
-        }
-
-        html.dark .btn-submit svg,
-        html.dark .btn-submit svg * {
-            color: #ffffff !important;
-            stroke: #ffffff !important;
-        }
-
-        html.light .btn-cta-primary {
-            color: #ffffff !important;
-        }
-
-        html.light .btn-cta-primary span {
-            color: #ffffff !important;
-        }
-
-        html.light .btn-cta-primary svg,
-        html.light .btn-cta-primary svg * {
-            color: #ffffff !important;
-            stroke: #ffffff !important;
-        }
-
-        html.dark .btn-cta-primary span {
-            color: #ffffff !important;
-        }
-
-        html.dark .btn-cta-primary svg,
-        html.dark .btn-cta-primary svg * {
-            color: #ffffff !important;
-            stroke: #ffffff !important;
-        }
-
-        html.dark .btn-cta-secondary span {
-            color: #ffffff !important;
-        }
-
-        html.dark .btn-cta-secondary svg,
-        html.dark .btn-cta-secondary svg * {
-            color: #ffffff !important;
-            stroke: #ffffff !important;
-        }
-
-        html.light .btn-cta-secondary {
-            color: #6d28d9 !important;
-        }
-
-        html.light .btn-cta-secondary span {
-            color: #6d28d9 !important;
-        }
-
-        html.light .btn-cta-secondary svg,
-        html.light .btn-cta-secondary svg * {
-            color: #6d28d9 !important;
-            stroke: #6d28d9 !important;
-        }
-
-        /* ── SECTION-TAG: override setelah global span ── */
-        html.light span.section-tag[style*="#a78bfa"] {
-            color: #a78bfa !important;
-        }
-
-        html.light span.section-tag[style*="#a78bfa"] svg {
-            color: #a78bfa !important;
-            stroke: #a78bfa !important;
-        }
-
-        html.light span.section-tag[style*="#22d3ee"] {
-            color: #22d3ee !important;
-        }
-
-        html.light span.section-tag[style*="#22d3ee"] svg {
-            color: #22d3ee !important;
-            stroke: #22d3ee !important;
-        }
-
-        /* ── CTA EYEBROW ── */
-        html.light .cta-eyebrow {
-            color: #6d28d9 !important;
-        }
-
-        html.light .cta-eyebrow span {
-            color: #6d28d9 !important;
-        }
-
-        html.light .cta-eyebrow svg {
-            color: #6d28d9 !important;
-            stroke: #6d28d9 !important;
-        }
-
-        footer,
-        footer h4,
-        footer p,
-        footer a,
-        footer span,
-        footer li,
-        footer div {
-            color: #fff !important;
-        }
-
-        html.light footer,
-        html.light footer h4,
-        html.light footer p,
-        html.light footer a,
-        html.light footer span,
-        html.light footer li,
-        html.light footer div {
-            color: #fff !important;
-        }
-
-        html.light footer .opacity-50,
-        html.light footer .opacity-60,
-        html.light footer .opacity-40 {
-            color: #fff !important;
-        }
+        footer, footer h4, footer p, footer a, footer span, footer li, footer div { color: #fff !important; }
+        html.light footer, html.light footer h4, html.light footer p, html.light footer a,
+        html.light footer span, html.light footer li, html.light footer div { color: #fff !important; }
+        html.light footer .opacity-50, html.light footer .opacity-60, html.light footer .opacity-40 { color: #fff !important; }
 
         .btn-primary {
             background: linear-gradient(135deg, #6d28d9 0%, #0891b2 100%);
             color: #fff !important;
             transition: all 0.3s ease;
         }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(109, 40, 217, 0.4); }
+        .btn-primary *, .btn-primary i, .btn-primary span { color: #fff !important; }
 
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(109, 40, 217, 0.4);
-        }
-
-        .btn-primary *,
-        .btn-primary i,
-        .btn-primary span {
-            color: #fff !important;
-        }
-
-        .dropdown {
-            position: relative;
-        }
-
+        .dropdown { position: relative; }
         .dropdown-menu {
             position: absolute;
             top: 100%;
@@ -1294,35 +985,11 @@
             transition: all 0.3s ease;
             z-index: 100;
         }
-
-        html.light .dropdown-menu {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .dropdown:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .dropdown-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            transition: all 0.2s ease;
-            color: #f8fafc;
-        }
-
-        html.light .dropdown-item {
-            color: #0f172a;
-        }
-
-        .dropdown-item:hover {
-            background: rgba(139, 92, 246, 0.2);
-        }
+        html.light .dropdown-menu { background: rgba(255, 255, 255, 0.95); border: 1px solid rgba(0, 0, 0, 0.1); }
+        .dropdown:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-item { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-radius: 0.5rem; transition: all 0.2s ease; color: #f8fafc; }
+        html.light .dropdown-item { color: #0f172a; }
+        .dropdown-item:hover { background: rgba(139, 92, 246, 0.2); }
 
         .mobile-menu {
             transform: translateX(100%);
@@ -1330,54 +997,19 @@
             background: #0f172a;
             z-index: 9999;
         }
-
-        html.light .mobile-menu {
-            background: #fff;
-            border-left: 1px solid #e2e8f0;
-        }
-
-        .mobile-menu.active {
-            transform: translateX(0);
-        }
-
+        html.light .mobile-menu { background: #fff; border-left: 1px solid #e2e8f0; }
+        .mobile-menu.active { transform: translateX(0); }
         .mobile-menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 9998;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.5); z-index: 9998; opacity: 0; visibility: hidden; transition: all 0.3s ease;
         }
+        .mobile-menu-overlay.active { opacity: 1; visibility: visible; }
 
-        .mobile-menu-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #0f172a;
-        }
-
-        html.light ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #334155;
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0f172a; }
+        html.light ::-webkit-scrollbar-track { background: #f1f5f9; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #334155; }
 
         .section-tag {
             display: inline-flex;
@@ -1391,37 +1023,20 @@
             text-transform: uppercase;
             font-family: 'DM Sans', sans-serif;
         }
-
-        /* BUG FIX: section-tag icons di light mode harus ikut warna parent bukan kena override global span */
-        html.light .section-tag svg {
-            color: inherit !important;
-            stroke: inherit !important;
-        }
-
-        html.light .section-tag span {
-            color: inherit !important;
-        }
+        html.light .section-tag svg { color: inherit !important; stroke: inherit !important; }
+        html.light .section-tag span { color: inherit !important; }
     </style>
 </head>
 
 <body>
-    <!-- Loading Screen (UNCHANGED) -->
-    <div class="loader-wrapper" id="loader">
-        <img src="assets/img/image.jpeg" alt="Monetra Logo" class="loader-logo-img">
-        <div class="loader-text">MONETRA</div>
-        <div class="loader-subtext">Kontak kami</div>
-    </div>
-
-    <!-- Navbar (UNCHANGED) -->
+    <!-- Navbar -->
     <nav class="navbar fixed w-full top-0 z-50 px-6">
         <div class="navbar-container max-w-7xl mx-auto flex items-center justify-between relative">
             <div class="flex items-center space-x-3 cursor-pointer group">
-                <div
-                    class="relative w-10 h-10 overflow-hidden rounded-xl border border-white/10 group-hover:border-violet-500/50 transition-colors">
+                <div class="relative w-10 h-10 overflow-hidden rounded-xl border border-white/10 group-hover:border-violet-500/50 transition-colors">
                     <img src="assets/img/image.jpeg" alt="Monetra Logo" class="w-full h-full object-cover">
                 </div>
-                <span
-                    class="text-xl font-bold tracking-tight group-hover:text-violet-400 transition-colors">Monetra</span>
+                <span class="text-xl font-bold tracking-tight group-hover:text-violet-400 transition-colors">Monetra</span>
             </div>
             <div class="hidden md:flex items-center space-x-8">
                 <a href="index.html" class="text-sm font-medium hover:text-violet-400 transition-colors">Home</a>
@@ -1431,24 +1046,18 @@
                         Features <i data-lucide="chevron-down" class="w-4 h-4"></i>
                     </button>
                     <div class="dropdown-menu">
-                        <a href="personality-test.html" class="dropdown-item"><i data-lucide="user-circle"
-                                class="w-4 h-4"></i><span>Tes Kepribadian</span></a>
-                        <a href="budget-simulator.html" class="dropdown-item"><i data-lucide="wallet"
-                                class="w-4 h-4"></i><span>Simulasi Budget</span></a>
-                        <a href="goal-tracker.html" class="dropdown-item"><i data-lucide="target"
-                                class="w-4 h-4"></i><span>Target Tabungan</span></a>
-                        <a href="challenge.html" class="dropdown-item"><i data-lucide="trophy"
-                                class="w-4 h-4"></i><span>Saving Challenge</span></a>
+                        <a href="personality-test.html" class="dropdown-item"><i data-lucide="user-circle" class="w-4 h-4"></i><span>Tes Kepribadian</span></a>
+                        <a href="budget-simulator.html" class="dropdown-item"><i data-lucide="wallet" class="w-4 h-4"></i><span>Simulasi Budget</span></a>
+                        <a href="goal-tracker.html" class="dropdown-item"><i data-lucide="target" class="w-4 h-4"></i><span>Target Tabungan</span></a>
+                        <a href="challenge.html" class="dropdown-item"><i data-lucide="trophy" class="w-4 h-4"></i><span>Saving Challenge</span></a>
                     </div>
                 </div>
-
                 <a href="contact.html" class="text-sm font-medium transition-colors">Contact</a>
                 <button class="p-2.5 rounded-full bg-white/5 hover:bg-white/10 transition" id="themeToggle">
                     <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-yellow-300"></i>
                     <i data-lucide="moon" class="w-5 h-5 block dark:hidden text-slate-700"></i>
                 </button>
-                <a href="personality-test.html" class="btn-primary px-6 py-2.5 rounded-full text-sm font-semibold"
-                    style="color:#ffffff !important">Mulai Sekarang</a>
+                <a href="personality-test.html" class="btn-primary px-6 py-2.5 rounded-full text-sm font-semibold" style="color:#ffffff !important">Mulai Sekarang</a>
             </div>
             <div class="md:hidden flex items-center space-x-4">
                 <button class="p-2" id="themeToggleMobile">
@@ -1470,23 +1079,17 @@
             <a href="about.html" class="text-lg font-medium hover:text-violet-400 transition">About</a>
             <div class="border-t border-white/10 pt-4">
                 <div class="text-xs uppercase tracking-wider opacity-50 mb-3">Features</div>
-                <a href="personality-test.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition"><i
-                        data-lucide="user-circle" class="w-4 h-4"></i><span>Tes Kepribadian</span></a>
-                <a href="budget-simulator.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition"><i
-                        data-lucide="wallet" class="w-4 h-4"></i><span>Simulasi Budget</span></a>
-                <a href="goal-tracker.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition"><i
-                        data-lucide="target" class="w-4 h-4"></i><span>Target Tabungan</span></a>
-                <a href="challenge.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition"><i
-                        data-lucide="trophy" class="w-4 h-4"></i><span>Saving Challenge</span></a>
+                <a href="personality-test.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition"><i data-lucide="user-circle" class="w-4 h-4"></i><span>Tes Kepribadian</span></a>
+                <a href="budget-simulator.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition"><i data-lucide="wallet" class="w-4 h-4"></i><span>Simulasi Budget</span></a>
+                <a href="goal-tracker.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition"><i data-lucide="target" class="w-4 h-4"></i><span>Target Tabungan</span></a>
+                <a href="challenge.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition"><i data-lucide="trophy" class="w-4 h-4"></i><span>Saving Challenge</span></a>
             </div>
-
             <a href="contact.html" class="text-lg font-medium text-violet-400 transition">Contact</a>
-            <a href="personality-test.html" class="btn-primary px-6 py-3 rounded-full text-center mt-4"
-                style="color:#ffffff !important">Mulai Sekarang</a>
+            <a href="personality-test.html" class="btn-primary px-6 py-3 rounded-full text-center mt-4" style="color:#ffffff !important">Mulai Sekarang</a>
         </div>
     </div>
 
-    <!-- ═══ PAGE HERO — BIGGER ═══ -->
+    <!-- ═══ PAGE HERO ═══ -->
     <section class="page-hero pt-52 pb-40 relative">
         <canvas id="network-canvas"></canvas>
         <div class="orb w-96 h-96 bg-violet-700/20" style="top:-80px;left:-80px;animation-delay:0s;"></div>
@@ -1537,8 +1140,7 @@
         <div class="hero-wave" style="margin-top:5rem;">
             <svg viewBox="0 0 1440 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
                 <path class="dark-wave" d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#0a0f1e" />
-                <path class="light-wave" d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#f1f5ff"
-                    style="display:none" />
+                <path class="light-wave" d="M0,40 C360,80 1080,0 1440,40 L1440,80 L0,80 Z" fill="#f1f5ff" style="display:none" />
             </svg>
         </div>
     </section>
@@ -1548,85 +1150,47 @@
         <div class="max-w-5xl mx-auto px-6">
             <div class="text-center mb-12" data-aos="fade-up">
                 <div class="section-line mx-auto"></div>
-                <p
-                    style="font-size:0.72rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#475569;font-family:'DM Sans',sans-serif;">
-                    Hubungi Langsung</p>
+                <p style="font-size:0.72rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#475569;font-family:'DM Sans',sans-serif;">Hubungi Langsung</p>
             </div>
             <div class="grid md:grid-cols-3 gap-5">
                 <div class="contact-card" data-aos="fade-up" data-aos-delay="0">
-                    <div class="card-glow"
-                        style="background:radial-gradient(ellipse at 30% 20%, rgba(124,58,237,0.08) 0%, transparent 70%);">
-                    </div>
-                    <div class="card-accent-line"
-                        style="background:linear-gradient(90deg,#7c3aed,#a855f7,transparent);"></div>
-                    <div class="card-icon-wrap"
-                        style="background:linear-gradient(135deg,#6d28d9,#9333ea);box-shadow:0 8px 24px rgba(109,40,217,0.4);">
+                    <div class="card-glow" style="background:radial-gradient(ellipse at 30% 20%, rgba(124,58,237,0.08) 0%, transparent 70%);"></div>
+                    <div class="card-accent-line" style="background:linear-gradient(90deg,#7c3aed,#a855f7,transparent);"></div>
+                    <div class="card-icon-wrap" style="background:linear-gradient(135deg,#6d28d9,#9333ea);box-shadow:0 8px 24px rgba(109,40,217,0.4);">
                         <i data-lucide="mail" class="w-6 h-6 text-white"></i>
                     </div>
-                    <div
-                        style="font-size:0.65rem;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:#a78bfa;margin-bottom:0.5rem;font-family:'DM Sans',sans-serif;">
-                        Email Resmi</div>
-                    <h3 style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:800;margin-bottom:0.75rem;">
-                        Dukungan Umum</h3>
-                    <a href="mailto:support@monetra.id"
-                        style="font-size:0.85rem;color:#22d3ee;font-weight:600;word-break:break-all;transition:color 0.2s;"
-                        onmouseover="this.style.color='#67e8f9'"
-                        onmouseout="this.style.color='#22d3ee'">support@monetra.id</a>
-                    <p
-                        style="font-size:0.75rem;margin-top:0.875rem;opacity:0.4;line-height:1.6;font-family:'DM Sans',sans-serif;">
-                        Untuk pertanyaan umum & bantuan platform</p>
+                    <div style="font-size:0.65rem;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:#a78bfa;margin-bottom:0.5rem;font-family:'DM Sans',sans-serif;">Email Resmi</div>
+                    <h3 style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:800;margin-bottom:0.75rem;">Dukungan Umum</h3>
+                    <a href="mailto:support@monetra.id" style="font-size:0.85rem;color:#22d3ee;font-weight:600;word-break:break-all;transition:color 0.2s;" onmouseover="this.style.color='#67e8f9'" onmouseout="this.style.color='#22d3ee'">support@monetra.id</a>
+                    <p style="font-size:0.75rem;margin-top:0.875rem;opacity:0.4;line-height:1.6;font-family:'DM Sans',sans-serif;">Untuk pertanyaan umum & bantuan platform</p>
                     <a href="mailto:support@monetra.id" class="card-arrow" style="color:#9333ea;">
                         <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i> Kirim email
                     </a>
                 </div>
                 <div class="contact-card" data-aos="fade-up" data-aos-delay="90">
-                    <div class="card-glow"
-                        style="background:radial-gradient(ellipse at 30% 20%, rgba(236,72,153,0.07) 0%, transparent 70%);">
-                    </div>
-                    <div class="card-accent-line"
-                        style="background:linear-gradient(90deg,#ec4899,#f43f5e,transparent);"></div>
-                    <div class="card-icon-wrap"
-                        style="background:linear-gradient(135deg,#db2777,#f43f5e);box-shadow:0 8px 24px rgba(219,39,119,0.4);">
+                    <div class="card-glow" style="background:radial-gradient(ellipse at 30% 20%, rgba(236,72,153,0.07) 0%, transparent 70%);"></div>
+                    <div class="card-accent-line" style="background:linear-gradient(90deg,#ec4899,#f43f5e,transparent);"></div>
+                    <div class="card-icon-wrap" style="background:linear-gradient(135deg,#db2777,#f43f5e);box-shadow:0 8px 24px rgba(219,39,119,0.4);">
                         <i data-lucide="instagram" class="w-6 h-6 text-white"></i>
                     </div>
-                    <div
-                        style="font-size:0.65rem;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:#f472b6;margin-bottom:0.5rem;font-family:'DM Sans',sans-serif;">
-                        Media Sosial</div>
-                    <h3 style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:800;margin-bottom:0.75rem;">
-                        Instagram Resmi</h3>
-                    <a href="https://instagram.com/monetra.id" target="_blank"
-                        style="font-size:0.85rem;color:#22d3ee;font-weight:600;transition:color 0.2s;"
-                        onmouseover="this.style.color='#67e8f9'" onmouseout="this.style.color='#22d3ee'">@monetra.id</a>
-                    <p
-                        style="font-size:0.75rem;margin-top:0.875rem;opacity:0.4;line-height:1.6;font-family:'DM Sans',sans-serif;">
-                        Tips finansial, update fitur & konten edukasi</p>
-                    <a href="https://instagram.com/monetra.id" target="_blank" class="card-arrow"
-                        style="color:#db2777;">
+                    <div style="font-size:0.65rem;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:#f472b6;margin-bottom:0.5rem;font-family:'DM Sans',sans-serif;">Media Sosial</div>
+                    <h3 style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:800;margin-bottom:0.75rem;">Instagram Resmi</h3>
+                    <a href="https://instagram.com/monetra.id" target="_blank" style="font-size:0.85rem;color:#22d3ee;font-weight:600;transition:color 0.2s;" onmouseover="this.style.color='#67e8f9'" onmouseout="this.style.color='#22d3ee'">@monetra.id</a>
+                    <p style="font-size:0.75rem;margin-top:0.875rem;opacity:0.4;line-height:1.6;font-family:'DM Sans',sans-serif;">Tips finansial, update fitur & konten edukasi</p>
+                    <a href="https://instagram.com/monetra.id" target="_blank" class="card-arrow" style="color:#db2777;">
                         <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i> Kunjungi profil
                     </a>
                 </div>
                 <div class="contact-card" data-aos="fade-up" data-aos-delay="180">
-                    <div class="card-glow"
-                        style="background:radial-gradient(ellipse at 30% 20%, rgba(16,185,129,0.07) 0%, transparent 70%);">
-                    </div>
-                    <div class="card-accent-line"
-                        style="background:linear-gradient(90deg,#10b981,#0891b2,transparent);"></div>
-                    <div class="card-icon-wrap"
-                        style="background:linear-gradient(135deg,#059669,#0891b2);box-shadow:0 8px 24px rgba(8,145,178,0.4);">
+                    <div class="card-glow" style="background:radial-gradient(ellipse at 30% 20%, rgba(16,185,129,0.07) 0%, transparent 70%);"></div>
+                    <div class="card-accent-line" style="background:linear-gradient(90deg,#10b981,#0891b2,transparent);"></div>
+                    <div class="card-icon-wrap" style="background:linear-gradient(135deg,#059669,#0891b2);box-shadow:0 8px 24px rgba(8,145,178,0.4);">
                         <i data-lucide="handshake" class="w-6 h-6 text-white"></i>
                     </div>
-                    <div
-                        style="font-size:0.65rem;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:#34d399;margin-bottom:0.5rem;font-family:'DM Sans',sans-serif;">
-                        Kolaborasi</div>
-                    <h3 style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:800;margin-bottom:0.75rem;">
-                        Partnership</h3>
-                    <a href="mailto:partnership@monetra.id"
-                        style="font-size:0.85rem;color:#22d3ee;font-weight:600;word-break:break-all;transition:color 0.2s;"
-                        onmouseover="this.style.color='#67e8f9'"
-                        onmouseout="this.style.color='#22d3ee'">partnership@monetra.id</a>
-                    <p
-                        style="font-size:0.75rem;margin-top:0.875rem;opacity:0.4;line-height:1.6;font-family:'DM Sans',sans-serif;">
-                        Program edukasi, event & kerja sama institusi</p>
+                    <div style="font-size:0.65rem;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:#34d399;margin-bottom:0.5rem;font-family:'DM Sans',sans-serif;">Kolaborasi</div>
+                    <h3 style="font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:800;margin-bottom:0.75rem;">Partnership</h3>
+                    <a href="mailto:partnership@monetra.id" style="font-size:0.85rem;color:#22d3ee;font-weight:600;word-break:break-all;transition:color 0.2s;" onmouseover="this.style.color='#67e8f9'" onmouseout="this.style.color='#22d3ee'">partnership@monetra.id</a>
+                    <p style="font-size:0.75rem;margin-top:0.875rem;opacity:0.4;line-height:1.6;font-family:'DM Sans',sans-serif;">Program edukasi, event & kerja sama institusi</p>
                     <a href="mailto:partnership@monetra.id" class="card-arrow" style="color:#10b981;">
                         <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i> Ajukan kerja sama
                     </a>
@@ -1642,16 +1206,13 @@
 
                 <div data-aos="fade-right" data-aos-duration="800">
                     <div class="mb-10">
-                        <span class="section-tag"
-                            style="border:1px solid rgba(139,92,246,0.25);background:rgba(139,92,246,0.07);color:#a78bfa;">
+                        <span class="section-tag" style="border:1px solid rgba(139,92,246,0.25);background:rgba(139,92,246,0.07);color:#a78bfa;">
                             <i data-lucide="send" class="w-3.5 h-3.5"></i> Kirim Pesan
                         </span>
-                        <h2
-                            style="font-family:'DM Sans',sans-serif;font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:900;margin-top:1.25rem;margin-bottom:0.875rem;line-height:1.12;letter-spacing:-0.025em;">
+                        <h2 style="font-family:'DM Sans',sans-serif;font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:900;margin-top:1.25rem;margin-bottom:0.875rem;line-height:1.12;letter-spacing:-0.025em;">
                             Ada yang ingin<br /><span class="gradient-text">kamu sampaikan?</span>
                         </h2>
-                        <p style="opacity:0.5;font-size:0.88rem;line-height:1.75;font-family:'DM Sans',sans-serif;">Isi
-                            form di bawah dan tim kami akan segera menghubungimu kembali dalam 1–2 hari kerja.</p>
+                        <p style="opacity:0.5;font-size:0.88rem;line-height:1.75;font-family:'DM Sans',sans-serif;">Isi form di bawah dan tim kami akan segera menghubungimu kembali dalam 1–2 hari kerja.</p>
                     </div>
 
                     <div class="contact-form-wrapper p-8 md:p-10">
@@ -1659,31 +1220,26 @@
                             <div class="grid sm:grid-cols-2 gap-5 mb-5">
                                 <div>
                                     <label class="form-label">Nama Lengkap</label>
-                                    <input type="text" id="namaInput" class="form-input" placeholder="Nama kamu..."
-                                        required>
+                                    <input type="text" id="namaInput" class="form-input" placeholder="Nama kamu..." required>
                                 </div>
                                 <div>
                                     <label class="form-label">Email</label>
-                                    <input type="email" id="emailInput" class="form-input" placeholder="email@kamu.com"
-                                        required>
+                                    <input type="email" id="emailInput" class="form-input" placeholder="email@kamu.com" required>
                                 </div>
                             </div>
                             <div class="mb-5">
                                 <label class="form-label">Subjek</label>
-                                <input type="text" id="subjekInput" class="form-input" placeholder="Topik pesan kamu..."
-                                    required>
+                                <input type="text" id="subjekInput" class="form-input" placeholder="Topik pesan kamu..." required>
                             </div>
                             <div class="mb-7">
                                 <label class="form-label">Pesan</label>
-                                <textarea id="pesanInput" class="form-input" placeholder="Ceritakan lebih detail..."
-                                    required></textarea>
+                                <textarea id="pesanInput" class="form-input" placeholder="Ceritakan lebih detail..." required></textarea>
                             </div>
                             <button type="submit" class="btn-submit ripple-btn" id="submitBtn">
                                 <i data-lucide="send" class="w-5 h-5"></i>
                                 <span id="btnText">Kirim Pesan</span>
                             </button>
-                            <p
-                                style="text-align:center;font-size:0.72rem;margin-top:1rem;opacity:0.3;font-family:'DM Sans',sans-serif;">
+                            <p style="text-align:center;font-size:0.72rem;margin-top:1rem;opacity:0.3;font-family:'DM Sans',sans-serif;">
                                 Dibalas dalam <strong>1–2 hari kerja</strong> — data kamu aman bersama kami.
                             </p>
                         </form>
@@ -1692,12 +1248,10 @@
 
                 <div class="flex flex-col gap-8" data-aos="fade-left" data-aos-duration="800">
                     <div>
-                        <span class="section-tag"
-                            style="border:1px solid rgba(34,211,238,0.25);background:rgba(34,211,238,0.06);color:#22d3ee;">
+                        <span class="section-tag" style="border:1px solid rgba(34,211,238,0.25);background:rgba(34,211,238,0.06);color:#22d3ee;">
                             <i data-lucide="help-circle" class="w-3.5 h-3.5"></i> Mengapa Menghubungi Kami?
                         </span>
-                        <h2
-                            style="font-family:'DM Sans',sans-serif;font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:900;margin-top:1.25rem;margin-bottom:1.5rem;line-height:1.12;letter-spacing:-0.025em;">
+                        <h2 style="font-family:'DM Sans',sans-serif;font-size:clamp(1.8rem,3.5vw,2.5rem);font-weight:900;margin-top:1.25rem;margin-bottom:1.5rem;line-height:1.12;letter-spacing:-0.025em;">
                             Kenapa Menghubungi<br /><span class="gradient-text">Monetra?</span>
                         </h2>
                         <div class="flex flex-col gap-2.5">
@@ -1706,12 +1260,8 @@
                                     <i data-lucide="lightbulb" class="w-5 h-5 text-violet-400"></i>
                                 </div>
                                 <div>
-                                    <div
-                                        style="font-weight:700;font-size:0.88rem;margin-bottom:0.2rem;font-family:'DM Sans',sans-serif;">
-                                        Masukan Fitur</div>
-                                    <div
-                                        style="font-size:0.77rem;opacity:0.45;line-height:1.55;font-family:'DM Sans',sans-serif;">
-                                        Ingin memberi masukan atau ide fitur baru untuk platform</div>
+                                    <div style="font-weight:700;font-size:0.88rem;margin-bottom:0.2rem;font-family:'DM Sans',sans-serif;">Masukan Fitur</div>
+                                    <div style="font-size:0.77rem;opacity:0.45;line-height:1.55;font-family:'DM Sans',sans-serif;">Ingin memberi masukan atau ide fitur baru untuk platform</div>
                                 </div>
                             </div>
                             <div class="why-card" data-aos="fade-left" data-aos-delay="120">
@@ -1719,12 +1269,8 @@
                                     <i data-lucide="help-circle" class="w-5 h-5 text-cyan-400"></i>
                                 </div>
                                 <div>
-                                    <div
-                                        style="font-weight:700;font-size:0.88rem;margin-bottom:0.2rem;font-family:'DM Sans',sans-serif;">
-                                        Tanya Penggunaan Platform</div>
-                                    <div
-                                        style="font-size:0.77rem;opacity:0.45;line-height:1.55;font-family:'DM Sans',sans-serif;">
-                                        Bertanya tentang cara menggunakan fitur-fitur Monetra</div>
+                                    <div style="font-weight:700;font-size:0.88rem;margin-bottom:0.2rem;font-family:'DM Sans',sans-serif;">Tanya Penggunaan Platform</div>
+                                    <div style="font-size:0.77rem;opacity:0.45;line-height:1.55;font-family:'DM Sans',sans-serif;">Bertanya tentang cara menggunakan fitur-fitur Monetra</div>
                                 </div>
                             </div>
                             <div class="why-card" data-aos="fade-left" data-aos-delay="180">
@@ -1732,12 +1278,8 @@
                                     <i data-lucide="users" class="w-5 h-5 text-emerald-400"></i>
                                 </div>
                                 <div>
-                                    <div
-                                        style="font-weight:700;font-size:0.88rem;margin-bottom:0.2rem;font-family:'DM Sans',sans-serif;">
-                                        Kerja Sama Edukasi</div>
-                                    <div
-                                        style="font-size:0.77rem;opacity:0.45;line-height:1.55;font-family:'DM Sans',sans-serif;">
-                                        Mengajukan kerja sama program literasi finansial</div>
+                                    <div style="font-weight:700;font-size:0.88rem;margin-bottom:0.2rem;font-family:'DM Sans',sans-serif;">Kerja Sama Edukasi</div>
+                                    <div style="font-size:0.77rem;opacity:0.45;line-height:1.55;font-family:'DM Sans',sans-serif;">Mengajukan kerja sama program literasi finansial</div>
                                 </div>
                             </div>
                             <div class="why-card" data-aos="fade-left" data-aos-delay="240">
@@ -1745,36 +1287,22 @@
                                     <i data-lucide="alert-triangle" class="w-5 h-5 text-orange-400"></i>
                                 </div>
                                 <div>
-                                    <div
-                                        style="font-weight:700;font-size:0.88rem;margin-bottom:0.2rem;font-family:'DM Sans',sans-serif;">
-                                        Kendala Teknis</div>
-                                    <div
-                                        style="font-size:0.77rem;opacity:0.45;line-height:1.55;font-family:'DM Sans',sans-serif;">
-                                        Melaporkan bug atau masalah yang kamu temukan</div>
+                                    <div style="font-weight:700;font-size:0.88rem;margin-bottom:0.2rem;font-family:'DM Sans',sans-serif;">Kendala Teknis</div>
+                                    <div style="font-size:0.77rem;opacity:0.45;line-height:1.55;font-family:'DM Sans',sans-serif;">Melaporkan bug atau masalah yang kamu temukan</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <div class="support-box" data-aos="fade-up" data-aos-delay="100">
-                        <div
-                            style="position:absolute;top:0;right:0;width:180px;height:180px;background:radial-gradient(ellipse at top right,rgba(139,92,246,0.12) 0%,transparent 70%);border-radius:0 1.75rem 0 0;pointer-events:none;">
-                        </div>
-                        <div
-                            style="width:50px;height:50px;background:linear-gradient(135deg,#6d28d9,#0891b2);border-radius:15px;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;box-shadow:0 8px 24px rgba(109,40,217,0.35);position:relative;z-index:1;">
+                        <div style="position:absolute;top:0;right:0;width:180px;height:180px;background:radial-gradient(ellipse at top right,rgba(139,92,246,0.12) 0%,transparent 70%);border-radius:0 1.75rem 0 0;pointer-events:none;"></div>
+                        <div style="width:50px;height:50px;background:linear-gradient(135deg,#6d28d9,#0891b2);border-radius:15px;display:flex;align-items:center;justify-content:center;margin-bottom:1.25rem;box-shadow:0 8px 24px rgba(109,40,217,0.35);position:relative;z-index:1;">
                             <i data-lucide="book-open" class="w-5 h-5 text-white"></i>
                         </div>
                         <div style="position:relative;z-index:1;">
-                            <div
-                                style="font-size:0.65rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#a78bfa;margin-bottom:0.5rem;font-family:'DM Sans',sans-serif;">
-                                Dukungan & Edukasi</div>
-                            <h3
-                                style="font-family:'DM Sans',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:0.875rem;letter-spacing:-0.015em;">
-                                Lebih dari Sekadar Platform</h3>
-                            <p style="opacity:0.5;font-size:0.84rem;line-height:1.8;font-family:'DM Sans',sans-serif;">
-                                Monetra tidak hanya menyediakan platform, tetapi juga membuka ruang diskusi dan
-                                pengembangan literasi finansial untuk generasi muda Indonesia. Bersama kita tumbuh lebih
-                                bijak dalam mengelola keuangan.</p>
+                            <div style="font-size:0.65rem;font-weight:800;letter-spacing:0.14em;text-transform:uppercase;color:#a78bfa;margin-bottom:0.5rem;font-family:'DM Sans',sans-serif;">Dukungan & Edukasi</div>
+                            <h3 style="font-family:'DM Sans',sans-serif;font-size:1.1rem;font-weight:800;margin-bottom:0.875rem;letter-spacing:-0.015em;">Lebih dari Sekadar Platform</h3>
+                            <p style="opacity:0.5;font-size:0.84rem;line-height:1.8;font-family:'DM Sans',sans-serif;">Monetra tidak hanya menyediakan platform, tetapi juga membuka ruang diskusi dan pengembangan literasi finansial untuk generasi muda Indonesia. Bersama kita tumbuh lebih bijak dalam mengelola keuangan.</p>
                         </div>
                     </div>
                 </div>
@@ -1787,17 +1315,10 @@
     <section class="cta-section">
         <div class="cta-bg"></div>
         <div class="cta-dots"></div>
-        <div class="cta-shape"
-            style="width:500px;height:500px;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.06;"></div>
-        <div class="cta-shape"
-            style="width:300px;height:300px;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.1;animation:floatOrb 8s ease-in-out infinite;">
-        </div>
-        <div class="cta-shape"
-            style="width:140px;height:140px;top:12%;right:14%;opacity:0.08;animation:floatOrb 6s ease-in-out infinite alternate;">
-        </div>
-        <div class="cta-shape"
-            style="width:90px;height:90px;bottom:14%;left:10%;opacity:0.08;animation:floatOrb 7s ease-in-out infinite alternate-reverse;">
-        </div>
+        <div class="cta-shape" style="width:500px;height:500px;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.06;"></div>
+        <div class="cta-shape" style="width:300px;height:300px;top:50%;left:50%;transform:translate(-50%,-50%);opacity:0.1;animation:floatOrb 8s ease-in-out infinite;"></div>
+        <div class="cta-shape" style="width:140px;height:140px;top:12%;right:14%;opacity:0.08;animation:floatOrb 6s ease-in-out infinite alternate;"></div>
+        <div class="cta-shape" style="width:90px;height:90px;bottom:14%;left:10%;opacity:0.08;animation:floatOrb 7s ease-in-out infinite alternate-reverse;"></div>
         <div id="ctaParticles"></div>
 
         <div class="max-w-3xl mx-auto px-6 relative z-10">
@@ -1816,15 +1337,13 @@
                     Langkah untuk <span class="accent-word">Berkembang</span>
                 </h2>
                 <p class="cta-subtitle">
-                    Kami siap mendengar dan bertumbuh bersama kamu. Jangan ragu untuk menyapa — suaramu penting bagi
-                    perkembangan Monetra.
+                    Kami siap mendengar dan bertumbuh bersama kamu. Jangan ragu untuk menyapa — suaramu penting bagi perkembangan Monetra.
                 </p>
                 <div class="cta-buttons">
-                    <a href="#contactForm" onclick="setTimeout(()=>document.getElementById('namaInput').focus(),300)"
-                        class="btn-cta-primary ripple-btn">
+                    <button id="ctaSendBtn" class="btn-cta-primary ripple-btn">
                         <i data-lucide="send" class="w-4 h-4"></i>
                         <span>Kirim Pesan Sekarang</span>
-                    </a>
+                    </button>
                     <a href="personality-test.html" class="btn-cta-secondary">
                         <i data-lucide="sparkles" class="w-4 h-4"></i>
                         <span>Coba Fitur Kami</span>
@@ -1850,7 +1369,7 @@
         </div>
     </section>
 
-    <!-- Footer (UNCHANGED) -->
+    <!-- Footer -->
     <footer class="bg-[#020617] pt-24 pb-12 border-t border-white/5">
         <div class="max-w-7xl mx-auto px-6">
             <div class="grid md:grid-cols-4 gap-12 mb-16">
@@ -1866,10 +1385,8 @@
                 <div>
                     <h4 class="font-bold mb-6">Produk</h4>
                     <ul class="space-y-4 text-sm opacity-60">
-                        <li><a href="personality-test.html" class="hover:text-violet-400 transition">Tes Kepribadian</a>
-                        </li>
-                        <li><a href="budget-simulator.html" class="hover:text-violet-400 transition">Simulasi Budget</a>
-                        </li>
+                        <li><a href="personality-test.html" class="hover:text-violet-400 transition">Tes Kepribadian</a></li>
+                        <li><a href="budget-simulator.html" class="hover:text-violet-400 transition">Simulasi Budget</a></li>
                         <li><a href="challenge.html" class="hover:text-violet-400 transition">Saving Challenge</a></li>
                     </ul>
                 </div>
@@ -1883,15 +1400,9 @@
                 <div>
                     <h4 class="font-bold mb-6">Ikuti Kami</h4>
                     <div class="flex space-x-4">
-                        <a href="#"
-                            class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10"><i
-                                data-lucide="twitter" class="w-5 h-5"></i></a>
-                        <a href="#"
-                            class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10"><i
-                                data-lucide="instagram" class="w-5 h-5"></i></a>
-                        <a href="#"
-                            class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10"><i
-                                data-lucide="linkedin" class="w-5 h-5"></i></a>
+                        <a href="#" class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                        <a href="#" class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10"><i data-lucide="instagram" class="w-5 h-5"></i></a>
+                        <a href="#" class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10"><i data-lucide="linkedin" class="w-5 h-5"></i></a>
                     </div>
                 </div>
             </div>
@@ -1904,19 +1415,7 @@
     <script>
         lucide.createIcons();
 
-        window.addEventListener('load', function () {
-            const loader = document.getElementById('loader');
-            setTimeout(() => {
-                if (loader) loader.classList.add('slide-up');
-            }, 800);
-        });
-
-        AOS.init({
-            duration: 800,
-            once: true,
-            offset: 100,
-            easing: 'ease-out-cubic'
-        });
+        AOS.init({ duration: 800, once: true, offset: 100, easing: 'ease-out-cubic' });
 
         const themeToggle = document.getElementById('themeToggle');
         const themeToggleMobile = document.getElementById('themeToggleMobile');
@@ -2037,18 +1536,26 @@
         window.addEventListener('resize', () => { resize(); initParticles(); });
         resize(); initParticles(); animate();
 
+        // ── FORM LOGIC ──
         const form = document.getElementById('contactForm');
         const submitBtn = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
+        const fields = [
+            document.getElementById('namaInput'),
+            document.getElementById('emailInput'),
+            document.getElementById('subjekInput'),
+            document.getElementById('pesanInput')
+        ];
+
+        // Update .ready class on submitBtn based on form completeness
+        function checkFormReady() {
+            const allFilled = fields.every(f => f.value.trim() !== '');
+            submitBtn.classList.toggle('ready', allFilled);
+        }
+        fields.forEach(f => f.addEventListener('input', checkFormReady));
 
         form.addEventListener('submit', function (e) {
             e.preventDefault();
-            const fields = [
-                document.getElementById('namaInput'),
-                document.getElementById('emailInput'),
-                document.getElementById('subjekInput'),
-                document.getElementById('pesanInput')
-            ];
             let valid = true;
             fields.forEach(f => {
                 if (!f.value.trim()) {
@@ -2079,6 +1586,7 @@
             setTimeout(() => {
                 clearInterval(di);
                 submitBtn.classList.add('sent');
+                submitBtn.classList.remove('ready');
                 submitBtn.style.opacity = '1';
                 btnText.textContent = 'Pesan Terkirim ✓';
                 form.reset();
@@ -2090,7 +1598,41 @@
                 }, 3500);
             }, 1800);
         });
+
+        // ── CTA "Kirim Pesan Sekarang" button ──
+        // Cek form, kalau belum lengkap: scroll ke form & highlight field kosong
+        // Kalau sudah lengkap: submit form
+        document.getElementById('ctaSendBtn').addEventListener('click', function () {
+            const allFilled = fields.every(f => f.value.trim() !== '');
+
+            // Scroll ke form section
+            document.getElementById('contactForm').scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            if (!allFilled) {
+                // Highlight field kosong saja, tanpa submit
+                setTimeout(() => {
+                    fields.forEach(f => {
+                        if (!f.value.trim()) {
+                            f.style.borderColor = 'rgba(239,68,68,0.7)';
+                            f.style.boxShadow = '0 0 0 4px rgba(239,68,68,0.12)';
+                            f.style.background = 'rgba(239,68,68,0.03)';
+                            f.addEventListener('input', function fix() {
+                                f.style.borderColor = ''; f.style.boxShadow = ''; f.style.background = '';
+                                f.removeEventListener('input', fix);
+                            });
+                        }
+                    });
+                    // Fokus ke field pertama yang kosong
+                    const firstEmpty = fields.find(f => !f.value.trim());
+                    if (firstEmpty) firstEmpty.focus();
+                }, 500);
+            } else {
+                // Form lengkap, langsung submit
+                setTimeout(() => form.dispatchEvent(new Event('submit')), 500);
+            }
+        });
     </script>
+
     <!-- Floating Clock -->
     <div id="floating-clock" class="clock-container">
         <div class="clock-time">00:00:00</div>

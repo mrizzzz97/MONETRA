@@ -122,36 +122,19 @@
             margin-top: 20px;
             font-size: 1.5rem;
             font-weight: 800;
-            background: linear-gradient(135deg, #ffffff 0%, #94a3b8 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ffffff;
             opacity: 0;
             animation: fadeIn 0.8s ease forwards 1.2s;
         }
 
-        @media (min-width: 640px) {
-            .loader-text {
-                font-size: 2rem;
-                margin-top: 24px;
-            }
-        }
-
         .loader-subtext {
-            margin-top: 6px;
-            font-size: 0.7rem;
+            margin-top: 8px;
+            font-size: 0.875rem;
             color: #64748b;
             letter-spacing: 0.2em;
             text-transform: uppercase;
             opacity: 0;
             animation: fadeIn 1s ease forwards 1.8s;
-        }
-
-        @media (min-width: 640px) {
-            .loader-subtext {
-                font-size: 0.875rem;
-                margin-top: 8px;
-            }
         }
 
         @keyframes fadeIn {
@@ -1233,7 +1216,6 @@
     <div class="loader-wrapper" id="loader">
         <img src="assets/img/image.jpeg" alt="Monetra Logo" class="loader-logo-img">
         <div class="loader-text">MONETRA</div>
-        <div class="loader-subtext">Tentang Kami</div>
     </div>
 
     <div id="toast" class="toast"></div>
@@ -1664,6 +1646,17 @@
                 if (loader) loader.classList.add('slide-up');
             }, 800);
         });
+
+        // Allow clicking loader to skip
+        const loaderElement = document.getElementById('loader');
+        if (loaderElement) {
+            loaderElement.style.cursor = 'pointer';
+            loaderElement.addEventListener('click', () => {
+                if (loaderElement && !loaderElement.classList.contains('slide-up')) {
+                    loaderElement.classList.add('slide-up');
+                }
+            });
+        }
 
         AOS.init({
             duration: 800,
