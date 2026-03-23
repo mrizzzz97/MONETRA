@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="dark">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
@@ -7,1862 +7,393 @@
     <title>Target Tabungan - Monetra</title>
     <link rel="shortcut icon" href="assets/img/image.jpeg" type="image/x-icon">
 
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="assets/css/goal-tracker.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Stylesheets -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
     <script>
         tailwind.config = {
             darkMode: 'class',
             theme: {
                 extend: {
-                    colors: {
-                        primary: '#8b5cf6',
-                        secondary: '#06b6d4',
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
                     },
-                    screens: {
-                        'xs': '480px',
-                        'sm': '640px',
-                        'md': '768px',
-                        'lg': '1024px',
-                        'xl': '1280px',
-                        '2xl': '1536px',
+                    colors: {
+                        brand: '#3b82f6',
+                    },
+                    animation: {
+                        'breathe': 'breathe 8s ease-in-out infinite',
+                        'shine': 'shine 1.5s ease-out infinite',
+                    },
+                    keyframes: {
+                        breathe: {
+                            '0%, 100%': { transform: 'translateX(-50%) scale(1)', opacity: '0.4' },
+                            '50%': { transform: 'translateX(-50%) scale(1.1)', opacity: '0.7' },
+                        },
+                        shine: {
+                            '0%': { left: '-100%' },
+                            '20%': { left: '100%' },
+                            '100%': { left: '100%' }
+                        }
                     }
                 }
             }
         }
     </script>
 
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <link rel="stylesheet" href="assets/css/clock.css">
-    <link rel="stylesheet" href="assets/css/main.css">
-
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            overflow-x: hidden;
-            transition: background-color 0.3s ease;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        html.dark body {
-            background-color: #020617;
-            color: #f8fafc;
-        }
-
-        html.light body {
-            background-color: #f8fafc;
-            color: #0f172a;
-        }
-
-        /* Noise texture */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1;
-            opacity: 0.03;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
-
-        /* Loading Screen */
-        .loader-wrapper {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100vh;
-            background: #020617;
-            z-index: 10000;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: transform 1s cubic-bezier(0.77, 0, 0.175, 1);
-        }
-
-        .loader-wrapper.slide-up {
-            transform: translateY(-100%);
-        }
-
-        .loader-logo-img {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-            border-radius: 20px;
-            box-shadow: 0 0 40px rgba(139, 92, 246, 0.4);
-            opacity: 0;
-            animation: logoReveal 1s ease forwards 0.5s;
-        }
-
-        @media (min-width: 640px) {
-            .loader-logo-img {
-                width: 100px;
-                height: 100px;
-            }
-        }
-
-        @keyframes logoReveal {
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .loader-text {
-            margin-top: 20px;
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #ffffff;
-            opacity: 0;
-            animation: fadeIn 0.8s ease forwards 1.2s;
-        }
-
-        .loader-subtext {
-            margin-top: 8px;
-            font-size: 0.875rem;
-            color: #64748b;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            opacity: 0;
-            animation: fadeIn 1s ease forwards 1.8s;
-        }
-
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
-        /* Navbar */
-        .navbar {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            padding-top: 1.25rem;
-            padding-bottom: 1.25rem;
-        }
-
-        .navbar .navbar-container {
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 0;
-        }
-
-        .navbar.floating {
-            padding-top: 0.5rem;
-            padding-bottom: 0.5rem;
-        }
-
-        .navbar.floating .navbar-container {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 9999px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            padding: 0.75rem 2rem;
-            max-width: 1200px;
-        }
-
-        html.light .navbar.floating .navbar-container {
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        /* =============================================
-           FIX 1: Navbar CTA - Ukuran wajar + teks selalu putih
-           ============================================= */
-        .navbar-cta {
-            background: linear-gradient(135deg, #7c3aed 0%, #0891b2 100%);
-            color: #ffffff !important;
-            display: inline-block;
-            transition: all 0.3s ease;
-            /* FIX: ukuran proporsional */
-            padding: 0.6rem 1.5rem !important;
-            font-size: 0.875rem !important;
-            font-weight: 700;
-        }
-
-        .navbar-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 35px rgba(139, 92, 246, 0.45);
-            background: linear-gradient(135deg, #6d28d9 0%, #0e7490 100%);
-            color: #ffffff !important;
-        }
-
-        /* FIX: teks selalu putih di semua mode */
-        html.light .navbar-cta,
-        html.light .navbar-cta:hover,
-        html.light .navbar-cta span,
-        html.light .navbar-cta * {
-            color: #ffffff !important;
-            -webkit-text-fill-color: #ffffff !important;
-        }
-
-        /* Cards */
-        .goal-card {
-            position: relative;
-            background: rgba(15, 23, 42, 0.6);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            overflow: hidden;
-        }
-
-        html.light .goal-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-        }
-
-        .goal-card:hover {
-            transform: translateY(-4px);
-            border-color: #8b5cf6;
-            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
-        }
-
-        /* Progress Bar */
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 999px;
-            overflow: hidden;
-        }
-
-        @media (min-width: 768px) {
-            .progress-bar {
-                height: 10px;
-            }
-        }
-
-        html.light .progress-bar {
-            background: rgba(0, 0, 0, 0.1);
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #8b5cf6, #06b6d4);
-            transition: width 0.5s ease;
-            border-radius: 999px;
-        }
-
-        /* Buttons */
-        .btn-primary {
-            background: linear-gradient(135deg, #7c3aed 0%, #0891b2 100%);
-            color: #ffffff !important;
-            transition: all 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
-        }
-
-        .btn-primary:active {
-            transform: translateY(0);
-        }
-
-        .btn-primary *,
-        .btn-primary i,
-        .btn-primary span {
-            color: #ffffff !important;
-        }
-
-        html.light .btn-primary,
-        html.light .btn-primary:hover,
-        html.light .btn-primary *,
-        html.light .btn-primary span {
-            color: #ffffff !important;
-        }
-
-        /* Goal Badges */
-        .goal-badge {
-            padding: 0.25rem 0.75rem;
-            border-radius: 999px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.25rem;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        @media (min-width: 640px) {
-            .goal-badge {
-                padding: 0.5rem 1rem;
-                font-size: 0.75rem;
-                gap: 0.5rem;
-            }
-        }
-
-        .badge-vacation {
-            background: rgba(6, 182, 212, 0.2);
-            border: 1px solid rgba(6, 182, 212, 0.3);
-            color: #06b6d4;
-        }
-
-        .badge-education {
-            background: rgba(139, 92, 246, 0.2);
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            color: #8b5cf6;
-        }
-
-        .badge-vehicle {
-            background: rgba(245, 158, 11, 0.2);
-            border: 1px solid rgba(245, 158, 11, 0.3);
-            color: #f59e0b;
-        }
-
-        .badge-house {
-            background: rgba(16, 185, 129, 0.2);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            color: #10b981;
-        }
-
-        .badge-emergency {
-            background: rgba(239, 68, 68, 0.2);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            color: #ef4444;
-        }
-
-        /* Modal */
-        .modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(8px);
-            z-index: 10001;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-            padding: 1rem;
-        }
-
-        .modal.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-content {
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1.5rem;
-            padding: 1.5rem;
-            max-width: 400px;
-            width: 100%;
-            transform: scale(0.9);
-            transition: transform 0.3s ease;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        @media (min-width: 640px) {
-            .modal-content {
-                padding: 2rem;
-                border-radius: 2rem;
-            }
-        }
-
-        html.light .modal-content {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-        }
-
-        .modal.active .modal-content {
-            transform: scale(1);
-        }
-
-        /* Input Styling */
-        .goal-input {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 0.5rem 0.75rem;
-            color: #f8fafc;
-            width: 100%;
-            transition: all 0.3s ease;
-            font-size: 0.875rem;
-        }
-
-        @media (min-width: 640px) {
-            .goal-input {
-                padding: 0.6rem 1rem;
-                font-size: 0.875rem;
-            }
-        }
-
-        .goal-input::placeholder {
-            font-size: 0.875rem;
-            opacity: 0.5;
-            color: #94a3b8;
-        }
-
-        html.light .goal-input {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            color: #0f172a;
-        }
-
-        html.light .goal-input::placeholder {
-            color: #64748b;
-        }
-
-        .goal-input:focus {
-            outline: none;
-            border-color: #8b5cf6;
-            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
-        }
-
-        /* SELECT DROPDOWN */
-        select.goal-input {
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238b5cf6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 0.75rem center;
-            background-size: 1em;
-            padding-right: 2.5rem;
-            color: #f8fafc;
-        }
-
-        html.light select.goal-input {
-            color: #0f172a;
-        }
-
-        select.goal-input option {
-            background: #0f172a;
-            color: #f8fafc;
-            padding: 0.5rem;
-        }
-
-        html.light select.goal-input option {
-            background: #ffffff;
-            color: #0f172a;
-        }
-
-        /* Milestone */
-        .milestone-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.5rem;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        @media (min-width: 640px) {
-            .milestone-item {
-                gap: 1rem;
-                padding: 0.75rem;
-                border-radius: 12px;
-            }
-        }
-
-        .milestone-item:hover {
-            background: rgba(139, 92, 246, 0.1);
-        }
-
-        .milestone-check {
-            width: 20px;
-            height: 20px;
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        @media (min-width: 640px) {
-            .milestone-check {
-                width: 24px;
-                height: 24px;
-                border-radius: 6px;
-            }
-        }
-
-        html.light .milestone-check {
-            border-color: #cbd5e1;
-        }
-
-        .milestone-check.checked {
-            background: #8b5cf6;
-            border-color: #8b5cf6;
-        }
-
-        /* Celebration Animation */
-        @keyframes confetti {
-            0% {
-                transform: translateY(0) rotate(0deg);
-                opacity: 1;
-            }
-
-            100% {
-                transform: translateY(100vh) rotate(720deg);
-                opacity: 0;
-            }
-        }
-
-        .confetti {
-            position: fixed;
-            width: 8px;
-            height: 8px;
-            background: linear-gradient(135deg, #8b5cf6, #06b6d4);
-            position: absolute;
-            animation: confetti 3s ease-in-out forwards;
-            z-index: 10002;
-        }
-
-        @media (min-width: 640px) {
-            .confetti {
-                width: 10px;
-                height: 10px;
-            }
-        }
-
-        /* Mobile Menu */
-        .mobile-menu-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(4px);
-            z-index: 9998;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .mobile-menu-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .mobile-menu {
-            position: fixed;
-            top: 0;
-            right: 0;
-            width: 85%;
-            max-width: 320px;
-            height: 100vh;
-            background: #0f172a;
-            z-index: 9999;
-            transform: translateX(100%);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow-y: auto;
-            padding: 1.5rem;
-            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.3);
-        }
-
-        html.light .mobile-menu {
-            background: #ffffff;
-            border-left: 1px solid #e2e8f0;
-        }
-
-        .mobile-menu.active {
-            transform: translateX(0);
-        }
-
-        #closeMobileMenu {
-            position: relative;
-            z-index: 10000;
-            cursor: pointer;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.1);
-            transition: all 0.2s ease;
-        }
-
-        #closeMobileMenu:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        #closeMobileMenu:active {
-            transform: scale(0.95);
-        }
-
-        #mobileMenuBtn {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 999px;
-            background: rgba(255, 255, 255, 0.1);
-            transition: all 0.2s ease;
-        }
-
-        #mobileMenuBtn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        #mobileMenuBtn:active {
-            transform: scale(0.95);
-        }
-
-        /* Dropdown Menu */
-        .dropdown {
-            position: relative;
-        }
-
-        .dropdown-menu {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            margin-top: 0.5rem;
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 1rem;
-            padding: 0.5rem;
-            min-width: 200px;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-            z-index: 100;
-        }
-
-        html.light .dropdown-menu {
-            background: rgba(255, 255, 255, 0.95);
-            border: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .dropdown:hover .dropdown-menu {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .dropdown-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            transition: all 0.2s ease;
-            color: #f8fafc;
-        }
-
-        html.light .dropdown-item {
-            color: #0f172a;
-        }
-
-        .dropdown-item:hover {
-            background: rgba(139, 92, 246, 0.2);
-        }
-
-        /* Hero Section */
-        .hero-title {
-            font-size: 2rem;
-            line-height: 1.2;
-        }
-
-        @media (min-width: 640px) {
-            .hero-title {
-                font-size: 3rem;
-            }
-        }
-
-        @media (min-width: 768px) {
-            .hero-title {
-                font-size: 4rem;
-            }
-        }
-
-        @media (min-width: 1024px) {
-            .hero-title {
-                font-size: 5rem;
-            }
-        }
-
-        /* Gradient Text */
-        .gradient-text {
-            background: linear-gradient(135deg, #a78bfa 0%, #22d3ee 50%, #818cf8 100%);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-size: 200% auto;
-            animation: gradientMove 5s linear infinite;
-        }
-
-        @keyframes gradientMove {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            100% {
-                background-position: 200% 50%;
-            }
-        }
-
-        /* Section tag */
-        .section-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.35rem 1rem;
-            border-radius: 9999px;
-            border: 1px solid rgba(139, 92, 246, 0.3);
-            background: rgba(139, 92, 246, 0.08);
-            font-size: 0.72rem;
-            font-weight: 700;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: #a78bfa;
-        }
-
-        html.light .section-tag {
-            color: #7c3aed;
-            background: rgba(124, 58, 237, 0.08);
-            border-color: rgba(124, 58, 237, 0.3);
-        }
-
-        /* Light Mode Fixes */
-        html.light h1,
-        html.light h2,
-        html.light h3,
-        html.light h4,
-        html.light h5 {
-            color: #0f172a !important;
-        }
-
-        html.light p,
-        html.light span,
-        html.light li,
-        html.light a:not(.btn-primary):not(.navbar-cta):not(.dropdown-item) {
-            color: #334155 !important;
-        }
-
-        html.light .text-gray-300,
-        html.light .text-gray-400,
-        html.light .text-gray-500 {
-            color: #64748b !important;
-        }
-
-        /* =============================================
-           FIX 2: Footer - selalu dark background, teks selalu putih
-           ============================================= */
-        footer {
-            background-color: #020617 !important;
-        }
-
-        footer *,
-        footer h4,
-        footer p,
-        footer a,
-        footer span,
-        footer li,
-        footer div {
-            color: #ffffff !important;
-        }
-
-        html.light footer {
-            background-color: #020617 !important;
-        }
-
-        html.light footer *,
-        html.light footer h4,
-        html.light footer p,
-        html.light footer a,
-        html.light footer span,
-        html.light footer li,
-        html.light footer div {
-            color: #ffffff !important;
-            -webkit-text-fill-color: #ffffff !important;
-        }
-
-        html.light footer .opacity-50,
-        html.light footer .opacity-60,
-        html.light footer .opacity-40 {
-            color: #ffffff !important;
-            -webkit-text-fill-color: #ffffff !important;
-        }
-
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-
-        @media (min-width: 768px) {
-            ::-webkit-scrollbar {
-                width: 8px;
-            }
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #0f172a;
-        }
-
-        html.light ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #334155;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #4b5563;
-        }
-
-        /* Touch-friendly buttons */
-        button,
-        a {
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        /* Smooth transitions */
-        .transition-all {
-            transition: all 0.3s ease;
-        }
-
-        /* Empty state improvements */
-        .empty-state-icon {
-            opacity: 0.2;
-            transition: all 0.3s ease;
-        }
-
-        .empty-state-icon:hover {
-            opacity: 0.3;
-            transform: scale(1.05);
-        }
-
-        /* Label styling */
-        label {
-            color: inherit;
-            opacity: 0.7;
-        }
-
-        html.light label {
-            color: #334155;
-        }
-    </style>
 </head>
 
-<body>
-    <!-- Loading Screen -->
-    <div class="loader-wrapper" id="loader">
-        <img src="assets/img/image.jpeg" alt="Monetra Logo" class="loader-logo-img">
-        <div class="loader-text">MONETRA</div>
+<body class="bg-zinc-50 text-zinc-900 dark:bg-[#09090b] dark:text-zinc-50 transition-colors duration-300 selection:bg-brand selection:text-white overflow-x-hidden">
+
+    <!-- Fast Boot Loader -->
+    <div class="sys-loader" id="loader">
+        <div class="font-mono text-brand text-sm tracking-widest mb-4 flex items-center gap-2">
+            <i data-lucide="terminal" class="w-4 h-4 animate-pulse"></i> GOALS.INIT()
+        </div>
+        <div class="w-48 h-1 bg-zinc-800 rounded-full overflow-hidden">
+            <div class="h-full bg-brand w-0" id="bootProgress" style="transition: width 0.5s ease;"></div>
+        </div>
     </div>
 
-    <!-- Navbar -->
-    <nav class="navbar fixed w-full top-0 z-50 px-6">
-        <div class="navbar-container max-w-7xl mx-auto flex items-center justify-between relative">
-            <div class="flex items-center space-x-3 cursor-pointer group" onclick="window.location.href='index.html'">
-                <div
-                    class="relative w-10 h-10 overflow-hidden rounded-xl border border-white/10 group-hover:border-violet-500/50 transition-colors">
-                    <img src="assets/img/image.jpeg" alt="Monetra Logo" class="w-full h-full object-cover">
+    <div class="bg-grid-pattern"></div>
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-blue-500/10 blur-[120px] rounded-full pointer-events-none z-[-5] animate-breathe"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 left-1/2 -translate-x-1/2 w-full z-50 bg-transparent h-[72px] flex items-center px-6">
+        <div class="w-full flex items-center justify-between">
+            <a href="index.html" class="flex items-center space-x-3 group pl-2">
+                <div class="w-8 h-8 rounded-md bg-zinc-900 dark:bg-white flex items-center justify-center overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-sm group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
+                    <img src="assets/img/image.jpeg" alt="Logo" class="w-full h-full object-cover grayscale opacity-90 group-hover:grayscale-0 transition-all duration-300">
                 </div>
-                <span
-                    class="text-xl font-bold tracking-tight group-hover:text-violet-400 transition-colors">Monetra</span>
-            </div>
-
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex items-center space-x-8">
-                <a href="index.html" class="text-sm font-medium hover:text-violet-400 transition-colors">Home</a>
-                <a href="about.html" class="text-sm font-medium hover:text-violet-400 transition-colors">About</a>
-
-                <!-- Features Dropdown -->
-                <div class="dropdown">
-                    <button class="text-sm font-medium hover:text-violet-400 transition-colors flex items-center gap-1">
-                        Features
-                        <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                <span class="font-bold text-lg tracking-tight">Monetra<span class="text-brand">.</span></span>
+            </a>
+            
+            <div class="hidden md:flex items-center space-x-1">
+                <a href="index.html" class="px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors rounded-full hover:bg-black/5 dark:hover:bg-white/5 relative group overflow-hidden">
+                    <span class="lang-id">Beranda</span><span class="lang-en">Home</span>
+                </a>
+                <div class="relative group">
+                    <button class="px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors rounded-full hover:bg-black/5 dark:hover:bg-white/5 flex items-center gap-1">
+                        <span class="lang-id">Fitur</span><span class="lang-en">Features</span>
+                        <i data-lucide="chevron-down" class="w-3.5 h-3.5 transition-transform duration-300 group-hover:rotate-180"></i>
                     </button>
-                    <div class="dropdown-menu">
-                        <a href="personality-test.html" class="dropdown-item">
-                            <i data-lucide="user-circle" class="w-4 h-4"></i>
-                            <span>Tes Kepribadian</span>
-                        </a>
-                        <a href="budget-simulator.html" class="dropdown-item">
-                            <i data-lucide="wallet" class="w-4 h-4"></i>
-                            <span>Simulasi Budget</span>
-                        </a>
-                        <a href="goal-tracker.html" class="dropdown-item">
-                            <i data-lucide="target" class="w-4 h-4"></i>
-                            <span>Target Tabungan</span>
-                        </a>
-                        <a href="challenge.html" class="dropdown-item">
-                            <i data-lucide="trophy" class="w-4 h-4"></i>
-                            <span>Saving Challenge</span>
-                        </a>
+                    <div class="absolute top-full left-1/2 -translate-x-1/2 pt-4 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top scale-95 group-hover:scale-100 z-[60]">
+                        <div class="w-64 bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 rounded-2xl shadow-xl p-2 backdrop-blur-xl">
+                            <a href="personality-test.html" class="flex items-center gap-3 px-4 py-3 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors group/item">
+                                <div class="w-8 h-8 rounded-lg bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center text-zinc-600 dark:text-zinc-400 transition-transform group-hover/item:scale-110">
+                                    <i data-lucide="user-round" class="w-4 h-4"></i>
+                                </div>
+                                <span class="text-sm font-medium tracking-tight"><span class="lang-id">Tes Kepribadian</span><span class="lang-en">Personality Test</span></span>
+                            </a>
+                            <a href="budget-simulator.html" class="flex items-center gap-3 px-4 py-3 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors group/item">
+                                <div class="w-8 h-8 rounded-lg bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center text-zinc-600 dark:text-zinc-400 transition-transform group-hover/item:scale-110">
+                                    <i data-lucide="wallet" class="w-4 h-4"></i>
+                                </div>
+                                <span class="text-sm font-medium tracking-tight"><span class="lang-id">Simulator Budget</span><span class="lang-en">Budget Simulator</span></span>
+                            </a>
+                            <a href="goal-tracker.html" class="flex items-center gap-3 px-4 py-3 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors group/item bg-zinc-100 dark:bg-zinc-800">
+                                <div class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-zinc-900 flex items-center justify-center text-brand transition-transform group-hover/item:scale-110">
+                                    <i data-lucide="target" class="w-4 h-4"></i>
+                                </div>
+                                <span class="text-sm font-bold tracking-tight"><span class="lang-id">Target Tabungan</span><span class="lang-en">Savings Goal</span></span>
+                            </a>
+                            <a href="challenge.html" class="flex items-center gap-3 px-4 py-3 hover:bg-zinc-100 dark:hover:bg-zinc-800 rounded-xl transition-colors group/item">
+                                <div class="w-8 h-8 rounded-lg bg-zinc-50 dark:bg-zinc-900 flex items-center justify-center text-zinc-600 dark:text-zinc-400 transition-transform group-hover/item:scale-110">
+                                    <i data-lucide="trophy" class="w-4 h-4"></i>
+                                </div>
+                                <span class="text-sm font-medium tracking-tight"><span class="lang-id">Saving Challenge</span><span class="lang-en">Saving Challenge</span></span>
+                            </a>
+                        </div>
                     </div>
                 </div>
-
-
-                <a href="contact.html" class="text-sm font-medium hover:text-violet-400 transition-colors">Contact</a>
-
-                <button class="p-2.5 rounded-full bg-white/5 hover:bg-white/10 transition" id="themeToggle">
-                    <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-yellow-300"></i>
-                    <i data-lucide="moon" class="w-5 h-5 block dark:hidden text-slate-700"></i>
-                </button>
-
-                <!-- FIX: Ukuran tombol diperkecil & teks selalu putih -->
-                <a href="personality-test.html" class="navbar-cta rounded-full font-bold flex items-center gap-2">
-                    <span>Mulai Sekarang</span>
+                <a href="about.html" class="px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors rounded-full hover:bg-black/5 dark:hover:bg-white/5 relative group overflow-hidden">
+                    <span class="lang-id">Tim Kami</span><span class="lang-en">Our Team</span>
+                </a>
+                <a href="contact.html" class="px-4 py-2 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-black dark:hover:text-white transition-colors rounded-full hover:bg-black/5 dark:hover:bg-white/5 relative group overflow-hidden">
+                    <span class="lang-id">Kontak</span><span class="lang-en">Contact</span>
                 </a>
             </div>
-            <!-- Mobile Menu Button -->
-            <div class="md:hidden flex items-center space-x-4">
-                <button class="p-2" id="themeToggleMobile">
-                    <i data-lucide="sun" class="w-5 h-5 hidden dark:block"></i>
-                    <i data-lucide="moon" class="w-5 h-5 block dark:hidden text-slate-700"></i>
+
+            <div class="hidden md:flex items-center gap-3 pr-2">
+                <button id="langToggleBtn" class="text-xs font-bold px-2 py-1.5 rounded-md border border-zinc-300 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-800 transition-colors text-zinc-600 dark:text-zinc-300 w-10 active:scale-95">ID</button>
+                <button class="text-zinc-500 hover:text-black dark:text-zinc-400 dark:hover:text-white transition-colors p-2 active:scale-90" id="themeToggle" aria-label="Toggle Theme">
+                    <i data-lucide="sun" class="w-4 h-4 hidden dark:block hover:rotate-90 transition-transform duration-500"></i>
+                    <i data-lucide="moon" class="w-4 h-4 block dark:hidden hover:-rotate-12 transition-transform duration-300"></i>
                 </button>
-                <button id="mobileMenuBtn" class="p-2">
-                    <i data-lucide="menu" class="w-6 h-6"></i>
+                <div class="h-4 w-px bg-zinc-300 dark:bg-zinc-800 mx-1"></div>
+                <button onclick="openAddGoalModal()" class="btn-magnetic inline-flex items-center justify-center gap-2 bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 px-5 py-2.5 rounded-full text-sm font-semibold hover:shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all">
+                    <i data-lucide="plus" class="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform"></i>
+                    <span class="lang-id">Target Baru</span><span class="lang-en">New Goal</span> 
                 </button>
             </div>
+            <button id="mobileMenuBtn" class="md:hidden p-2 text-zinc-900 dark:text-white"><i data-lucide="menu" class="w-5 h-5"></i></button>
         </div>
     </nav>
 
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay" id="mobileMenuOverlay"></div>
-
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobileMenu">
-        <div class="flex justify-end mb-8">
-            <button id="closeMobileMenu">
-                <i data-lucide="x" class="w-6 h-6"></i>
-            </button>
+    <!-- Mobile Menu Overlay & Drawer -->
+    <div id="mobileMenuOverlay" class="fixed inset-0 bg-zinc-900/60 backdrop-blur-sm z-[99] opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    <div id="mobileMenu" class="fixed top-0 right-0 w-full max-w-sm h-full bg-white dark:bg-[#09090b] z-[100] transform translate-x-full transition-transform duration-300 border-l border-zinc-200 dark:border-zinc-800 flex flex-col">
+        <div class="flex justify-between items-center p-6 border-b border-zinc-200 dark:border-zinc-800">
+            <span class="font-bold text-lg"><span class="lang-id">Menu</span><span class="lang-en">Menu</span></span>
+            <button id="closeMobileMenu" class="p-2"><i data-lucide="x" class="w-5 h-5 hover:rotate-90 transition-transform"></i></button>
         </div>
-        <div class="flex flex-col space-y-4">
-            <a href="index.html" class="text-lg font-medium hover:text-violet-400 transition">Home</a>
-            <a href="about.html" class="text-lg font-medium hover:text-violet-400 transition">About</a>
-
-            <div class="border-t border-white/10 pt-4">
-                <div class="text-xs uppercase tracking-wider opacity-50 mb-3">Features</div>
-                <a href="personality-test.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition">
-                    <i data-lucide="user-circle" class="w-4 h-4"></i>
-                    <span>Tes Kepribadian</span>
-                </a>
-                <a href="budget-simulator.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition">
-                    <i data-lucide="wallet" class="w-4 h-4"></i>
-                    <span>Simulasi Budget</span>
-                </a>
-                <a href="goal-tracker.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition">
-                    <i data-lucide="target" class="w-4 h-4"></i>
-                    <span>Target Tabungan</span>
-                </a>
-                <a href="challenge.html" class="flex items-center gap-3 py-2 hover:text-violet-400 transition">
-                    <i data-lucide="trophy" class="w-4 h-4"></i>
-                    <span>Saving Challenge</span>
-                </a>
+        <div class="flex-1 overflow-y-auto p-6 space-y-6">
+            <a href="index.html" class="block text-lg font-medium hover:text-brand transition-colors"><span class="lang-id">Beranda</span><span class="lang-en">Home</span></a>
+            <div class="space-y-4">
+                <span class="text-xs font-bold uppercase tracking-widest text-zinc-400"><span class="lang-id">Fitur</span><span class="lang-en">Features</span></span>
+                <div class="grid gap-4 pl-2">
+                    <a href="personality-test.html" class="flex items-center gap-3 text-lg font-medium hover:text-brand transition-colors"><i data-lucide="user-round" class="w-5 h-5"></i> <span class="lang-id">Tes Kepribadian</span><span class="lang-en">Personality Test</span></a>
+                    <a href="budget-simulator.html" class="flex items-center gap-3 text-lg font-medium hover:text-brand transition-colors"><i data-lucide="wallet" class="w-5 h-5"></i> <span class="lang-id">Simulasi Budget</span><span class="lang-en">Budget Simulator</span></a>
+                    <a href="goal-tracker.html" class="flex items-center gap-3 text-lg font-bold text-brand transition-colors"><i data-lucide="target" class="w-5 h-5"></i> <span class="lang-id">Target Tabungan</span><span class="lang-en">Savings Goal</span></a>
+                    <a href="challenge.html" class="flex items-center gap-3 text-lg font-medium hover:text-brand transition-colors"><i data-lucide="trophy" class="w-5 h-5"></i> <span class="lang-id">Saving Challenge</span><span class="lang-en">Saving Challenge</span></a>
+                </div>
             </div>
-
-            <a href="contact.html" class="text-lg font-medium hover:text-violet-400 transition">Contact</a>
-
-            <a href="personality-test.html" class="navbar-cta rounded-full text-center mt-4">
-                Mulai Sekarang
-            </a>
+            <a href="about.html" class="block text-lg font-medium hover:text-brand transition-colors"><span class="lang-id">Tim Kami</span><span class="lang-en">Our Team</span></a>
+            <a href="contact.html" class="block text-lg font-medium hover:text-brand transition-colors"><span class="lang-id">Kontak</span><span class="lang-en">Contact</span></a>
+        </div>
+        <div class="p-6 border-t border-zinc-200 dark:border-zinc-800 space-y-5">
+            <div class="flex items-center justify-between">
+                <span class="text-sm font-medium"><span class="lang-id">Bahasa</span><span class="lang-en">Language</span></span>
+                <button id="langToggleBtnMobile" class="text-xs font-bold px-3 py-1.5 rounded-md border border-zinc-300 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-800">ID</button>
+            </div>
+            <div class="flex items-center justify-between">
+                <span class="text-sm font-medium"><span class="lang-id">Tema Gelap</span><span class="lang-en">Dark Theme</span></span>
+                <button id="themeToggleMobile" class="w-11 h-6 rounded-full bg-zinc-200 dark:bg-brand relative transition-colors">
+                    <div class="absolute w-4 h-4 rounded-full bg-white top-1 left-1 dark:translate-x-5 transition-transform shadow-sm"></div>
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- Hero Section -->
-    <section class="pt-28 sm:pt-32 md:pt-36 lg:pt-40 pb-12 sm:pb-16 md:pb-20 relative overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-b from-emerald-900/20 via-transparent to-transparent"></div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 relative z-10">
-            <div class="text-center" data-aos="fade-down">
-                <div class="inline-block mb-4 sm:mb-6">
-                    <span class="section-tag">
-                        Target Tracker
-                    </span>
+    <header class="pt-40 pb-16 relative z-10 text-center px-6">
+        <div class="max-w-3xl mx-auto" data-aos="fade-up" data-aos-duration="1000">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-widest border border-zinc-200 dark:border-zinc-800 text-zinc-500 mb-6 bg-white/50 dark:bg-zinc-900/50 backdrop-blur-md">
+                <i data-lucide="target" class="w-3 h-3 text-brand"></i>
+                <span class="lang-id">Arsitektur Impian</span><span class="lang-en">Dream Architecture</span>
+            </div>
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight mb-6">
+                <span class="lang-id">Visualisasi <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400">Target Anda.</span></span>
+                <span class="lang-en">Visualize <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-cyan-400">Your Goals.</span></span>
+            </h1>
+            <p class="text-zinc-600 dark:text-zinc-400 text-lg leading-relaxed max-w-2xl mx-auto">
+                <span class="lang-id">Monitor pertumbuhan aset Anda secara presisi. Tetapkan milestone dan capai kebebasan finansial satu langkah pada satu waktu.</span>
+                <span class="lang-en">Monitor your asset growth with precision. Set milestones and achieve financial freedom one step at a time.</span>
+            </p>
+        </div>
+    </header>
+
+    <!-- Goals Container -->
+    <main class="max-w-7xl mx-auto px-6 pb-20 relative z-10">
+        <!-- Add Button Mobile Only -->
+        <div class="md:hidden flex justify-center mb-8">
+             <button onclick="openAddGoalModal()" class="btn-magnetic w-full max-w-xs bg-brand text-white px-6 py-4 rounded-2xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20">
+                <i data-lucide="plus-circle" class="w-5 h-5"></i> 
+                <span class="lang-id">Tambah Target</span><span class="lang-en">Add Goal</span>
+             </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="goalsContainer">
+            <!-- Dynamic Content -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="emptyState" class="hidden text-center py-20 border-2 border-dashed border-zinc-200 dark:border-zinc-800 rounded-3xl bg-white/30 dark:bg-zinc-900/30 backdrop-blur-sm">
+            <div class="w-16 h-16 bg-zinc-100 dark:bg-zinc-900 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <i data-lucide="folder-plus" class="w-8 h-8 text-zinc-400"></i>
+            </div>
+            <h3 class="text-xl font-bold mb-2">
+                <span class="lang-id">Belum Ada Target Aktif</span><span class="lang-en">No Active Goals</span>
+            </h3>
+            <p class="text-zinc-500 text-sm mb-6">
+                <span class="lang-id">Klik tombol "Target Baru" untuk memulai pemantauan finansial Anda.</span>
+                <span class="lang-en">Click the "New Goal" button to start monitoring your finances.</span>
+            </p>
+            <button onclick="openAddGoalModal()" class="md:hidden btn-magnetic inline-flex items-center justify-center gap-2 bg-zinc-900 text-white dark:bg-white dark:text-zinc-900 px-5 py-2.5 rounded-full text-sm font-semibold">
+                <i data-lucide="plus" class="w-3.5 h-3.5"></i> <span class="lang-id">Target Baru</span><span class="lang-en">New Goal</span>
+            </button>
+        </div>
+    </main>
+
+    <!-- Milestones & Tips Section -->
+    <section class="max-w-7xl mx-auto px-6 pb-32 relative z-10">
+        <div class="text-center mb-12" data-aos="fade-up">
+            <h2 class="text-2xl md:text-3xl font-bold tracking-tight mb-3">
+                <span class="lang-id">Perjalanan Menuju Impian</span><span class="lang-en">Journey to the Dream</span>
+            </h2>
+            <div class="w-16 h-1 bg-brand mx-auto rounded-full opacity-50 mb-3"></div>
+            <p class="text-zinc-500 text-sm">
+                <span class="lang-id">Setiap langkah kecil membawamu lebih dekat ke tujuan besar.</span>
+                <span class="lang-en">Every small step brings you closer to the big goal.</span>
+            </p>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-6">
+            <!-- Recent Milestones Container -->
+            <div class="spotlight-card bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 lg:p-8 shadow-sm group" data-aos="fade-right">
+                <h3 class="text-lg font-bold mb-6 flex items-center gap-2">
+                    <i data-lucide="clock" class="w-5 h-5 text-brand"></i>
+                    <span class="lang-id">Pencapaian Terbaru</span><span class="lang-en">Recent Achievements</span>
+                </h3>
+                <div class="space-y-4" id="recentMilestones">
+                    <!-- Populated by JS -->
                 </div>
-                <h1 class="hero-title font-black mb-4 sm:mb-6">Wujudkan <span class="gradient-text">Impian
-                        Finansialmu</span></h1>
-                <p class="text-sm sm:text-base md:text-lg lg:text-xl opacity-70 max-w-2xl mx-auto leading-relaxed px-4">
-                    Tetapkan target tabungan, pantau progres, dan rayakan setiap pencapaian dalam perjalanan menuju
-                    impianmu.
-                </p>
+            </div>
+
+            <!-- Tips Container -->
+            <div class="spotlight-card bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 rounded-3xl p-6 lg:p-8 shadow-sm group" data-aos="fade-left">
+                <h3 class="text-lg font-bold mb-6 flex items-center gap-2">
+                    <i data-lucide="lightbulb" class="w-5 h-5 text-amber-500"></i>
+                    <span class="lang-id">Tips Finansial</span><span class="lang-en">Financial Tips</span>
+                </h3>
+                <div id="tipsContainer">
+                    <!-- Populated by JS -->
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Add Goal Button -->
-    <section class="pb-8 sm:pb-10 md:pb-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="flex justify-end">
-                <button onclick="openAddGoalModal()"
-                    class="btn-primary px-5 sm:px-6 md:px-8 py-3 sm:py-3.5 md:py-4 rounded-full font-bold text-sm sm:text-base flex items-center gap-2">
-                    <i data-lucide="plus" class="w-4 h-4 sm:w-5 sm:h-5"></i>
-                    Tambah Target Baru
+    <!-- Modal Form Detail -->
+    <div id="addGoalModal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-6 modal-blur transition-opacity duration-300">
+        <div class="bg-white dark:bg-[#09090b] w-full max-w-md rounded-3xl border border-zinc-200 dark:border-zinc-800 shadow-2xl overflow-hidden transform scale-95 transition-transform duration-300 flex flex-col max-h-[90vh]" id="modalContent">
+            
+            <div class="px-6 py-5 border-b border-zinc-100 dark:border-zinc-800 flex justify-between items-center bg-zinc-50/50 dark:bg-zinc-900/50 shrink-0">
+                <h3 class="font-bold text-lg tracking-tight">
+                    <span class="lang-id">Konfigurasi Target</span><span class="lang-en">Goal Configuration</span>
+                </h3>
+                <button onclick="closeAddGoalModal()" class="p-1.5 hover:bg-zinc-200 dark:hover:bg-zinc-800 rounded-full transition-colors">
+                    <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             </div>
-        </div>
-    </section>
-
-    <!-- Goals Grid -->
-    <section class="pb-20 sm:pb-24 md:pb-28 lg:pb-32">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6 md:gap-8" id="goalsContainer">
-                <!-- Goals will be dynamically added here -->
-            </div>
-
-            <!-- Empty State -->
-            <div id="emptyState" class="text-center py-12 sm:py-16 md:py-20">
-                <div
-                    class="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 mx-auto mb-4 sm:mb-5 md:mb-6 empty-state-icon">
-                    <i data-lucide="target" class="w-full h-full"></i>
-                </div>
-                <h3 class="text-xl sm:text-2xl font-bold mb-2 sm:mb-3">Belum Ada Target</h3>
-                <p class="text-sm sm:text-base opacity-60 mb-6 sm:mb-8">Mulai dengan menambahkan target tabungan
-                    pertamamu</p>
-                <button onclick="openAddGoalModal()"
-                    class="btn-primary px-6 sm:px-7 md:px-8 py-3 sm:py-3.5 md:py-4 rounded-full font-bold text-sm sm:text-base inline-flex items-center gap-2">
-                    <i data-lucide="plus" class="w-4 h-4 sm:w-5 sm:h-5"></i>
-                    Tambah Target
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <!-- Milestones Section -->
-    <section class="pb-20 sm:pb-24 md:pb-28 lg:pb-32">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6">
-            <div class="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16" data-aos="fade-up">
-                <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4 md:mb-6">Perjalanan
-                    Menuju Impian</h2>
-                <div
-                    class="w-16 sm:w-20 md:w-24 h-1 sm:h-1.5 bg-gradient-to-r from-violet-500 to-cyan-500 mx-auto rounded-full mb-3 sm:mb-4 md:mb-6">
-                </div>
-                <p class="text-sm sm:text-base md:text-lg opacity-70 max-w-2xl mx-auto px-4">
-                    Setiap langkah kecil membawamu lebih dekat ke tujuan besar
-                </p>
-            </div>
-
-            <div class="grid lg:grid-cols-2 gap-4 sm:gap-6 md:gap-8">
-                <!-- Recent Milestones -->
-                <div class="goal-card p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl" data-aos="fade-right">
-                    <h3 class="text-lg sm:text-xl md:text-2xl font-bold mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
-                        <i data-lucide="clock" class="w-5 h-5 sm:w-6 sm:h-6 text-violet-400"></i>
-                        Pencapaian Terbaru
-                    </h3>
-                    <div class="space-y-3 sm:space-y-4" id="recentMilestones">
-                        <!-- Will be populated by JavaScript -->
-                    </div>
-                </div>
-
-                <!-- Tips Container -->
-                <div class="goal-card p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl" data-aos="fade-left">
-                    <h3 class="text-lg sm:text-xl md:text-2xl font-bold mb-4 sm:mb-6 flex items-center gap-2 sm:gap-3">
-                        <i data-lucide="lightbulb" class="w-5 h-5 sm:w-6 sm:h-6 text-yellow-400"></i>
-                        Tips Mencapai Target
-                    </h3>
-                    <div class="space-y-3 sm:space-y-4" id="tipsContainer">
-                        <!-- Tips will be dynamically updated -->
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Add Goal Modal -->
-    <div class="modal" id="addGoalModal">
-        <div class="modal-content">
-            <div class="flex justify-between items-center mb-3 sm:mb-4">
-                <h3 class="text-lg sm:text-xl font-bold">Tambah Target Baru</h3>
-                <button onclick="closeAddGoalModal()" class="p-1.5 hover:bg-white/10 rounded-lg transition">
-                    <i data-lucide="x" class="w-4 h-4 sm:w-5 sm:h-5"></i>
-                </button>
-            </div>
-
-            <div class="space-y-2 sm:space-y-3">
+            
+            <div class="p-6 overflow-y-auto space-y-5 flex-1 custom-scroll">
                 <div>
-                    <label class="block text-xs font-medium mb-1">Nama Target</label>
-                    <input type="text" id="goalName" class="goal-input" placeholder="Contoh: Liburan ke Bali">
+                    <label class="sys-label"><span class="lang-id">Nama Target</span><span class="lang-en">Goal Name</span></label>
+                    <input type="text" id="goalName" class="sys-input" placeholder="Misal: Liburan / Example: Vacation">
                 </div>
-
+                
                 <div>
-                    <label class="block text-xs font-medium mb-1">Kategori</label>
-                    <select id="goalCategory" class="goal-input">
-                        <option value="vacation">Liburan</option>
-                        <option value="education">Pendidikan</option>
-                        <option value="vehicle">Kendaraan</option>
-                        <option value="house">Rumah</option>
-                        <option value="emergency">Dana Darurat</option>
-                        <option value="other">Lainnya</option>
+                    <label class="sys-label"><span class="lang-id">Kategori</span><span class="lang-en">Category</span></label>
+                    <select id="goalCategory" class="sys-input">
+                        <option value="vacation">✈️ Liburan / Vacation</option>
+                        <option value="education">🎓 Pendidikan / Education</option>
+                        <option value="vehicle">🚗 Kendaraan / Vehicle</option>
+                        <option value="house">🏠 Properti / Property</option>
+                        <option value="emergency">🚨 Dana Darurat / Emergency Fund</option>
+                        <option value="other">🎯 Lainnya / Other</option>
                     </select>
                 </div>
 
-                <div class="grid grid-cols-2 gap-2 sm:gap-3">
+                <div class="grid grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs font-medium mb-1">Target (Rp)</label>
-                        <input type="text" id="goalTarget" class="goal-input" placeholder="10.000.000">
+                        <label class="sys-label"><span class="lang-id">Target (Rp)</span><span class="lang-en">Target (IDR)</span></label>
+                        <input type="text" id="goalTarget" class="sys-input" placeholder="0">
                     </div>
                     <div>
-                        <label class="block text-xs font-medium mb-1">Tabungan Saat Ini</label>
-                        <input type="text" id="goalCurrent" class="goal-input" value="0" placeholder="0">
+                        <label class="sys-label"><span class="lang-id">Terkumpul (Rp)</span><span class="lang-en">Current (IDR)</span></label>
+                        <input type="text" id="goalCurrent" class="sys-input" value="0">
                     </div>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium mb-1">Target Tanggal (Opsional)</label>
-                    <input type="date" id="goalDeadline" class="goal-input">
+                    <label class="sys-label"><span class="lang-id">Tenggat Waktu (Opsional)</span><span class="lang-en">Deadline (Optional)</span></label>
+                    <input type="date" id="goalDeadline" class="sys-input">
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium mb-1 sm:mb-2">Milestones (Opsional)</label>
-                    <div id="milestonesContainer" class="space-y-2 mb-2">
-                        <!-- Milestones will be added here -->
+                    <label class="sys-label"><span class="lang-id">Milestones (Opsional)</span><span class="lang-en">Milestones (Optional)</span></label>
+                    <div id="milestonesContainer" class="space-y-2 mb-3">
+                        <!-- Milestones injected here -->
                     </div>
-                    <button type="button" onclick="addMilestoneInput()"
-                        class="w-full py-2 border border-dashed border-white/20 rounded-lg text-xs sm:text-sm hover:bg-white/5 transition flex items-center justify-center gap-2">
-                        <i data-lucide="plus" class="w-3 h-3"></i>
-                        Tambah Milestone
+                    <button type="button" onclick="addMilestoneInput()" class="w-full py-2.5 border border-dashed border-zinc-300 dark:border-zinc-700 rounded-xl text-xs font-medium text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition flex items-center justify-center gap-2">
+                        <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+                        <span class="lang-id">Tambah Milestone</span><span class="lang-en">Add Milestone</span>
                     </button>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-medium mb-1 sm:mb-2">Warna</label>
-                    <div class="flex gap-1.5 sm:gap-2">
-                        <button type="button" onclick="selectColor('violet')"
-                            class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-violet-500 border-2 border-white hover:scale-110 transition color-option"
-                            data-color="violet"></button>
-                        <button type="button" onclick="selectColor('cyan')"
-                            class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-cyan-500 border-2 border-transparent hover:scale-110 transition color-option"
-                            data-color="cyan"></button>
-                        <button type="button" onclick="selectColor('emerald')"
-                            class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-emerald-500 border-2 border-transparent hover:scale-110 transition color-option"
-                            data-color="emerald"></button>
-                        <button type="button" onclick="selectColor('amber')"
-                            class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-amber-500 border-2 border-transparent hover:scale-110 transition color-option"
-                            data-color="amber"></button>
-                        <button type="button" onclick="selectColor('rose')"
-                            class="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-rose-500 border-2 border-transparent hover:scale-110 transition color-option"
-                            data-color="rose"></button>
-                    </div>#ffffff
+                    <label class="sys-label"><span class="lang-id">Warna Tema</span><span class="lang-en">Theme Color</span></label>
+                    <div class="flex gap-3">
+                        <button type="button" onclick="selectColor('#8b5cf6', this)" class="color-option selected" style="background-color: #8b5cf6;"></button>
+                        <button type="button" onclick="selectColor('#06b6d4', this)" class="color-option" style="background-color: #06b6d4;"></button>
+                        <button type="button" onclick="selectColor('#10b981', this)" class="color-option" style="background-color: #10b981;"></button>
+                        <button type="button" onclick="selectColor('#f59e0b', this)" class="color-option" style="background-color: #f59e0b;"></button>
+                        <button type="button" onclick="selectColor('#f43f5e', this)" class="color-option" style="background-color: #f43f5e;"></button>
+                    </div>
                 </div>
             </div>
 
-            <div class="flex gap-2 sm:gap-3 mt-4 sm:mt-5 md:mt-6">
-                <button onclick="addNewGoal()"
-                    class="btn-primary flex-1 py-2 sm:py-2.5 rounded-xl font-semibold text-xs sm:text-sm">
-                    Simpan Target
-                </button>
-                <button onclick="closeAddGoalModal()"
-                    class="flex-1 py-2 sm:py-2.5 rounded-xl border border-white/20 font-semibold text-xs sm:text-sm hover:bg-white/5 transition">
-                    Batal
+            <div class="p-6 border-t border-zinc-100 dark:border-zinc-800 bg-white dark:bg-[#09090b] shrink-0">
+                <button onclick="addNewGoal()" class="btn-magnetic w-full bg-brand text-white py-3.5 rounded-xl font-bold hover:shadow-lg shadow-blue-500/20 transition-all flex justify-center items-center gap-2">
+                    <i data-lucide="save" class="w-4 h-4"></i>
+                    <span class="lang-id">Simpan Target</span><span class="lang-en">Save Goal</span>
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- FOOTER -->
-    <footer class="bg-[#020617] pt-24 pb-12 border-t border-white/5">
+    <!-- Footer -->
+    <footer class="pt-24 pb-12 border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-[#030712] relative z-10 no-print">
         <div class="max-w-7xl mx-auto px-6">
-            <div class="grid md:grid-cols-4 gap-12 mb-16">
-                <div>
-                    <div class="flex items-center space-x-3 mb-6">
-                        <div class="w-10 h-10 overflow-hidden rounded-xl border border-white/10">
-                            <img src="assets/img/image.jpeg" alt="Monetra Logo" class="w-full h-full object-cover">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-12 mb-20">
+                <div class="md:col-span-4">
+                    <a href="index.html" class="flex items-center space-x-3 mb-6 grayscale hover:grayscale-0 transition-all duration-300 w-max group">
+                        <div class="w-8 h-8 rounded bg-zinc-900 dark:bg-white flex items-center justify-center overflow-hidden group-hover:scale-110 transition-transform">
+                            <img src="assets/img/image.jpeg" alt="Logo" class="w-full h-full object-cover">
                         </div>
-                        <span class="text-2xl font-bold">Monetra</span>
-                    </div>
-                    <p class="opacity-50 text-sm leading-relaxed">Platform edukasi finansial interaktif yang membantu
-                        generasi muda Indonesia memahami, merencanakan, dan mengoptimalkan keuangan mereka secara lebih
-                        bijak.</p>
+                        <span class="font-bold text-xl tracking-tight">Monetra.</span>
+                    </a>
+                    <p class="text-sm text-zinc-500 leading-relaxed mb-6 max-w-xs">
+                        <span class="lang-id">Infrastruktur logika untuk keputusan finansial generasi muda.</span>
+                        <span class="lang-en">Logical infrastructure for the younger generation's financial decisions.</span>
+                    </p>
                 </div>
-                <div>
-                    <h4 class="font-bold mb-6">Produk</h4>
-                    <ul class="space-y-4 text-sm opacity-60">
-                        <li><a href="personality-test.html" class="hover:text-violet-400 transition">Tes Kepribadian</a>
-                        </li>
-                        <li><a href="budget-simulator.html" class="hover:text-violet-400 transition">Simulasi Budget</a>
-                        </li>
-                        <li><a href="goal-tracker.html" class="hover:text-violet-400 transition">Target Tabungan</a>
-                        </li>
-                        <li><a href="challenge.html" class="hover:text-violet-400 transition">Saving Challenge</a></li>
+                <div class="hidden md:block md:col-span-2"></div>
+                <div class="md:col-span-2">
+                    <h4 class="font-bold mb-5 text-sm uppercase tracking-widest text-zinc-900 dark:text-white">Modul</h4>
+                    <ul class="space-y-3 text-sm text-zinc-600 dark:text-zinc-400 font-medium">
+                        <li><a href="personality-test.html" class="hover:text-brand hover:translate-x-1 inline-block transition-transform"><span class="lang-id">Tes Kepribadian</span><span class="lang-en">Personality Test</span></a></li>
+                        <li><a href="budget-simulator.html" class="hover:text-brand hover:translate-x-1 inline-block transition-transform"><span class="lang-id">Simulator Budget</span><span class="lang-en">Budget Simulator</span></a></li>
+                        <li><a href="goal-tracker.html" class="hover:text-brand hover:translate-x-1 inline-block transition-transform text-brand font-bold"><span class="lang-id">Target Tabungan</span><span class="lang-en">Savings Goal</span></a></li>
+                        <li><a href="challenge.html" class="hover:text-brand hover:translate-x-1 inline-block transition-transform"><span class="lang-id">Saving Challenge</span><span class="lang-en">Saving Challenge</span></a></li>
                     </ul>
                 </div>
-                <div>
-                    <h4 class="font-bold mb-6">Perusahaan</h4>
-                    <ul class="space-y-4 text-sm opacity-60">
-                        <li><a href="about.html" class="hover:text-violet-400 transition">Tentang Kami</a></li>
-                        <li><a href="contact.html" class="hover:text-violet-400 transition">Hubungi Kami</a></li>
+                <div class="md:col-span-2">
+                    <h4 class="font-bold mb-5 text-sm uppercase tracking-widest text-zinc-900 dark:text-white"><span class="lang-id">Akses</span><span class="lang-en">Access</span></h4>
+                    <ul class="space-y-3 text-sm text-zinc-600 dark:text-zinc-400 font-medium">
+                        <li><a href="about.html" class="hover:text-brand hover:translate-x-1 inline-block transition-transform"><span class="lang-id">Tentang Tim</span><span class="lang-en">Our Team</span></a></li>
+                        <li><a href="contact.html" class="hover:text-brand hover:translate-x-1 inline-block transition-transform"><span class="lang-id">Hubungi Kami</span><span class="lang-en">Contact Us</span></a></li>
                     </ul>
-                </div>
-                <div>
-                    <h4 class="font-bold mb-6">Ikuti Kami</h4>
-                    <div class="flex space-x-4">
-                        <a href="#"
-                            class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10">
-                            <i data-lucide="twitter" class="w-5 h-5"></i>
-                        </a>
-                        <a href="#"
-                            class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10">
-                            <i data-lucide="instagram" class="w-5 h-5"></i>
-                        </a>
-                        <a href="#"
-                            class="w-12 h-12 bg-white/5 rounded-xl flex items-center justify-center hover:bg-violet-600 transition border border-white/10">
-                            <i data-lucide="linkedin" class="w-5 h-5"></i>
-                        </a>
-                    </div>
                 </div>
             </div>
-            <div class="border-t border-white/5 pt-8 text-center opacity-40 text-sm">
-                <p>&copy; 2026 Monetra. All rights reserved.</p>
+            <div class="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-zinc-200 dark:border-zinc-800 text-xs text-zinc-500 font-mono">
+                <p>&copy; 2026 Monetra System. All rights reserved.</p>
+                <div class="flex items-center gap-2 mt-4 md:mt-0 bg-zinc-200 dark:bg-zinc-900 px-3 py-1.5 rounded-full">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> <span class="lang-id">Sistem Operasional: Normal</span><span class="lang-en">Systems Operational</span>
+                </div>
             </div>
         </div>
     </footer>
 
-    <script>
-        lucide.createIcons();
-
-        // Loading
-        window.addEventListener('load', function () {
-            const loader = document.getElementById('loader');
-            setTimeout(() => {
-                if (loader) loader.classList.add('slide-up');
-            }, 800);
-        });
-
-        // Allow clicking loader to skip
-        const loaderElement = document.getElementById('loader');
-        if (loaderElement) {
-            loaderElement.style.cursor = 'pointer';
-            loaderElement.addEventListener('click', () => {
-                if (loaderElement && !loaderElement.classList.contains('slide-up')) {
-                    loaderElement.classList.add('slide-up');
-                }
-            });
-        }
-
-        AOS.init({
-            duration: 800,
-            once: true,
-            offset: 100,
-            easing: 'ease-out-cubic'
-        });
-
-        // Theme Toggle
-        const themeToggle = document.getElementById('themeToggle');
-        const themeToggleMobile = document.getElementById('themeToggleMobile');
-        const html = document.documentElement;
-
-        function toggleTheme() {
-            html.classList.toggle('dark');
-            html.classList.toggle('light');
-            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-            lucide.createIcons();
-        }
-
-        if (themeToggle) themeToggle.addEventListener('click', toggleTheme);
-        if (themeToggleMobile) themeToggleMobile.addEventListener('click', toggleTheme);
-
-        // Load saved theme
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'light') {
-            html.classList.remove('dark');
-            html.classList.add('light');
-        } else if (!savedTheme) {
-            html.classList.add('dark');
-        }
-
-        // Floating Navbar on Scroll
-        const navbar = document.querySelector('.navbar');
-        window.addEventListener('scroll', function () {
-            if (window.scrollY > 100) {
-                navbar.classList.add('floating');
-            } else {
-                navbar.classList.remove('floating');
-            }
-        });
-
-        // Mobile Menu
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const closeMobileMenu = document.getElementById('closeMobileMenu');
-        const mobileMenu = document.getElementById('mobileMenu');
-        const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-
-        function openMobileMenu() {
-            if (mobileMenu && mobileMenuOverlay) {
-                mobileMenu.classList.add('active');
-                mobileMenuOverlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            }
-        }
-
-        function closeMobileMenuFunc() {
-            if (mobileMenu && mobileMenuOverlay) {
-                mobileMenu.classList.remove('active');
-                mobileMenuOverlay.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        }
-
-        if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openMobileMenu);
-        if (closeMobileMenu) closeMobileMenu.addEventListener('click', closeMobileMenuFunc);
-        if (mobileMenuOverlay) mobileMenuOverlay.addEventListener('click', closeMobileMenuFunc);
-
-        document.querySelectorAll('.mobile-menu a').forEach(link => {
-            link.addEventListener('click', closeMobileMenuFunc);
-        });
-
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape' && mobileMenu && mobileMenu.classList.contains('active')) {
-                closeMobileMenuFunc();
-            }
-        });
-
-        // Goal Tracker Logic
-        let goals = [];
-        let selectedColor = 'violet';
-        let milestoneCounter = 0;
-        let tempMilestones = [];
-
-        if (localStorage.getItem('goals')) {
-            goals = JSON.parse(localStorage.getItem('goals'));
-        } else {
-            goals = [];
-            localStorage.setItem('goals', JSON.stringify(goals));
-        }
-
-        const formatRupiah = (number) => {
-            return 'Rp ' + number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-        };
-
-        function formatNumberInput(value) {
-            const number = value.replace(/\D/g, '');
-            return number.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-        }
-
-        function parseFormattedNumber(value) {
-            return parseInt(value.replace(/\./g, '') || '0');
-        }
-
-        function setupNumberFormatting(input) {
-            if (!input) return;
-
-            input.addEventListener('input', function (e) {
-                const cursorPosition = this.selectionStart;
-                const oldLength = this.value.length;
-                this.value = formatNumberInput(this.value);
-                const newLength = this.value.length;
-                const diff = newLength - oldLength;
-                this.setSelectionRange(cursorPosition + diff, cursorPosition + diff);
-            });
-
-            input.addEventListener('blur', function () {
-                if (!this.value || this.value === '0') {
-                    this.value = '0';
-                }
-            });
-
-            input.addEventListener('focus', function () {
-                if (this.value === '0') {
-                    this.value = '';
-                }
-            });
-        }
-
-        function addMilestoneInput() {
-            milestoneCounter++;
-            const container = document.getElementById('milestonesContainer');
-            if (!container) return;
-
-            const milestoneDiv = document.createElement('div');
-            milestoneDiv.className = 'flex gap-2';
-            milestoneDiv.id = `milestone-${milestoneCounter}`;
-            milestoneDiv.innerHTML = `
-                <input type="text" class="goal-input flex-1 text-xs sm:text-sm" placeholder="Contoh: Booking tiket" id="milestone-text-${milestoneCounter}">
-                <button type="button" onclick="removeMilestoneInput(${milestoneCounter})" class="px-2 py-1 hover:bg-white/10 rounded-lg transition">
-                    <i data-lucide="x" class="w-3 h-3 sm:w-4 sm:h-4"></i>
-                </button>
-            `;
-            container.appendChild(milestoneDiv);
-            lucide.createIcons();
-        }
-
-        function removeMilestoneInput(id) {
-            const element = document.getElementById(`milestone-${id}`);
-            if (element) element.remove();
-        }
-
-        function getMilestonesFromInputs() {
-            const milestones = [];
-            const container = document.getElementById('milestonesContainer');
-            if (!container) return milestones;
-
-            const inputs = container.querySelectorAll('input[type="text"]');
-            inputs.forEach((input, index) => {
-                const text = input.value.trim();
-                if (text) {
-                    milestones.push({
-                        id: index + 1,
-                        text: text,
-                        completed: false
-                    });
-                }
-            });
-
-            return milestones;
-        }
-
-        function clearMilestoneInputs() {
-            const container = document.getElementById('milestonesContainer');
-            if (container) container.innerHTML = '';
-            milestoneCounter = 0;
-        }
-
-        function getCategoryBadge(category) {
-            const badges = {
-                vacation: 'badge-vacation',
-                education: 'badge-education',
-                vehicle: 'badge-vehicle',
-                house: 'badge-house',
-                emergency: 'badge-emergency',
-                other: 'badge-vacation'
-            };
-
-            const icons = {
-                vacation: 'plane',
-                education: 'graduation-cap',
-                vehicle: 'car',
-                house: 'home',
-                emergency: 'alert-triangle',
-                other: 'target'
-            };
-
-            const labels = {
-                vacation: 'Liburan',
-                education: 'Pendidikan',
-                vehicle: 'Kendaraan',
-                house: 'Rumah',
-                emergency: 'Darurat',
-                other: 'Lainnya'
-            };
-
-            return `
-                <span class="goal-badge ${badges[category]}">
-                    <i data-lucide="${icons[category]}" class="w-3 h-3"></i>
-                    ${labels[category]}
-                </span>
-            `;
-        }
-
-        function calculateProgress(current, target) {
-            return Math.min(Math.round((current / target) * 100), 100);
-        }
-
-        function getDaysLeft(deadline) {
-            if (!deadline) return null;
-            const today = new Date();
-            const targetDate = new Date(deadline);
-            const diffTime = targetDate - today;
-            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            return diffDays;
-        }
-
-        function renderGoals() {
-            const container = document.getElementById('goalsContainer');
-            const emptyState = document.getElementById('emptyState');
-
-            if (!container) return;
-
-            if (goals.length === 0) {
-                container.innerHTML = '';
-                if (emptyState) emptyState.classList.remove('hidden');
-                lucide.createIcons();
-                return;
-            }
-
-            if (emptyState) emptyState.classList.add('hidden');
-
-            let html = '';
-            goals.forEach(goal => {
-                const progress = calculateProgress(goal.current, goal.target);
-                const daysLeft = getDaysLeft(goal.deadline);
-                const milestoneCompleted = goal.milestones ? goal.milestones.filter(m => m.completed).length : 0;
-                const totalMilestones = goal.milestones ? goal.milestones.length : 0;
-
-                html += `
-                    <div class="goal-card p-5 sm:p-6 md:p-8 rounded-2xl sm:rounded-3xl" data-aos="fade-up">
-                        <div class="flex justify-between items-start mb-3 sm:mb-4">
-                            ${getCategoryBadge(goal.category)}
-                            <button onclick="deleteGoal(${goal.id})" class="p-1.5 sm:p-2 hover:bg-white/10 rounded-lg transition opacity-50 hover:opacity-100">
-                                <i data-lucide="trash-2" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
-                            </button>
-                        </div>
-                        
-                        <h3 class="text-lg sm:text-xl md:text-2xl font-bold mb-1 sm:mb-2">${goal.name}</h3>
-                        
-                        ${goal.deadline ? `
-                            <div class="flex flex-wrap items-center gap-1 sm:gap-2 text-xs sm:text-sm opacity-60 mb-3 sm:mb-4">
-                                <i data-lucide="calendar" class="w-3 h-3 sm:w-4 sm:h-4"></i>
-                                <span>Target: ${new Date(goal.deadline).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}</span>
-                                ${daysLeft > 0 ? `<span class="text-${goal.color}-400 text-xs">(${daysLeft} hari)</span>` : daysLeft < 0 ? '<span class="text-red-400 text-xs">(Terlewat)</span>' : ''}
-                            </div>
-                        ` : ''}
-                        
-                        <div class="flex justify-between items-end mb-2 sm:mb-3">
-                            <div>
-                                <span class="text-xl sm:text-2xl md:text-3xl font-bold text-${goal.color}-400">${formatRupiah(goal.current)}</span>
-                                <span class="opacity-60 text-xs sm:text-sm"> / ${formatRupiah(goal.target)}</span>
-                            </div>
-                            <span class="text-lg sm:text-xl md:text-2xl font-bold">${progress}%</span>
-                        </div>
-                        
-                        <div class="progress-bar mb-4 sm:mb-5 md:mb-6">
-                            <div class="progress-fill" style="width: ${progress}%; background: linear-gradient(90deg, #${goal.color === 'violet' ? '8b5cf6' : goal.color === 'cyan' ? '06b6d4' : goal.color === 'emerald' ? '10b981' : goal.color === 'amber' ? 'f59e0b' : 'f43f5e'}, #06b6d4)"></div>
-                        </div>
-                        
-                        ${totalMilestones > 0 ? `
-                            <div class="border-t border-white/10 pt-3 sm:pt-4 mt-3 sm:mt-4">
-                                <div class="flex justify-between items-center mb-2 sm:mb-3">
-                                    <span class="text-xs sm:text-sm font-semibold">Milestones</span>
-                                    <span class="text-xs sm:text-sm opacity-60">${milestoneCompleted}/${totalMilestones}</span>
-                                </div>
-                                <div class="space-y-1 sm:space-y-2">
-                                    ${goal.milestones.map(milestone => `
-                                        <div class="milestone-item" onclick="toggleMilestone(${goal.id}, ${milestone.id})">
-                                            <div class="milestone-check ${milestone.completed ? 'checked' : ''}">
-                                                ${milestone.completed ? '<i data-lucide="check" class="w-3 h-3 sm:w-3.5 sm:h-3.5 text-white"></i>' : ''}
-                                            </div>
-                                            <span class="flex-1 text-xs sm:text-sm ${milestone.completed ? 'line-through opacity-50' : ''}">${milestone.text}</span>
-                                        </div>
-                                    `).join('')}
-                                </div>
-                            </div>
-                        ` : ''}
-                        
-                        <div class="flex gap-2 mt-4 sm:mt-5 md:mt-6">
-                            <input type="text" id="update-${goal.id}" class="goal-input text-xs sm:text-sm update-amount-input" placeholder="Tambah tabungan" data-goal-id="${goal.id}">
-                            <button onclick="updateProgress(${goal.id})" class="btn-primary px-3 sm:px-4 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm whitespace-nowrap">
-                                Update
-                            </button>
-                        </div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
-            lucide.createIcons();
-
-            document.querySelectorAll('.update-amount-input').forEach(input => {
-                setupNumberFormatting(input);
-            });
-
-            updateRecentMilestones();
-            updateTips();
-        }
-
-        function updateProgress(goalId) {
-            const input = document.getElementById(`update-${goalId}`);
-            if (!input) return;
-
-            const amount = parseFormattedNumber(input.value);
-
-            if (amount > 0) {
-                const goalIndex = goals.findIndex(g => g.id === goalId);
-                if (goalIndex !== -1) {
-                    const oldProgress = goals[goalIndex].current;
-                    goals[goalIndex].current += amount;
-
-                    if (oldProgress < goals[goalIndex].target && goals[goalIndex].current >= goals[goalIndex].target) {
-                        celebrateGoal();
-                    }
-
-                    localStorage.setItem('goals', JSON.stringify(goals));
-                    renderGoals();
-                    input.value = '';
-                }
-            }
-        }
-
-        function toggleMilestone(goalId, milestoneId) {
-            const goal = goals.find(g => g.id === goalId);
-            if (goal && goal.milestones) {
-                const milestone = goal.milestones.find(m => m.id === milestoneId);
-                if (milestone) {
-                    milestone.completed = !milestone.completed;
-
-                    if (milestone.completed) {
-                        milestone.completedAt = new Date().toISOString();
-                    } else {
-                        delete milestone.completedAt;
-                    }
-
-                    localStorage.setItem('goals', JSON.stringify(goals));
-                    renderGoals();
-
-                    const allCompleted = goal.milestones.every(m => m.completed);
-                    if (allCompleted && milestone.completed) {
-                        showNotification('Semua milestone selesai! 🎉');
-                    }
-                }
-            }
-        }
-
-        function deleteGoal(goalId) {
-            if (confirm('Yakin ingin menghapus target ini?')) {
-                goals = goals.filter(g => g.id !== goalId);
-                localStorage.setItem('goals', JSON.stringify(goals));
-                renderGoals();
-            }
-        }
-
-        function celebrateGoal() {
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + '%';
-                confetti.style.top = '-10px';
-                confetti.style.background = `hsl(${Math.random() * 360}, 100%, 50%)`;
-                confetti.style.animationDelay = Math.random() * 2 + 's';
-                document.body.appendChild(confetti);
-
-                setTimeout(() => {
-                    if (confetti.parentNode) confetti.remove();
-                }, 3000);
-            }
-
-            showNotification('Selamat! Target tercapai! 🎉');
-        }
-
-        function showNotification(message) {
-            alert(message);
-        }
-
-        function updateRecentMilestones() {
-            const container = document.getElementById('recentMilestones');
-            if (!container) return;
-
-            const allMilestones = [];
-
-            goals.forEach(goal => {
-                if (goal.milestones) {
-                    goal.milestones.forEach(milestone => {
-                        if (milestone.completed) {
-                            allMilestones.push({
-                                goalName: goal.name,
-                                milestoneText: milestone.text,
-                                completedAt: milestone.completedAt || new Date().toISOString(),
-                                goalColor: goal.color
-                            });
-                        }
-                    });
-                }
-            });
-
-            allMilestones.sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt));
-
-            const recent = allMilestones.slice(0, 5);
-
-            if (recent.length === 0) {
-                container.innerHTML = '<p class="opacity-60 text-center py-6 sm:py-8 text-sm">Belum ada milestone yang dicapai</p>';
-                return;
-            }
-
-            container.innerHTML = recent.map(m => {
-                const timeAgo = getTimeAgo(new Date(m.completedAt));
-                return `
-                    <div class="flex items-start gap-2 sm:gap-3 p-2 sm:p-3 bg-white/5 rounded-lg sm:rounded-xl">
-                        <div class="w-6 h-6 sm:w-7 sm:h-7 md:w-8 md:h-8 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
-                            <i data-lucide="check" class="w-3 h-3 sm:w-3.5 sm:h-3.5 md:w-4 md:h-4 text-emerald-400"></i>
-                        </div>
-                        <div class="flex-1">
-                            <p class="text-xs sm:text-sm font-medium">${m.milestoneText}</p>
-                            <p class="text-xxs sm:text-xs opacity-50">${m.goalName} • ${timeAgo}</p>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-
-            lucide.createIcons();
-        }
-
-        function getTimeAgo(date) {
-            const now = new Date();
-            const diffMs = now - date;
-            const diffMins = Math.floor(diffMs / 60000);
-            const diffHours = Math.floor(diffMs / 3600000);
-            const diffDays = Math.floor(diffMs / 86400000);
-
-            if (diffMins < 1) return 'Baru saja';
-            if (diffMins < 60) return `${diffMins} menit lalu`;
-            if (diffHours < 24) return `${diffHours} jam lalu`;
-            if (diffDays === 1) return 'Kemarin';
-            if (diffDays < 7) return `${diffDays} hari lalu`;
-            return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' });
-        }
-
-        function updateTips() {
-            const container = document.getElementById('tipsContainer');
-            if (!container) return;
-
-            const tips = [
-                {
-                    icon: 'zap',
-                    title: 'Konsisten Itu Kunci',
-                    text: 'Menabung rutin meski kecil lebih baik daripada besar tapi jarang.'
-                },
-                {
-                    icon: 'pie-chart',
-                    title: 'Gunakan Aturan 50/30/20',
-                    text: 'Alokasikan 20% pendapatan untuk tabungan dan investasi.'
-                },
-                {
-                    icon: 'trending-up',
-                    title: 'Investasi vs Tabungan',
-                    text: 'Untuk target jangka panjang, pertimbangkan instrumen investasi.'
-                },
-                {
-                    icon: 'shield',
-                    title: 'Dana Darurat Dulu',
-                    text: 'Pastikan punya dana darurat 3-6 bulan sebelum target lain.'
-                }
-            ];
-
-            const randomTip = tips[Math.floor(Math.random() * tips.length)];
-
-            container.innerHTML = `
-                <div class="flex items-start gap-2 sm:gap-3 md:gap-4">
-                    <div class="w-8 h-8 sm:w-10 sm:h-10 md:w-11 md:h-11 lg:w-12 lg:h-12 rounded-full bg-gradient-to-br from-violet-600 to-cyan-600 flex items-center justify-center flex-shrink-0">
-                        <i data-lucide="${randomTip.icon}" class="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-white"></i>
-                    </div>
-                    <div>
-                        <h4 class="text-sm sm:text-base font-bold mb-1">${randomTip.title}</h4>
-                        <p class="text-xs sm:text-sm opacity-60">${randomTip.text}</p>
-                    </div>
-                </div>
-            `;
-
-            lucide.createIcons();
-        }
-
-        function openAddGoalModal() {
-            const modal = document.getElementById('addGoalModal');
-            if (modal) {
-                modal.classList.add('active');
-                document.body.style.overflow = 'hidden';
-
-                setTimeout(() => {
-                    setupNumberFormatting(document.getElementById('goalTarget'));
-                    setupNumberFormatting(document.getElementById('goalCurrent'));
-                }, 0);
-            }
-        }
-
-        function closeAddGoalModal() {
-            const modal = document.getElementById('addGoalModal');
-            if (modal) {
-                modal.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        }
-
-        function selectColor(color) {
-            selectedColor = color;
-            document.querySelectorAll('.color-option').forEach(btn => {
-                btn.style.borderColor = 'transparent';
-            });
-            if (event && event.currentTarget) {
-                event.currentTarget.style.borderColor = 'white';
-            }
-        }
-
-        function addNewGoal() {
-            const nameInput = document.getElementById('goalName');
-            const targetInput = document.getElementById('goalTarget');
-            const currentInput = document.getElementById('goalCurrent');
-            const categoryInput = document.getElementById('goalCategory');
-            const deadlineInput = document.getElementById('goalDeadline');
-
-            if (!nameInput || !targetInput) return;
-
-            const name = nameInput.value;
-            const target = parseFormattedNumber(targetInput.value);
-            const current = parseFormattedNumber(currentInput ? currentInput.value : '0');
-            const category = categoryInput ? categoryInput.value : 'vacation';
-            const deadline = deadlineInput ? deadlineInput.value : null;
-            const milestones = getMilestonesFromInputs();
-
-            if (!name || !target) {
-                alert('Nama target dan nominal harus diisi!');
-                return;
-            }
-
-            const newGoal = {
-                id: Date.now(),
-                name: name,
-                category: category,
-                target: target,
-                current: current || 0,
-                deadline: deadline || null,
-                color: selectedColor,
-                milestones: milestones,
-                createdAt: new Date().toISOString()
-            };
-
-            goals.push(newGoal);
-            localStorage.setItem('goals', JSON.stringify(goals));
-
-            renderGoals();
-            closeAddGoalModal();
-
-            if (nameInput) nameInput.value = '';
-            if (targetInput) targetInput.value = '';
-            if (currentInput) currentInput.value = '0';
-            if (deadlineInput) deadlineInput.value = '';
-            clearMilestoneInputs();
-
-            selectedColor = 'violet';
-            document.querySelectorAll('.color-option').forEach(btn => {
-                btn.style.borderColor = 'transparent';
-            });
-            const violetBtn = document.querySelector('.color-option[data-color="violet"]');
-            if (violetBtn) violetBtn.style.borderColor = 'white';
-        }
-
-        // Initialize
-        renderGoals();
-        setInterval(updateTips, 30000);
-
-        // Make functions global
-        window.openAddGoalModal = openAddGoalModal;
-        window.closeAddGoalModal = closeAddGoalModal;
-        window.selectColor = selectColor;
-        window.addNewGoal = addNewGoal;
-        window.updateProgress = updateProgress;
-        window.toggleMilestone = toggleMilestone;
-        window.deleteGoal = deleteGoal;
-        window.addMilestoneInput = addMilestoneInput;
-        window.removeMilestoneInput = removeMilestoneInput;
-    </script>
-    <!-- Floating Clock -->
-    <div id="floating-clock" class="clock-container">
-        <div class="clock-time">00:00:00</div>
-        <div class="clock-date">Memuat...</div>
+    <!-- Jam Capsule -->
+    <div id="floating-clock" class="clock-container no-print">
+        <div class="clock-time" id="clock-time">00:00:00</div>
+        <div class="clock-date" id="clock-date">Memuat...</div>
     </div>
 
-    <script src="assets/js/clock.js"></script>
+    <!-- Core Scripts -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <script src="assets/js/goal-tracker.js"></script>
+    <script src="assets/js/goal-tracker-logic.js"></script>
 </body>
-
 </html>

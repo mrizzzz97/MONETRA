@@ -1,0 +1,100 @@
+        /* CORE CSS */
+        html { scroll-behavior: smooth; }
+        body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent;}
+        ::selection { background: rgba(59, 130, 246, 0.3); color: inherit; }
+        
+        /* LANGUAGE SWITCHER LOGIC */
+        html[lang="en"] .lang-id { display: none !important; }
+        html[lang="id"] .lang-en { display: none !important; }
+
+        /* Minimalist Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
+        html.light ::-webkit-scrollbar-thumb { background: #cbd5e1; }
+
+        /* Background Grid */
+        .bg-grid-pattern {
+            position: fixed; inset: 0; z-index: -10; pointer-events: none;
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(128, 128, 128, 0.08) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(128, 128, 128, 0.08) 1px, transparent 1px);
+            mask-image: radial-gradient(circle at center top, black 30%, transparent 80%);
+            -webkit-mask-image: radial-gradient(circle at center top, black 30%, transparent 80%);
+        }
+
+        /* Fast Boot Loader */
+        .sys-loader {
+            position: fixed; inset: 0; background: #09090b; z-index: 10000;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
+        }
+        .sys-loader.booted { transform: translateY(-100%); }
+
+        /* === ISLAND NAVBAR === */
+        #navbar {
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            max-width: 100%; border-radius: 0; border: 1px solid transparent;
+        }
+        .nav-scrolled {
+            top: 20px !important; max-width: 1000px !important; border-radius: 9999px !important;
+            background: rgba(255, 255, 255, 0.85) !important;
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(228, 228, 231, 0.8) !important;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
+            padding-left: 0.5rem; padding-right: 0.5rem;
+        }
+        html.dark .nav-scrolled {
+            background: rgba(9, 9, 11, 0.85) !important; border: 1px solid rgba(39, 39, 42, 0.8) !important;
+            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
+        }
+
+        /* === 3D TILT & SPOTLIGHT === */
+        .spotlight-card { 
+            position: relative; overflow: hidden; transform-style: preserve-3d;
+            will-change: transform; transition: transform 0.1s ease, box-shadow 0.3s ease;
+        }
+        .spotlight-card::before {
+            content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: inherit;
+            background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(59, 130, 246, 0.12), transparent 40%);
+            z-index: 0; pointer-events: none; opacity: 0; transition: opacity 0.4s ease;
+        }
+        html.dark .spotlight-card::before {
+            background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(59, 130, 246, 0.25), transparent 40%);
+        }
+        .spotlight-card:hover::before { opacity: 1; }
+        .spotlight-card > * { position: relative; z-index: 1; transform: translateZ(20px); }
+
+        /* Tech Image Card */
+        .tech-img-wrapper { position: relative; overflow: hidden; border-radius: 1rem; }
+        .tech-img-wrapper::after {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(to bottom, transparent, rgba(9,9,11,0.8));
+            opacity: 0.6; transition: opacity 0.3s ease;
+        }
+        .tech-img-wrapper:hover::after { opacity: 0.2; }
+        .tech-img-wrapper img { transition: transform 0.5s ease, filter 0.5s ease; filter: grayscale(100%) contrast(1.1); }
+        .spotlight-card:hover .tech-img-wrapper img { transform: scale(1.05); filter: grayscale(0%) contrast(1); }
+
+        /* Magnetic Button */
+        .btn-magnetic { transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1); position: relative; overflow: hidden; }
+        .btn-magnetic::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
+            transform: skewX(-20deg);
+        }
+        .btn-magnetic:hover::after { animation: shine 1.5s ease-out infinite; }
+
+        /* Clock Style Integrated */
+        .clock-container {
+            position: fixed; bottom: 24px; right: 24px;
+            background: rgba(24, 24, 27, 0.8); backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 9999px;
+            padding: 10px 24px; color: white; z-index: 100;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); min-width: 160px;
+            transition: opacity 0.4s ease, transform 0.4s ease; /* Transisi untuk menghilang halus */
+        }
+        html.light .clock-container { background: #ffffff !important; color: #18181b !important; border-color: rgba(0, 0, 0, 0.1); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
+        .clock-time { font-family: 'JetBrains Mono', monospace; font-size: 1.25rem; font-weight: 800; line-height: 1; letter-spacing: 0.05em; }
+        .clock-date { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.6; margin-top: 4px; }

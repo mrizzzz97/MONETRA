@@ -10,6 +10,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/about.css">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -48,107 +49,7 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <style>
-        /* CORE CSS */
-        html { scroll-behavior: smooth; }
-        body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; -webkit-tap-highlight-color: transparent;}
-        ::selection { background: rgba(59, 130, 246, 0.3); color: inherit; }
-        
-        /* LANGUAGE SWITCHER LOGIC */
-        html[lang="en"] .lang-id { display: none !important; }
-        html[lang="id"] .lang-en { display: none !important; }
 
-        /* Minimalist Scrollbar */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
-        html.light ::-webkit-scrollbar-thumb { background: #cbd5e1; }
-
-        /* Background Grid */
-        .bg-grid-pattern {
-            position: fixed; inset: 0; z-index: -10; pointer-events: none;
-            background-size: 40px 40px;
-            background-image: linear-gradient(to right, rgba(128, 128, 128, 0.08) 1px, transparent 1px),
-                              linear-gradient(to bottom, rgba(128, 128, 128, 0.08) 1px, transparent 1px);
-            mask-image: radial-gradient(circle at center top, black 30%, transparent 80%);
-            -webkit-mask-image: radial-gradient(circle at center top, black 30%, transparent 80%);
-        }
-
-        /* Fast Boot Loader */
-        .sys-loader {
-            position: fixed; inset: 0; background: #09090b; z-index: 10000;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            transition: transform 0.8s cubic-bezier(0.85, 0, 0.15, 1);
-        }
-        .sys-loader.booted { transform: translateY(-100%); }
-
-        /* === ISLAND NAVBAR === */
-        #navbar {
-            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-            max-width: 100%; border-radius: 0; border: 1px solid transparent;
-        }
-        .nav-scrolled {
-            top: 20px !important; max-width: 1000px !important; border-radius: 9999px !important;
-            background: rgba(255, 255, 255, 0.85) !important;
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(228, 228, 231, 0.8) !important;
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.1);
-            padding-left: 0.5rem; padding-right: 0.5rem;
-        }
-        html.dark .nav-scrolled {
-            background: rgba(9, 9, 11, 0.85) !important; border: 1px solid rgba(39, 39, 42, 0.8) !important;
-            box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5);
-        }
-
-        /* === 3D TILT & SPOTLIGHT === */
-        .spotlight-card { 
-            position: relative; overflow: hidden; transform-style: preserve-3d;
-            will-change: transform; transition: transform 0.1s ease, box-shadow 0.3s ease;
-        }
-        .spotlight-card::before {
-            content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: inherit;
-            background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(59, 130, 246, 0.12), transparent 40%);
-            z-index: 0; pointer-events: none; opacity: 0; transition: opacity 0.4s ease;
-        }
-        html.dark .spotlight-card::before {
-            background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(59, 130, 246, 0.25), transparent 40%);
-        }
-        .spotlight-card:hover::before { opacity: 1; }
-        .spotlight-card > * { position: relative; z-index: 1; transform: translateZ(20px); }
-
-        /* Tech Image Card */
-        .tech-img-wrapper { position: relative; overflow: hidden; border-radius: 1rem; }
-        .tech-img-wrapper::after {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(to bottom, transparent, rgba(9,9,11,0.8));
-            opacity: 0.6; transition: opacity 0.3s ease;
-        }
-        .tech-img-wrapper:hover::after { opacity: 0.2; }
-        .tech-img-wrapper img { transition: transform 0.5s ease, filter 0.5s ease; filter: grayscale(100%) contrast(1.1); }
-        .spotlight-card:hover .tech-img-wrapper img { transform: scale(1.05); filter: grayscale(0%) contrast(1); }
-
-        /* Magnetic Button */
-        .btn-magnetic { transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1); position: relative; overflow: hidden; }
-        .btn-magnetic::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.2), transparent);
-            transform: skewX(-20deg);
-        }
-        .btn-magnetic:hover::after { animation: shine 1.5s ease-out infinite; }
-
-        /* Clock Style Integrated */
-        .clock-container {
-            position: fixed; bottom: 24px; right: 24px;
-            background: rgba(24, 24, 27, 0.8); backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 9999px;
-            padding: 10px 24px; color: white; z-index: 100;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3); min-width: 160px;
-        }
-        html.light .clock-container { background: #ffffff !important; color: #18181b !important; border-color: rgba(0, 0, 0, 0.1); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
-        .clock-time { font-family: 'JetBrains Mono', monospace; font-size: 1.25rem; font-weight: 800; line-height: 1; letter-spacing: 0.05em; }
-        .clock-date { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.6; margin-top: 4px; }
-    </style>
 </head>
 
 <body class="bg-zinc-50 text-zinc-900 dark:bg-[#09090b] dark:text-zinc-50 transition-colors duration-300 selection:bg-brand selection:text-white overflow-x-hidden">
@@ -240,7 +141,7 @@
 
     <!-- Mobile Menu -->
     <div id="mobileMenuOverlay" class="fixed inset-0 bg-zinc-900/60 backdrop-blur-sm z-[99] opacity-0 pointer-events-none transition-opacity duration-300"></div>
-    <div id="mobileMenu" class="fixed top-0 right-0 w-full max-w-sm h-full bg-white dark:bg-[#09090b] z-[100] transform translate-x-full transition-transform duration-300 border-l border-zinc-200 dark:border-zinc-800 flex flex-col">
+    <div id="mobileMenu" class="fixed top-0 right-0 w-full max-sm:max-w-xs h-full bg-white dark:bg-[#09090b] z-[100] transform translate-x-full transition-transform duration-300 border-l border-zinc-200 dark:border-zinc-800 flex flex-col">
         <div class="flex justify-between items-center p-6 border-b border-zinc-200 dark:border-zinc-800">
             <span class="font-bold text-lg"><span class="lang-id">Menu</span><span class="lang-en">Menu</span></span>
             <button id="closeMobileMenu" class="p-2"><i data-lucide="x" class="w-5 h-5 hover:rotate-90 transition-transform"></i></button>
@@ -393,6 +294,7 @@
             </div>
 
             <div class="grid md:grid-cols-2 gap-8">
+                <!-- Team 1 -->
                 <div class="spotlight-card bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 flex flex-col items-center text-center" data-aos="zoom-in" data-aos-delay="0">
                     <div class="tech-img-wrapper w-32 h-32 mb-6 border-2 border-zinc-200 dark:border-zinc-800 rounded-full shadow-lg">
                         <img src="assets/img/IMG_20260211_091513.jpg" alt="Daffi Nafeeza" class="w-full h-full object-cover">
@@ -413,6 +315,7 @@
                     </div>
                 </div>
 
+                <!-- Team 2 -->
                 <div class="spotlight-card bg-white dark:bg-[#09090b] border border-zinc-200 dark:border-zinc-800 rounded-3xl p-8 flex flex-col items-center text-center" data-aos="zoom-in" data-aos-delay="100">
                     <div class="tech-img-wrapper w-32 h-32 mb-6 border-2 border-zinc-200 dark:border-zinc-800 rounded-full shadow-lg">
                         <img src="assets/img/WhatsApp Image 2026-02-17 at 14.07.22.jpeg" alt="M Rizki Suryapratama" class="w-full h-full object-cover">
@@ -503,122 +406,7 @@
         <div class="clock-date" id="clock-date">Memuat...</div>
     </div>
 
-    <!-- Core Scripts -->
-    <script>
-        lucide.createIcons();
-
-        // Fast Boot Loader Logic
-        window.addEventListener('load', () => {
-            const bar = document.getElementById('bootProgress');
-            const loader = document.getElementById('loader');
-            setTimeout(() => { if(bar) bar.style.width = '100%'; }, 100);
-            setTimeout(() => { if(loader) loader.classList.add('booted'); }, 600);
-        });
-
-        // Init Animations
-        AOS.init({ duration: 800, once: true, offset: 50, easing: 'ease-out-cubic' });
-
-        // Theme System
-        const toggleTheme = () => {
-            const html = document.documentElement;
-            html.classList.toggle('dark'); html.classList.toggle('light');
-            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-            lucide.createIcons();
-        };
-        document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-        document.getElementById('themeToggleMobile').addEventListener('click', toggleTheme);
-        if (localStorage.getItem('theme') === 'light') { document.documentElement.classList.remove('dark'); document.documentElement.classList.add('light'); }
-
-        // Language System
-        const langToggleBtn = document.getElementById('langToggleBtn');
-        const langToggleBtnMobile = document.getElementById('langToggleBtnMobile');
-        let currentLang = localStorage.getItem('lang') || 'id';
-
-        const applyLanguage = (lang) => {
-            document.documentElement.lang = lang; 
-            langToggleBtn.innerText = lang.toUpperCase();
-            if (langToggleBtnMobile) langToggleBtnMobile.innerText = lang.toUpperCase();
-            localStorage.setItem('lang', lang);
-            updateClock();
-        };
-
-        langToggleBtn.addEventListener('click', () => { currentLang = currentLang === 'id' ? 'en' : 'id'; applyLanguage(currentLang); });
-        if (langToggleBtnMobile) langToggleBtnMobile.addEventListener('click', () => { currentLang = currentLang === 'id' ? 'en' : 'id'; applyLanguage(currentLang); });
-        applyLanguage(currentLang);
-
-        // Island Navbar
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 40) navbar.classList.add('nav-scrolled');
-            else navbar.classList.remove('nav-scrolled');
-        });
-
-        // 3D Spotlight Cards
-        document.querySelectorAll('.spotlight-card').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left; const y = e.clientY - rect.top;
-                card.style.setProperty('--mouse-x', `${x}px`); card.style.setProperty('--mouse-y', `${y}px`);
-                const centerX = rect.width / 2; const centerY = rect.height / 2;
-                const rotateX = ((y - centerY) / centerY) * -5; const rotateY = ((x - centerX) / centerX) * 5;
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-            });
-            card.addEventListener('mouseleave', () => card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`);
-        });
-
-        // Magnetic Buttons
-        document.querySelectorAll('.btn-magnetic').forEach(btn => {
-            btn.addEventListener('mousemove', function(e) {
-                const position = btn.getBoundingClientRect();
-                const x = e.clientX - position.left - position.width / 2;
-                const y = e.clientY - position.top - position.height / 2;
-                btn.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
-            });
-            btn.addEventListener('mouseout', () => btn.style.transform = 'translate(0px, 0px)');
-        });
-
-        // Mobile Menu
-        const mobileMenu = document.getElementById('mobileMenu');
-        const overlay = document.getElementById('mobileMenuOverlay');
-        const openBtn = document.getElementById('mobileMenuBtn');
-        const closeBtn = document.getElementById('closeMobileMenu');
-
-        const toggleMobileMenu = (show) => {
-            if (show) {
-                mobileMenu.classList.remove('translate-x-full'); overlay.classList.remove('opacity-0', 'pointer-events-none');
-                document.body.style.overflow = 'hidden'; 
-            } else {
-                mobileMenu.classList.add('translate-x-full'); overlay.classList.add('opacity-0', 'pointer-events-none');
-                document.body.style.overflow = '';
-            }
-        };
-        openBtn.addEventListener('click', () => toggleMobileMenu(true));
-        closeBtn.addEventListener('click', () => toggleMobileMenu(false));
-        overlay.addEventListener('click', () => toggleMobileMenu(false));
-
-        // Clock Logic
-        function updateClock() {
-            const now = new Date();
-            const isID = document.documentElement.lang === 'id';
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const seconds = String(now.getSeconds()).padStart(2, '0');
-            document.getElementById('clock-time').textContent = `${hours}.${minutes}.${seconds}`;
-            
-            const daysID = ['MINGGU', 'SENIN', 'SELASA', 'RABU', 'KAMIS', 'JUMAT', 'SABTU'];
-            const monthsID = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER'];
-            const daysEN = ['SUNDAY', 'MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY'];
-            const monthsEN = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE', 'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'];
-            
-            if (isID) {
-                document.getElementById('clock-date').textContent = `${daysID[now.getDay()]}, ${now.getDate()} ${monthsID[now.getMonth()]} ${now.getFullYear()}`;
-            } else {
-                document.getElementById('clock-date').textContent = `${daysEN[now.getDay()]}, ${monthsEN[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
-            }
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-    </script>
+    <script src="assets/js/about.js"></script>
 </body>
 
 </html>
